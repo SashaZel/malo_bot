@@ -1,0 +1,27 @@
+.todo-card {
+    margin: 1rem 0;
+    padding: 0.5rem;
+    text-align: left;
+    border: 1px solid black;
+}
+
+.todo-card__del-button {
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    background-color: #eee;
+}
+
+.todo-done {
+    margin: 0.5rem;
+    padding: 0.5rem;
+    border-width: 2px;
+    border-style: solid;
+}
+
+.done-color__green {
+    border-color: green;
+}
+
+.done-color__red {
+    border-color: red;
+}

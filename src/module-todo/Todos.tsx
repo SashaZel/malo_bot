@@ -6,12 +6,16 @@ import { RootState } from "../store";
 import { Todo } from "./Todo";
 
 export const Todos = () => {
+
+  const [nameForm, setNameForm] = React.useState('');
+  const [descriptionForm, setDescriptionForm] = React.useState('');
+
   const todosList = useSelector((state: RootState) => state.todos.todoList);
   const dispatch = useDispatch();
 
   const handleTodoSubmit = (e: React.BaseSyntheticEvent): void => {
     e.preventDefault();
-    console.log(e.target);
+    // console.log(e.target);
     const actionTodo: ITodo = {
       todoId: nanoid(),
       todoName: e.target[0].value,
@@ -20,16 +24,16 @@ export const Todos = () => {
     };
 
     dispatch(todosReducer.actions.addTodo(actionTodo));
+
+    setNameForm('');
+    setDescriptionForm('');
   };
 
-  console.log(todosList);
+  //console.log(todosList);
 
   return (
     <div>
-      <div>
-        This is {todosList[0]?.todoId ?? "none-0"}{" "}
-        {todosList[1]?.todoId ?? "none-1"}
-      </div>
+      <h4>--- Todo list ---</h4>
       <div>
         {todosList.map((todo: ITodo) => {
             console.log('add Todo!')
@@ -39,11 +43,11 @@ export const Todos = () => {
       <form onSubmit={(e) => handleTodoSubmit(e)}>
         <label>
           Todo name
-          <input type="text" />
+          <input type="text" value={nameForm} onChange={(e: React.BaseSyntheticEvent) => setNameForm(e.target.value)} />
         </label>
         <label>
           Todo description
-          <input type="text" />
+          <input type="text" value={descriptionForm} onChange={(e: React.BaseSyntheticEvent) => setDescriptionForm(e.target.value)}/>
         </label>
         <input type="submit" value="Add Todo" />
       </form>

@@ -19,7 +19,18 @@ export const todosReducer = createSlice({
     } as ITodoList,
     reducers: {
         addTodo: (state, action: PayloadAction<ITodo>): void => {
-            state.todoList.push(action.payload)
+            state.todoList.push(action.payload);
+        },
+        delTodo: (state, action: PayloadAction<ITodo>): void => {
+            state.todoList = state.todoList.filter(todo => todo.todoId !== action.payload.todoId);
+        },
+        doneTodo: (state, action: PayloadAction<ITodo>): void => {
+            state.todoList = state.todoList.map((todo) => {
+                if (todo.todoId === action.payload.todoId) {
+                    return todo = {...todo, done: true};
+                }
+                return todo;
+            });
         }
     }
 });
