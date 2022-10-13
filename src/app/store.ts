@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { counterReducer } from "./reducers/counter";
-import { todosReducer } from "./reducers/todo";
+import { counterReducer } from "../features/counter/counterSlice";
+import { telegramReducer } from "../features/telegram-api/telegramSlice";
+import { todosReducer } from "../features/todo/todoSlice";
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer.reducer,
     todos: todosReducer.reducer,
+    telegram: telegramReducer.reducer
   },
 });
 

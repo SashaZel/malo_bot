@@ -2,3 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .my-button {
+    @apply p-1 md:p-2 m-1 bg-slate-300 border-2 border-slate-500 hover:bg-slate-400;
+  }
+}

@@ -31,6 +31,9 @@ export const todosReducer = createSlice({
                 }
                 return todo;
             });
+        },
+        setTodoFromIDB: (state, action): void => {
+            state.todoList = action.payload;
         }
     }
 });

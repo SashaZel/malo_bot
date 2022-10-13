@@ -17,6 +17,9 @@ export const counterReducer = createSlice({
         },
         reset: (state) => {
             state.value = 0
+        },
+        setValue: (state, action) => {
+            state.value = action.payload
         }
     }
 });
