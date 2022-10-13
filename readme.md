@@ -17,7 +17,7 @@ DONE:
 - mastering Tailwind
 - use axios
 - first steps in vanilla Telegram API
-TODO:
+TODO list:
 - make Telegram client for chatting via bot
 - make frontend Telegram bot echo
 - make frontend Telegram bot
