@@ -2,7 +2,7 @@ import React from "react";
 import { Panel } from "../common/Panel";
 import { Counter } from "../features/counter/Counter";
 import { IDB } from "../features/idb/IDB";
-import { TelegramAPI } from "../features/telegram-api/TelegramAPI";
+import { TelegramPanel } from "../features/telegram-api/TelegramPanel";
 import { TodoPanel } from "../features/todo/TodoPanel";
 
 function App(): React.ReactElement {
@@ -17,7 +17,7 @@ function App(): React.ReactElement {
         <IDB />
       </Panel>
       <Panel>
-        <TelegramAPI />
+        <TelegramPanel />
       </Panel>
       <Panel>
         <TodoPanel />
