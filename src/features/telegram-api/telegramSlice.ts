@@ -36,7 +36,7 @@ export interface IAccount {
 
 export interface ITelegram {
   account_data: IAccount;
-  current_chat: IChat;
+  current_chat: IChat | null;
   chats: IChat[];
   messages: IMessage[];
   //users: IUsers[];
@@ -66,8 +66,8 @@ const INITIAL_STATE: ITelegram = {
     bot_name: "",
     update_id: 0,
   },
-  current_chat: INITIAL_CHAT,
-  chats: [INITIAL_CHAT, INITIAL_CHAT_2],
+  current_chat: null,
+  chats: [],
   messages: [],
 };
 
@@ -87,11 +87,29 @@ export const telegramReducer = createSlice({
         state.account_data.update_id = action.payload.update_id + 1;
       }
     },
+    addChatToChats: (state, action: PayloadAction<IChat>): void => {
+      if (state.chats.map((chat: IChat) => chat.id).includes(action.payload.id)) {
+        return;
+      }
+      state.chats.push(action.payload);
+    },
     setCurrentChat: (state, action: PayloadAction<IChat>): void => {
       state.current_chat = action.payload;
     },
-    addChatToChats: (state, action: PayloadAction<IChat>): void => {
-      state.chats.push(action.payload);
+    setAllMessages: (
+      state,
+      action: PayloadAction<IMessage[]>
+    ): void => {
+        state.messages = action.payload;
     },
+    setAllChats: (
+      state,
+      action: PayloadAction<IChat[]>
+    ): void => {
+      state.chats = action.payload
+    },
+    clearAndExit: (state) => {
+      state.account_data = INITIAL_STATE.account_data;
+    }
   },
 });

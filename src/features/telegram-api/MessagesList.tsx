@@ -7,13 +7,21 @@ import { IMessage } from "./telegramSlice";
 export const MessagesList = () => {
 
   const msgList = useSelector((state: RootState) => state.telegram.messages);
-  const currentChatID = useSelector((state: RootState) => state.telegram.current_chat.id);
+  const currentChat = useSelector((state: RootState) => state.telegram.current_chat);
+
+  if(!currentChat || msgList.length === 0) {
+    return (
+      <div>
+        <h3>No messages.</h3>
+      </div>
+    );
+  }
 
   return (
     <div>
       {msgList.map((message: IMessage) => {
-        if (currentChatID === message.chat.id) {
-          return <Message key={message.message_id} message_id={message.message_id} />
+        if (currentChat?.id === message?.chat?.id) {
+          return <Message key={message?.message_id} message_id={message?.message_id} />
         }
         return;
       })}

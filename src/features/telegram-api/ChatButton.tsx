@@ -6,10 +6,10 @@ import { IChat, telegramReducer } from "./telegramSlice";
 export const ChatButton: React.FC<{ chat: IChat }> = ({chat}) => {
 
   const dispatch = useDispatch()
-  const currentChatID = useSelector(
-    (state: RootState) => state.telegram.current_chat.id
+  const currentChat = useSelector(
+    (state: RootState) => state.telegram.current_chat
   );
-  const borderStyle = (chat.id === currentChatID) ? 'border-4 border-green-500' : 'border-2';
+  const borderStyle = (currentChat && chat.id === currentChat.id) ? 'border-4 border-green-500' : 'border-2';
 
   const setThisChatAsCurrent = () => {
     dispatch(telegramReducer.actions.setCurrentChat(chat));

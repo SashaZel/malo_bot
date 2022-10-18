@@ -9,33 +9,33 @@ export type Ifunction = (messageText: string) => void;
 
 export const TelegramAPI = () => {
   //const [ listeningToUpdates, setListeningToUpdates ] = React.useState(false);
-  const currentAccount = useSelector((state: RootState) => state.telegram.account_data);
-  const currentChatID = useSelector(
-    (state: RootState) => state.telegram.current_chat.id
+  const currentAccount = useSelector(
+    (state: RootState) => state.telegram.account_data
   );
-  const availableChatsIDs = useSelector((state: RootState) =>
-    state.telegram.chats.map((chat) => chat.id)
+  const currentChat = useSelector(
+    (state: RootState) => state.telegram.current_chat
   );
   const dispatch = useDispatch();
 
   const handleSendMessage: Ifunction = (messageText) => {
     //e.preventDefault();
     //console.log(e.target[0].value);
+    if (!currentChat || !currentAccount) {
+      return;
+    }
 
     axios
-      .get(`https://api.telegram.org/bot${currentAccount.bot_token}/sendMessage`, {
-        params: {
-          chat_id: currentChatID,
-          text: messageText,
-        },
-      })
+      .get(
+        `https://api.telegram.org/bot${currentAccount.bot_token}/sendMessage`,
+        {
+          params: {
+            chat_id: currentChat.id,
+            text: messageText,
+          },
+        }
+      )
       .then(function (response) {
         console.log("response from sendMessage", response);
-        // console.log(`response.data.ok = ${response.data.ok}`);
-        // console.log(`response.data.result.chat.id = ${response.data.result.chat.id}`);
-        // console.log(`response.data.result.chat.username = ${response.data.result.chat.username}`);
-        // console.log(`response.data.result.from.id = ${response.data.result.from.id}`);
-        // console.log(`response.data.result.text = ${response.data.result.text}`);
         const message: IMessage = {
           message_id: response.data.result.message_id,
           from: response.data.result.from,
@@ -48,10 +48,7 @@ export const TelegramAPI = () => {
         );
       })
       .catch(function (error) {
-        console.log(error);
-      })
-      .finally(function () {
-        // always executed
+        console.log('Fail to send message at "TelegramAPI" ', error);
       });
   };
 
@@ -63,12 +60,15 @@ export const TelegramAPI = () => {
       //setListeningToUpdates(true);
 
       axios
-        .get(`https://api.telegram.org/bot${currentAccount.bot_token}/getUpdates`, {
-          params: {
-            offset: currentAccount.update_id,
-            timeout: 10,
-          },
-        })
+        .get(
+          `https://api.telegram.org/bot${currentAccount.bot_token}/getUpdates`,
+          {
+            params: {
+              offset: currentAccount.update_id,
+              timeout: 10,
+            },
+          }
+        )
         .then(function (response) {
           //setListeningToUpdates(false);
           console.log(response);
@@ -86,21 +86,15 @@ export const TelegramAPI = () => {
               date: response.data.result[i].message.date,
               text: response.data.result[i].message.text,
             };
-            if (
-              !availableChatsIDs.includes(
-                response.data.result[i].message.chat.id
-              )
-            ) {
-              const newChat: IChat = {
-                id: response.data.result[i].message.chat.id,
-                first_name: response.data.result[i].message.chat.first_name,
-                last_name: response.data.result[i].message.chat.last_name,
-                username: response.data.result[i].message.chat.username,
-                //TODO: Do something with unread msgs
-                unread_msg: 0,
-              };
-              dispatch(telegramReducer.actions.addChatToChats(newChat))
-            }
+            const newChat: IChat = {
+              id: response.data.result[i].message.chat.id,
+              first_name: response.data.result[i].message.chat.first_name,
+              last_name: response.data.result[i].message.chat.last_name,
+              username: response.data.result[i].message.chat.username,
+              //TODO: Do something with unread msgs
+              unread_msg: 0,
+            };
+            dispatch(telegramReducer.actions.addChatToChats(newChat));
             dispatch(
               telegramReducer.actions.addMessage({
                 message: message,
@@ -117,15 +111,10 @@ export const TelegramAPI = () => {
           console.log("Could not get messeges from bot chats. Wait...", error);
           delay = delay * 2;
           timeout = setTimeout(getBotUpdates, delay);
-        })
-        .finally(function () {
-          // always executed
         });
     };
 
-    //if(!listeningToUpdates) {
     getBotUpdates();
-    //}
 
     return () => timeout && clearTimeout(timeout);
   }, [currentAccount.update_id]);

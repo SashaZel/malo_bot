@@ -1,21 +1,33 @@
 import React from "react";
 import axios from "axios";
+import { get, set } from "idb-keyval";
+import { useDispatch, useSelector } from "react-redux";
 import { ChooseUser } from "./ChooseUser";
 import { MessagesList } from "./MessagesList";
 import { TelegramAPI } from "./TelegramAPI";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../../app/store";
 import { IAccount, telegramReducer } from "./telegramSlice";
+import { SaveButton } from "./SaveButton";
+import { RootState } from "../../app/store";
 
 type LoginStatus = "login_yes" | "login_no" | "login_waiting";
 
 export const TelegramPanel = () => {
-  const dispatch = useDispatch();
-  const [loginStatus, setLoginStatus] = React.useState<LoginStatus>("login_no");
-  const currentAccount = useSelector(
-    (state: RootState) => state.telegram.account_data
-  );
 
+  console.log('@TelegramPanel');
+
+  const dispatch = useDispatch();
+  const currentAccount = useSelector((state: RootState) => state.telegram.account_data);
+  const [loginStatus, setLoginStatus] = React.useState<LoginStatus>("login_no");
+  const [wrongLogin, setWrongLogin] = React.useState(false);
+
+
+  React.useEffect(() => {
+    get('idb-account_data').then((IDBaccountData: IAccount) => {
+      if(!IDBaccountData) return;
+      checkLogin(IDBaccountData);
+    })
+  }, []);
+    
   const checkLogin = (accountData: IAccount) => {
     setLoginStatus("login_waiting");
     axios
@@ -25,17 +37,23 @@ export const TelegramPanel = () => {
         if (response.data.ok) {
           setLoginStatus("login_yes");
           dispatch(telegramReducer.actions.setAccountData(accountData));
+          set('idb-account_data', accountData)
+            .catch((error) => console.error("set idb-account_data failed", error));
         }
         if (!response.data.ok) {
           setLoginStatus("login_no");
         }
       })
-      .catch((error) => console.error("checkLogin error: ", error));
+      .catch((error) => {
+        console.error("checkLogin error: ", error);
+        setWrongLogin(true);
+        setLoginStatus("login_no");
+      });
   };
 
   const handleLogin = (e: React.BaseSyntheticEvent) => {
     e.preventDefault();
-    console.log("@login 0 _ ", e.target[0].value);
+    //console.log("@login 0 _ ", e.target[0].value);
     //TODO: Add check of input data
     const newAccountData: IAccount = {
       bot_name: e.target[0].value,
@@ -45,9 +63,10 @@ export const TelegramPanel = () => {
     checkLogin(newAccountData);
   };
 
-  if (loginStatus === "login_yes") {
+  if (loginStatus === "login_yes" && currentAccount.bot_name) {
     return (
       <>
+        <SaveButton />
         <TelegramAPI />
         <ChooseUser />
         <MessagesList />
@@ -59,7 +78,8 @@ export const TelegramPanel = () => {
     <>
       <h2 className="text-xl ml-2">Frontend-only Telegram bot</h2>
       <h3 className="text-xl ml-2">{(loginStatus !== 'login_waiting') ? 'Please Log in:' : 'Waiting...'}</h3>
-      <div className="m-1 p-2 border-2 border-red-300">
+      <div className={`m-1 p-2 border-2 ${wrongLogin && 'border-red-300'}`}>
+        <p className="text-red-500">{wrongLogin && 'Error: Wrong Bot username or token. Try again.'}</p>
       <form onSubmit={(e: React.SyntheticEvent) => handleLogin(e)}>
         <label>
           <p>Bot username:</p>
