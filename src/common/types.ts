@@ -1,0 +1,1 @@
+export type Ifunction = (messageText: string) => void;

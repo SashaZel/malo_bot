@@ -1,5 +1,6 @@
 import React from "react";
 import { Panel } from "../common/Panel";
+import { ChatbotPanel } from "../features/chatbot/ChatbotPanel";
 import { Counter } from "../features/counter/Counter";
 import { IDB } from "../features/idb/IDB";
 import { TelegramPanel } from "../features/telegram-api/TelegramPanel";
@@ -18,6 +19,9 @@ function App(): React.ReactElement {
       </Panel>
       <Panel>
         <TelegramPanel />
+      </Panel>
+      <Panel>
+        <ChatbotPanel />
       </Panel>
       <Panel>
         <TodoPanel />

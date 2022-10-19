@@ -42,27 +42,25 @@ export interface ITelegram {
   //users: IUsers[];
 }
 
-const INITIAL_CHAT: IChat = {
-  id: 5122222407,
-  first_name: "Al",
-  last_name: "Zel",
-  username: "sasha_zelenkov",
-  unread_msg: 0,
-};
+// const INITIAL_CHAT: IChat = {
+//   id: 5122222407,
+//   first_name: "Al",
+//   last_name: "Zel",
+//   username: "sasha_zelenkov",
+//   unread_msg: 0,
+// };
 
-const INITIAL_CHAT_2: IChat = {
-  id: 5122222408,
-  first_name: "Nikolay",
-  last_name: "Zelllenkov",
-  username: "kolya_zelenkov",
-  unread_msg: 3,
-};
+// const INITIAL_CHAT_2: IChat = {
+//   id: 5122222408,
+//   first_name: "Nikolay",
+//   last_name: "Zelllenkov",
+//   username: "kolya_zelenkov",
+//   unread_msg: 3,
+// };
 
 const INITIAL_STATE: ITelegram = {
   account_data: {
-    //bot_token: import.meta.env.VITE_TELEGRAM_BOT_TOKEN,
     bot_token: "",
-    //bot_name: "zelenkov_test_bot",
     bot_name: "",
     update_id: 0,
   },
@@ -88,7 +86,9 @@ export const telegramReducer = createSlice({
       }
     },
     addChatToChats: (state, action: PayloadAction<IChat>): void => {
-      if (state.chats.map((chat: IChat) => chat.id).includes(action.payload.id)) {
+      if (
+        state.chats.map((chat: IChat) => chat.id).includes(action.payload.id)
+      ) {
         return;
       }
       state.chats.push(action.payload);
@@ -96,20 +96,14 @@ export const telegramReducer = createSlice({
     setCurrentChat: (state, action: PayloadAction<IChat>): void => {
       state.current_chat = action.payload;
     },
-    setAllMessages: (
-      state,
-      action: PayloadAction<IMessage[]>
-    ): void => {
-        state.messages = action.payload;
+    setAllMessages: (state, action: PayloadAction<IMessage[]>): void => {
+      state.messages = action.payload;
     },
-    setAllChats: (
-      state,
-      action: PayloadAction<IChat[]>
-    ): void => {
-      state.chats = action.payload
+    setAllChats: (state, action: PayloadAction<IChat[]>): void => {
+      state.chats = action.payload;
     },
     clearAndExit: (state) => {
       state.account_data = INITIAL_STATE.account_data;
-    }
+    },
   },
 });

@@ -4,32 +4,33 @@ import { useSelector, useDispatch } from "react-redux";
 import { IChat, IMessage, telegramReducer } from "./telegramSlice";
 import { RootState } from "../../app/store";
 import { TelegramForm } from "./TelegramForm";
-
-export type Ifunction = (messageText: string) => void;
+import { listenAndAnswer } from "../chatbot/inputListener";
+import { Ifunction } from "../../common/types";
 
 export const TelegramAPI = () => {
-  //const [ listeningToUpdates, setListeningToUpdates ] = React.useState(false);
-  const currentAccount = useSelector(
-    (state: RootState) => state.telegram.account_data
-  );
-  const currentChat = useSelector(
-    (state: RootState) => state.telegram.current_chat
-  );
+
+  const { account_data, current_chat} = useSelector((state: RootState) => state.telegram);
+  const chatbotState = useSelector((state: RootState) => state.chatbot);
   const dispatch = useDispatch();
 
+  console.log('@TAPI');
+
   const handleSendMessage: Ifunction = (messageText) => {
-    //e.preventDefault();
-    //console.log(e.target[0].value);
-    if (!currentChat || !currentAccount) {
+
+    // console.log("ready to send: ", messageText);
+    // console.log('TAPI currentChat ', current_chat);
+    // console.log('TAPI currentAccount ', current_chat);
+    if (!messageText || !current_chat || !current_chat) {
       return;
     }
+    //console.log("ready to send after checks: ", messageText);
 
     axios
       .get(
-        `https://api.telegram.org/bot${currentAccount.bot_token}/sendMessage`,
+        `https://api.telegram.org/bot${account_data.bot_token}/sendMessage`,
         {
           params: {
-            chat_id: currentChat.id,
+            chat_id: current_chat.id,
             text: messageText,
           },
         }
@@ -57,21 +58,20 @@ export const TelegramAPI = () => {
     let timeout: NodeJS.Timeout;
 
     const getBotUpdates = () => {
-      //setListeningToUpdates(true);
 
       axios
         .get(
-          `https://api.telegram.org/bot${currentAccount.bot_token}/getUpdates`,
+          `https://api.telegram.org/bot${account_data.bot_token}/getUpdates`,
           {
             params: {
-              offset: currentAccount.update_id,
+              offset: account_data.update_id,
               timeout: 10,
             },
           }
         )
         .then(function (response) {
-          //setListeningToUpdates(false);
-          console.log(response);
+          
+          //console.log(response);
           // console.log(`response.data.ok = ${response.data.ok}`);
           // console.log(`response.data.result.chat.id = ${response.data.result.chat.id}`);
           // console.log(`response.data.result.chat.username = ${response.data.result.chat.username}`);
@@ -101,13 +101,14 @@ export const TelegramAPI = () => {
                 update_id: response.data.result[i].update_id,
               })
             );
+            //handleSendMessage('I receive your msg: ' + response.data.result[i].message.text);
+            handleSendMessage(listenAndAnswer(response.data.result[i].message.text, chatbotState));
           }
 
           delay = 1000;
           timeout = setTimeout(getBotUpdates, delay);
         })
         .catch(function (error) {
-          //setListeningToUpdates(false);
           console.log("Could not get messeges from bot chats. Wait...", error);
           delay = delay * 2;
           timeout = setTimeout(getBotUpdates, delay);
@@ -117,18 +118,18 @@ export const TelegramAPI = () => {
     getBotUpdates();
 
     return () => timeout && clearTimeout(timeout);
-  }, [currentAccount.update_id]);
+  }, [account_data.update_id]);
 
   return (
     <>
       <h3>Hi, Telegram API!</h3>
       <p>Bot name:</p>
       <p>
-        <a href={`https://t.me/${currentAccount.bot_name}`} target="blank">
-          {currentAccount.bot_name}
+        <a href={`https://t.me/${account_data.bot_name}`} target="blank">
+          {account_data.bot_name}
         </a>
       </p>
-      <p>Bot token: {currentAccount.bot_token}</p>
+      <p>Bot token: {account_data.bot_token}</p>
       <TelegramForm handleSendMessage={handleSendMessage} />
     </>
   );
