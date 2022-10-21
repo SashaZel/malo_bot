@@ -1,5 +1,5 @@
 import React from "react";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { bindActionCreators, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import { KeywordButton } from "./KeywordButton";
 
@@ -14,11 +14,8 @@ export interface IChatbot {
 
 const INITIAL_STATE: IChatbot = {
   intents: {
-    hello: "hello",
-    hi: "hello",
   },
   reactions: {
-    hello: "Hello my dear friend!",
   },
 };
 
@@ -37,6 +34,7 @@ export const chatbotReducer = createSlice({
       state,
       action: PayloadAction<{ keywords: string; pointerToAction: string }>
     ) => {
+      // TODO: Add checking of uniq keyword
       action.payload.keywords
         .split(",")
         .map((keyword) => keyword.trim())
@@ -56,6 +54,12 @@ export const chatbotReducer = createSlice({
     ) => {
       state.reactions[action.payload.reactionName] = action.payload.answer;
     },
+    removeReaction: (
+      state,
+      action: PayloadAction<{ reactionForRemoving: string }>
+    ) => {
+      delete state.reactions[action.payload.reactionForRemoving];
+    }
   },
 });
 

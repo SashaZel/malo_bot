@@ -24,10 +24,13 @@ export const ChatbotPanel = () => {
   }, []);
 
   return (
-    <div>
-      Hi, chatbot panel.
-      <ChatbotListOfReactions />
+    <div className="p-1 md:p-2">
+      <h2 className="m-1 lg:m-2 text-xl font-semibold border-b-2">Chatbot admin panel</h2>
+      <p className="mx-2">Manage your chatbot.</p>
+      <p className="mx-2">Add or remove your responses and keywords for responses.</p>
+      <p className="mx-2">All changes will be saved automaticly.</p>
       <ChatbotForm />
+      <ChatbotListOfReactions />
     </div>
   );
 };

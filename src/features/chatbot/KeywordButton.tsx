@@ -13,11 +13,11 @@ export const KeywordButton: React.FC<{ keyword: string }> = ({ keyword }) => {
   }
 
   return (
-    <div className="border-2 inline-block m-1 p-1">
+    <div className="border-2 rounded-lg inline-block m-1 pt-1 pl-1 shadow-sm">
       {keyword} 
       <button
         onClick={() => handleDeleteKeyword()}
-        className="border-2 m-1 text-xs font-bold text-red-800 rounded-lg p-1"
+        className="border-2 m-1 text-xs font-bold text-red-500 bg-white rounded-lg p-1 translate-x-3 -translate-y-3"
       >X</button>
     </div>
   );

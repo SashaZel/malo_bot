@@ -25,7 +25,7 @@ export interface IChat {
   first_name: string;
   last_name: string;
   username: string;
-  unread_msg: number;
+  unread_msg?: number;
 }
 
 export interface IAccount {
@@ -39,7 +39,6 @@ export interface ITelegram {
   current_chat: IChat | null;
   chats: IChat[];
   messages: IMessage[];
-  //users: IUsers[];
 }
 
 // const INITIAL_CHAT: IChat = {

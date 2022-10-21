@@ -1,5 +1,9 @@
 # Test pet project
-My test project for learning new stack:
+My pet project for learning new stack:
+
+Frontend-only Telegram chatbot.
+Live demo:
+https://sashazel.github.io/vite-test/index.html
 
 DONE:
 - try Vite
@@ -17,12 +21,12 @@ DONE:
 - mastering Tailwind
 - use axios
 - first steps in vanilla Telegram API
-
-TODO list:
 - make Telegram client for chatting via bot
 - make frontend Telegram bot echo
 - make frontend Telegram bot
 - make auth for Telegram bot creation
 - deploy app
+
+TODO list:
 - make advanced UI for Telegram bot app
 - make admin CRM with frontend-only Telegram bot

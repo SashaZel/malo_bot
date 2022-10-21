@@ -1,8 +1,9 @@
 import { IChatbot } from "./chatbotSlice";
+import { store } from "../../app/store";
 
-export function listenAndAnswer (inputMessage: string, chatbotState: IChatbot) {
+export function listenAndAnswer (inputMessage: string) {
 
-  //const chatbotState = store.getState().chatbot
+  const chatbotState: IChatbot = store.getState().chatbot
   //const chatbotState = useSelector((state: RootState) => state.chatbot);
   if (!chatbotState || !chatbotState.intents || !chatbotState.reactions) {
     console.error('Chatbot state is not ready! @listenAndAnswer');

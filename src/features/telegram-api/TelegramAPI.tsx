@@ -9,13 +9,14 @@ import { Ifunction } from "../../common/types";
 
 export const TelegramAPI = () => {
 
-  const { account_data, current_chat} = useSelector((state: RootState) => state.telegram);
+  const isPooling = React.useRef(false);
+  const account_data = useSelector((state: RootState) => state.telegram.account_data);
   const chatbotState = useSelector((state: RootState) => state.chatbot);
   const dispatch = useDispatch();
 
   console.log('@TAPI');
 
-  const handleSendMessage: Ifunction = (messageText) => {
+  const handleSendMessage: Ifunction = (messageText, account_data, current_chat) => {
 
     // console.log("ready to send: ", messageText);
     // console.log('TAPI currentChat ', current_chat);
@@ -54,10 +55,17 @@ export const TelegramAPI = () => {
   };
 
   React.useEffect(() => {
+
+    // TODO: Fix doubling the callbacks when re-renders component!!!
+
     let delay = 1000;
-    let timeout: NodeJS.Timeout;
+    let timeout: NodeJS.Timeout | null = null;
 
     const getBotUpdates = () => {
+
+      if (isPooling.current) return;
+
+      isPooling.current = true;
 
       axios
         .get(
@@ -66,12 +74,12 @@ export const TelegramAPI = () => {
             params: {
               offset: account_data.update_id,
               timeout: 10,
-            },
+            }
           }
         )
         .then(function (response) {
           
-          //console.log(response);
+          console.log("TAPI response", response.data);
           // console.log(`response.data.ok = ${response.data.ok}`);
           // console.log(`response.data.result.chat.id = ${response.data.result.chat.id}`);
           // console.log(`response.data.result.chat.username = ${response.data.result.chat.username}`);
@@ -94,6 +102,8 @@ export const TelegramAPI = () => {
               //TODO: Do something with unread msgs
               unread_msg: 0,
             };
+            // TODO: Now bot answer to current account, not to the account which 
+            // send the message
             dispatch(telegramReducer.actions.addChatToChats(newChat));
             dispatch(
               telegramReducer.actions.addMessage({
@@ -102,35 +112,45 @@ export const TelegramAPI = () => {
               })
             );
             //handleSendMessage('I receive your msg: ' + response.data.result[i].message.text);
-            handleSendMessage(listenAndAnswer(response.data.result[i].message.text, chatbotState));
+            handleSendMessage(
+              listenAndAnswer(response.data.result[i].message.text),
+              account_data, 
+              response.data.result[i].message.chat
+            );
           }
+          
+          isPooling.current = false;
 
           delay = 1000;
+          timeout && clearTimeout(timeout);
+          timeout = null;
           timeout = setTimeout(getBotUpdates, delay);
         })
         .catch(function (error) {
           console.log("Could not get messeges from bot chats. Wait...", error);
+          
+          isPooling.current = false;
+
           delay = delay * 2;
+          timeout && clearTimeout(timeout);
+          timeout = null;
           timeout = setTimeout(getBotUpdates, delay);
         });
     };
 
     getBotUpdates();
 
-    return () => timeout && clearTimeout(timeout);
+    return () => {
+      timeout && clearTimeout(timeout);
+      timeout = null;
+    }
   }, [account_data.update_id]);
 
   return (
-    <>
-      <h3>Hi, Telegram API!</h3>
-      <p>Bot name:</p>
-      <p>
-        <a href={`https://t.me/${account_data.bot_name}`} target="blank">
-          {account_data.bot_name}
-        </a>
-      </p>
-      <p>Bot token: {account_data.bot_token}</p>
+    <div
+      className="border-2 m-1 p-2"
+    >
       <TelegramForm handleSendMessage={handleSendMessage} />
-    </>
+    </div>
   );
 };

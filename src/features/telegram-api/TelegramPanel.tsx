@@ -20,6 +20,7 @@ export const TelegramPanel = () => {
   );
   const [loginStatus, setLoginStatus] = React.useState<LoginStatus>("login_no");
   const [wrongLogin, setWrongLogin] = React.useState(false);
+  const [ connectError, setConnectError ] = React.useState<null | string>(null);
 
   React.useEffect(() => {
     get("idb-account_data").then((IDBaccountData: IAccount) => {
@@ -33,6 +34,7 @@ export const TelegramPanel = () => {
     axios
       .get(`https://api.telegram.org/bot${accountData.bot_token}/getMe`)
       .then((response) => {
+        setConnectError(null);
         //console.log("@checkLogin ", response.data);
         if (response.data.ok && !loadFromIDB) {
           set("idb-account_data", accountData).catch((error) =>
@@ -76,6 +78,7 @@ export const TelegramPanel = () => {
         console.error("checkLogin error: ", error);
         setWrongLogin(true);
         setLoginStatus("login_no");
+        setConnectError(error.message + '. Please check Internet connection or try again.')
       });
   };
 
@@ -93,24 +96,31 @@ export const TelegramPanel = () => {
 
   if (loginStatus === "login_yes" && currentAccount.bot_name) {
     return (
-      <>
+      <div className="p-1 md:p-2">
+      <h2 className="m-1 lg:m-2 text-xl font-semibold border-b-2">Telegram chats</h2>
+      <p className="mx-2">Choose chat, browse querries and answers. Write a messages by the hand.</p>
+      <p className="mx-2">User have to interact with chatbot first.</p>
+      <p className="mx-2">All messages saved automaticly.</p>
         <SaveButton />
-        <TelegramAPI />
         <ChooseUser />
+        <TelegramAPI />
         <MessagesList />
-      </>
+      </div>
     );
   }
 
   return (
-    <>
-      <h2 className="text-xl ml-2">Frontend-only Telegram bot</h2>
-      <h3 className="text-xl ml-2">
+    <div className="p-1 md:p-2">
+      <h2 className="m-1 lg:m-2 text-xl font-semibold border-b-2">Frontend-only Telegram chatbot</h2>
+      <p className="mx-2 pt-2">No-coding chatbot. Just add an answer and keywords. Your bot is ready!</p>
+      <p className="mx-2 pt-2">No backend needs. Chatbot lives on your machine. Keep your browser open. To quit chatbot just close the browser.</p>
+      <p className="mx-2 pt-2">All changes save automaticly. Open this page again - and your chatbot is ready again with full history available.</p>
+      <h3 className="text-xl ml-2 pt-4">
         {loginStatus !== "login_waiting" ? "Please Log in:" : "Waiting..."}
       </h3>
       <div className={`m-1 p-2 border-2 ${wrongLogin && "border-red-300"}`}>
         <p className="text-red-500">
-          {wrongLogin && "Error: Wrong Bot username or token. Try again."}
+          {connectError || (wrongLogin && "Error: Wrong Bot username or token. Try again.")}
         </p>
         <form onSubmit={(e: React.SyntheticEvent) => handleLogin(e)}>
           <label>
@@ -125,11 +135,11 @@ export const TelegramPanel = () => {
         </form>
       </div>
       <div>
-        <h4 className="text-lg font-semibold">
+        <h4 className="text-lg font-semibold mx-2 mt-4">
           How to get bot username and token?
         </h4>
-        <p>Get username and token from @BotFather.</p>
-        <p>
+        <p className="mx-2 mt-2">Get username and token from @BotFather.</p>
+        <p className="mx-2 mb-4">
           See detailed guide{" "}
           <a
             className="underline"
@@ -140,6 +150,6 @@ export const TelegramPanel = () => {
           </a>
         </p>
       </div>
-    </>
+    </div>
   );
 };

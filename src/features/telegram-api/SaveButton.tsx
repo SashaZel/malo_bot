@@ -33,7 +33,7 @@ export const SaveButton = () => {
   };
 
   return (
-    <div>
+    <div className="border-2 m-1 p-2">
       <div
         className={`fixed ${
           !readyForClear && "hidden"
@@ -62,10 +62,15 @@ export const SaveButton = () => {
         </div>
       </div>
 
-      <button onClick={handleSave} className="my-button">
-        Save before exit
-      </button>
-      <button onClick={() => setReadyForClear(true)} className="my-button">
+      <span className="font-semibold inline-block mr-1">Your bot: </span>
+      <a
+        href={`https://t.me/${telegramAppState.account_data.bot_name}`}
+        target="blank"
+        className="inline-block mr-4"
+      >
+        https://t.me/{telegramAppState.account_data.bot_name}
+      </a>
+      <button onClick={() => setReadyForClear(true)} className="my-1 border-2 p-2 bg-slate-200 hover:bg-slate-300 border-slate-300">
         Clear IndexedDB and Log out.
       </button>
     </div>
