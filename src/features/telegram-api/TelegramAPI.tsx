@@ -11,7 +11,6 @@ export const TelegramAPI = () => {
 
   const isPooling = React.useRef(false);
   const account_data = useSelector((state: RootState) => state.telegram.account_data);
-  const chatbotState = useSelector((state: RootState) => state.chatbot);
   const dispatch = useDispatch();
 
   console.log('@TAPI');
@@ -148,7 +147,7 @@ export const TelegramAPI = () => {
 
   return (
     <div
-      className="border-2 m-1 p-2"
+      className="bg-gradient-to-br p-2 my-2 rounded-bl-xl rounded-tr-xl from-pink-800 to-pink-700"
     >
       <TelegramForm handleSendMessage={handleSendMessage} />
     </div>

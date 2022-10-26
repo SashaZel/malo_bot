@@ -5,13 +5,13 @@ import { TelegramPanel } from "../features/telegram-api/TelegramPanel";
 
 function App(): React.ReactElement {
   return (
-    <div className="bg-gradient-to-r from-lime-100 via-amber-100 to-lime-200 pt-2 pb-6">
+    <div className="bg-gradient-to-r from-fuchsia-800 via-purple-800 to-pink-800 pt-2 pb-6">
       <div className="font-sans container mx-auto px-4 lg:grid lg:grid-cols-2 lg:gap-y-2 lg:gap-x-4 xl:gap-x-6 ">
         <Panel>
-          <ChatbotPanel />
+          <TelegramPanel />
         </Panel>
         <Panel>
-          <TelegramPanel />
+          <ChatbotPanel />
         </Panel>
         <div className="col-span-2">
           <Panel>

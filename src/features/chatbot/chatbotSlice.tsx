@@ -1,5 +1,5 @@
 import React from "react";
-import { bindActionCreators, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import { KeywordButton } from "./KeywordButton";
 
@@ -10,42 +10,48 @@ export interface IChatbot {
   reactions: {
     [action: string]: string;
   };
+  lastReaction: string;
 }
 
 const INITIAL_STATE: IChatbot = {
-  intents: {
-  },
-  reactions: {
-  },
+  intents: {},
+  reactions: {},
+  lastReaction: "",
 };
 
 export const chatbotReducer = createSlice({
   name: "chatbot",
   initialState: INITIAL_STATE,
   reducers: {
-    setState: (
-      state,
-      action: PayloadAction<{ newState: IChatbot}>
-    ) => {
+    setState: (state, action: PayloadAction<{ newState: IChatbot }>) => {
       state.intents = action.payload.newState.intents;
       state.reactions = action.payload.newState.reactions;
     },
+    setLastReaction: (state, action: PayloadAction<string>) => {
+      state.lastReaction = action.payload;
+    },
     addIntent: (
       state,
-      action: PayloadAction<{ keywords: string; pointerToAction: string }>
+      action: PayloadAction<{
+        keywords: string;
+        pointerToAction: string;
+        parent: string;
+      }>
     ) => {
       // TODO: Add checking of uniq keyword
       action.payload.keywords
         .split(",")
         .map((keyword) => keyword.trim())
         .map((keyword: string) => {
-          state.intents[keyword] = action.payload.pointerToAction;
+          if (action.payload.parent) {
+            state.intents[action.payload.parent + "~" + keyword] =
+              action.payload.parent + "~" + action.payload.pointerToAction;
+          } else {
+            state.intents[keyword] = action.payload.pointerToAction;
+          }
         });
     },
-    removeIntent: (
-      state,
-      action: PayloadAction<{keyword: string}>
-    ) => {
+    removeIntent: (state, action: PayloadAction<{ keyword: string }>) => {
       delete state.intents[action.payload.keyword];
     },
     addReaction: (
@@ -58,8 +64,17 @@ export const chatbotReducer = createSlice({
       state,
       action: PayloadAction<{ reactionForRemoving: string }>
     ) => {
+      const intentsForRemoving = [];
+      for (const [ keyword, pointerToReaction] of Object.entries(state.intents)) {
+        if (pointerToReaction === action.payload.reactionForRemoving) {
+          intentsForRemoving.push(keyword);
+        }
+      }
+      intentsForRemoving.map((keywordForRemoving) => {
+        delete state.intents[keywordForRemoving];
+      })
       delete state.reactions[action.payload.reactionForRemoving];
-    }
+    },
   },
 });
 

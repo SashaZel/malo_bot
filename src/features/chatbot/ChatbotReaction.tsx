@@ -14,6 +14,8 @@ export const ChatbotReaction: React.FC<{
     selectorKeywordsList(state, reactionName)
   );
   const [inputValue, setInputValue] = React.useState("");
+  const deepthInIntentTree = 'ml-' + String(reactionName.split('~').length > 1 ? reactionName.split('~').length*2 : 1);
+  console.log('deepthInIntentTree ', deepthInIntentTree);
   // const keywords = Object.entries(intents)
   //   .filter(([_, pointerToAction]) => pointerToAction === reactionName)
   //   .map(([keyword, _]) => keyword)
@@ -21,13 +23,21 @@ export const ChatbotReaction: React.FC<{
 
   const handleAddNewKeyword = (e: React.BaseSyntheticEvent) => {
     e.preventDefault();
+    const lastSlashSymbol = reactionName.lastIndexOf("~");
+    let keywordParent = "";
+    let reactionNameWithoutParent = reactionName;
+    if (lastSlashSymbol > 0) {
+      keywordParent = reactionName.slice(0, lastSlashSymbol);
+      reactionNameWithoutParent = reactionName.slice(lastSlashSymbol + 1);
+    }
     const inputString = e.target[0].value;
     //console.log(inputString);
     if (!inputString) return;
     dispatcher(
       chatbotReducer.actions.addIntent({
         keywords: inputString,
-        pointerToAction: reactionName,
+        pointerToAction: reactionNameWithoutParent,
+        parent: keywordParent,
       })
     );
     saveChatbotToIDB();
@@ -44,7 +54,7 @@ export const ChatbotReaction: React.FC<{
   };
 
   return (
-    <div className="relative border-2 p-2 m-1">
+    <div className={`relative border-2 border-pink-800 rounded-bl-xl rounded-tr-xl p-2 ${deepthInIntentTree} mt-1 mr-1 mb-1 `}>
       <div className="flex justify-between">
         <h4>
           <span className="font-semibold">Reaction: </span>
@@ -55,12 +65,12 @@ export const ChatbotReaction: React.FC<{
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            className="border-2 w-1/2"
+            className="border-2 border-pink-200 rounded-bl-lg w-1/2"
           />
           <input
             type="submit"
             value="Add keywords"
-            className="border-2 px-2 bg-slate-200 hover:border-slate-400"
+            className="border-2 border-pink-200 rounded-tr-lg px-2 bg-pink-200 hover:border-pink-400"
           />
         </form>
       </div>

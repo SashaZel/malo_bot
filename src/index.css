@@ -4,6 +4,6 @@
 
 @layer components {
   .my-button {
-    @apply p-1 md:p-2 m-1 bg-slate-300 border-2 border-slate-500 hover:bg-slate-400;
+    @apply p-1 md:p-2 m-1 rounded-lg bg-gradient-to-br from-pink-800 to-pink-700 hover:opacity-90 text-yellow-100;
   }
 }
