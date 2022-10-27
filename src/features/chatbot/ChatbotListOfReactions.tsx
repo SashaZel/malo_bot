@@ -1,17 +1,14 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
-import { ChatbotReaction } from "./ChatbotReaction";
+import { selectorListOfAllReactions } from "./chatbotSlice";
 
 export const ChatbotListOfReactions = () => {
-  
-  const reactions = useSelector((state: RootState) => state.chatbot.reactions);
+  console.log("@ChatbotListOfReactions");
 
-  return (
-    <div>
-      {Object.entries(reactions).map(
-        ([reactionName, answer]) => <ChatbotReaction key={reactionName} reactionName={reactionName} answer={answer} />
-      )}
-    </div>
+  const reactions = useSelector((state: RootState) =>
+    selectorListOfAllReactions(state)
   );
-}
+
+  return <div>{reactions}</div>;
+};
