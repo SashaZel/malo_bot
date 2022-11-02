@@ -14,7 +14,7 @@ export const getChatbotFromIDB = async (): Promise<IChatbot | undefined> => {
   let chatbotState;
   try {
     chatbotState = await get("idb-chatbot");
-    console.log('get chatbot state', chatbotState);
+    //console.log('get chatbot state', chatbotState);
   } catch (error) {
     console.error('error in get @chatbotIDB', error);
   }

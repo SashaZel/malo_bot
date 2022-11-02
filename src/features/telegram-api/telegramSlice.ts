@@ -25,6 +25,8 @@ export interface IChat {
   first_name: string;
   last_name: string;
   username: string;
+  // TODO: fix last reaction issue for each chat
+  lastReaction: string;
   unread_msg?: number;
 }
 
@@ -94,6 +96,20 @@ export const telegramReducer = createSlice({
     },
     setCurrentChat: (state, action: PayloadAction<IChat>): void => {
       state.current_chat = action.payload;
+    },
+    setLastReaction: (
+      state,
+      action: PayloadAction<{ chatID: number; lastReactionForThisChat: string;}>
+    ): void => {
+      state.chats = state.chats.map((chat) => {
+        if (chat.id === action.payload.chatID) {
+          return ({
+            ...chat,
+            lastReaction: action.payload.lastReactionForThisChat
+          });
+        }
+        return chat;
+      });
     },
     setAllMessages: (state, action: PayloadAction<IMessage[]>): void => {
       state.messages = action.payload;

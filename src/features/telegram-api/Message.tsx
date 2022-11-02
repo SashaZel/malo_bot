@@ -16,14 +16,15 @@ export const Message: React.FC<{message_id: number}> = ({message_id}) => {
   const botName = useSelector((state: RootState) => state.telegram.account_data.bot_name);
   const messageStyle = (botName === message?.from?.username) ? "ml-auto bg-gradient-to-r from-pink-800 to-pink-700 rounded-l-2xl rounded-tr-2xl" : "bg-gradient-to-r from-indigo-800 to-blue-700 rounded-r-2xl rounded-tl-2xl";
 
-  const time = new Date(message.date);
+  const timeInUTC = new Date(0, 0, 0, 0, 0, Number(message.date));
+  const localTime = new Date(timeInUTC.getTime() - timeInUTC.getTimezoneOffset()*60*1000);
 
   return (
     <div className="w-full">
       <div className={`w-fit max-w-md my-1 p-3 text-yellow-100 ${messageStyle}`}>
         {message?.text}<span 
           className="text-orange-400 ml-2 inline-block translate-y-2"
-        >{` ${time.getHours()}:${time.getMinutes()}`}</span>
+        >{` ${String(localTime.getHours()).padStart(2, "0")}:${String(localTime.getMinutes()).padStart(2, "0")}`}</span>
       </div>
     </div>
   )

@@ -11,13 +11,11 @@ export interface IChatbot {
   reactions: {
     [action: string]: string;
   };
-  lastReaction: string;
 }
 
 const INITIAL_STATE: IChatbot = {
   intents: {},
   reactions: {},
-  lastReaction: "",
 };
 
 export const chatbotReducer = createSlice({
@@ -28,9 +26,7 @@ export const chatbotReducer = createSlice({
       state.intents = action.payload.newState.intents;
       state.reactions = action.payload.newState.reactions;
     },
-    setLastReaction: (state, action: PayloadAction<string>) => {
-      state.lastReaction = action.payload;
-    },
+
     addIntent: (
       state,
       action: PayloadAction<{
@@ -52,34 +48,51 @@ export const chatbotReducer = createSlice({
           }
         });
     },
+
     removeIntent: (state, action: PayloadAction<{ keyword: string }>) => {
       delete state.intents[action.payload.keyword];
     },
+
     addReaction: (
       state,
-      action: PayloadAction<{ reactionName: string; answer: string }>
+      action: PayloadAction<{
+        reactionParent: string;
+        reactionName: string;
+        answer: string;
+        buttonMarkup: string;
+      }>
     ) => {
-      state.reactions[action.payload.reactionName] = action.payload.answer;
+      const readyReactionName = action.payload.reactionParent
+        ? action.payload.reactionParent + "~" + action.payload.reactionName
+        : action.payload.reactionName;
+      const readyReactionAnswer = action.payload.buttonMarkup
+        ? action.payload.answer + "??reply_markup=" + action.payload.buttonMarkup
+        : action.payload.answer;
+      state.reactions[readyReactionName] = readyReactionAnswer;
     },
+
     editAnswer: (
       state,
       action: PayloadAction<{ reactionName: string; newAnswer: string }>
     ) => {
       state.reactions[action.payload.reactionName] = action.payload.newAnswer;
     },
+
     removeReaction: (
       state,
       action: PayloadAction<{ reactionForRemoving: string }>
     ) => {
       const intentsForRemoving = [];
-      for (const [ keyword, pointerToReaction] of Object.entries(state.intents)) {
+      for (const [keyword, pointerToReaction] of Object.entries(
+        state.intents
+      )) {
         if (pointerToReaction === action.payload.reactionForRemoving) {
           intentsForRemoving.push(keyword);
         }
       }
       intentsForRemoving.map((keywordForRemoving) => {
         delete state.intents[keywordForRemoving];
-      })
+      });
       // TODO: Remove child reactions too
       delete state.reactions[action.payload.reactionForRemoving];
     },
@@ -97,46 +110,51 @@ export const selectorKeywordsList = (
     });
 };
 
-export const selectorListOfAllReactions = (
-  state: RootState
-) => {
-
+export const selectorListOfAllReactions = (state: RootState) => {
   // Complicated selector function for display ordered nested tree of reactions
   // created from the flat state.chatbot.reactions object
 
   const unorderedListOfReactions = Object.entries(state.chatbot.reactions);
   const orderedListOfReactions = [];
 
-  // recursive function for deepth-first search 
+  // recursive function for deepth-first search
 
   const checkLoneChilds = (parentName: string) => {
-    for (let i=0; i<unorderedListOfReactions.length; i++) {
+    for (let i = 0; i < unorderedListOfReactions.length; i++) {
       if (unorderedListOfReactions[i][0] === parentName) {
         continue;
       }
       if (!unorderedListOfReactions[i][0].startsWith(parentName)) {
         continue;
       }
-      if (unorderedListOfReactions[i][0].slice(parentName.length+1).includes('~')) {
+      if (
+        unorderedListOfReactions[i][0]
+          .slice(parentName.length + 1)
+          .includes("~")
+      ) {
         continue;
       }
       orderedListOfReactions.push(unorderedListOfReactions[i]);
       checkLoneChilds(unorderedListOfReactions[i][0]);
     }
-  }
+  };
 
-  for (let i=0; i<unorderedListOfReactions.length; i++) {
-    const [ candidatName, candidatAnswer ] = unorderedListOfReactions[i];
-    if (!candidatName.includes('~')) {
-      orderedListOfReactions.push([ candidatName, candidatAnswer ]);
+  for (let i = 0; i < unorderedListOfReactions.length; i++) {
+    const [candidatName, candidatAnswer] = unorderedListOfReactions[i];
+    if (!candidatName.includes("~")) {
+      orderedListOfReactions.push([candidatName, candidatAnswer]);
       checkLoneChilds(candidatName);
     }
   }
 
-  return orderedListOfReactions.map(
-    ([reactionName, answer]) => <ChatbotReaction key={reactionName} reactionName={reactionName} answer={answer} />
-  );
-}
+  return orderedListOfReactions.map(([reactionName, answer]) => (
+    <ChatbotReaction
+      key={reactionName}
+      reactionName={reactionName}
+      answer={answer}
+    />
+  ));
+};
 
 // First variant of simple selector returned NOT ordered list of reactions
 // export const selectorListOfAllReactions = (

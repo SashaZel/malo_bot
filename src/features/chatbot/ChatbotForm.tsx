@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
+import { ChatbotFormButtons } from "./ChatbotFormButtons";
 import { saveChatbotToIDB } from "./chatbotIDB";
 import { chatbotReducer } from "./chatbotSlice";
 
@@ -11,7 +12,8 @@ type IinputStatus =
   | "please write at least one keyword"
   | "This reaction name already exist. Please choose another."
   | "One of this keyword already exist for another reaction."
-  | "Please do not use tilda sign ('~') in the reactions names or keywords";
+  | "Please do not use tilda sign ('~') in the reactions names or keywords"
+  | "Please don't include '??reply_markup=' in your answer";
 
 export const ChatbotForm = () => {
   const dispatch = useDispatch();
@@ -25,6 +27,12 @@ export const ChatbotForm = () => {
   const [inputOneContent, setInputOneContent] = React.useState("");
   const [inputTwoContent, setInputTwoContent] = React.useState("");
   const [inputThreeContent, setInputThreeContent] = React.useState("");
+  //const [inputButtonsContent, setInputButtonsContent] = React.useState('{"keyboard":[["buttonOne"],["buttonTwo","ButtonThree"]],"resize_keyboard":true,"one_time_keyboard":true}');
+  const [inputButtonsContent, setInputButtonsContent] = React.useState('{"keyboard":[["buttonOne"],["buttonTwo","ButtonThree"]],"resize_keyboard":true,"one_time_keyboard":true}');
+
+  const handleAddButtons = (buttonsMarkup: string) => {
+    setInputButtonsContent(buttonsMarkup);
+  }
 
   const handleNewReaction = (event: React.BaseSyntheticEvent) => {
     event.preventDefault();
@@ -66,13 +74,17 @@ export const ChatbotForm = () => {
       setInputStatus("One of this keyword already exist for another reaction.");
       return;
     }
+    if (newRaactionAnswer.includes('??reply_markup=')) {
+      setInputStatus("Please don't include '??reply_markup=' in your answer");
+      return;
+    }
 
     dispatch(
       chatbotReducer.actions.addReaction({
-        reactionName: newReactionParent
-          ? newReactionParent + "~" + newReactionName
-          : newReactionName,
+        reactionParent: newReactionParent,
+        reactionName: newReactionName,
         answer: newRaactionAnswer,
+        buttonMarkup: inputButtonsContent,
       })
     );
     dispatch(
@@ -89,6 +101,7 @@ export const ChatbotForm = () => {
     setInputOneContent("");
     setInputTwoContent("");
     setInputThreeContent("");
+    //setInputButtonsContent("");
   };
 
   return (
@@ -138,6 +151,9 @@ export const ChatbotForm = () => {
         <input type="submit" value="Add new reaction" className="my-button" />
         <span className="font-bold text-red-500">{inputStatus}</span>
       </form>
+      <ChatbotFormButtons 
+        handleAddButtons={handleAddButtons}
+      />
     </div>
   );
 };

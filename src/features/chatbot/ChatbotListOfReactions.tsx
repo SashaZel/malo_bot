@@ -4,7 +4,7 @@ import { RootState } from "../../app/store";
 import { selectorListOfAllReactions } from "./chatbotSlice";
 
 export const ChatbotListOfReactions = () => {
-  console.log("@ChatbotListOfReactions");
+  //console.log("@ChatbotListOfReactions");
 
   const reactions = useSelector((state: RootState) =>
     selectorListOfAllReactions(state)

@@ -5,6 +5,7 @@ import { saveChatbotToIDB } from "./chatbotIDB";
 import { chatbotReducer, selectorKeywordsList } from "./chatbotSlice";
 import binPicture from "../../assets/pictures/icons8-bin-60.png";
 import pencilPicture from "../../assets/pictures/pencil.png";
+import { ChatbotReactionAnswer } from "./ChatbotReactionAnswer";
 
 export const ChatbotReaction: React.FC<{
   reactionName: string;
@@ -72,7 +73,7 @@ export const ChatbotReaction: React.FC<{
   const handleAnswerEdit = (e: React.BaseSyntheticEvent) => {
     e.preventDefault();
     const answer = e.target[0].value;
-    console.log('@@@answer ', answer)
+    //console.log('@@@answer ', answer)
     dispatcher(
       chatbotReducer.actions.editAnswer({
         reactionName: reactionName,
@@ -159,10 +160,7 @@ export const ChatbotReaction: React.FC<{
           />
         </form>
       </div>
-      <h4>
-        <span className="font-semibold">Answer: </span>
-        &quot;{answer}&quot;
-      </h4>
+      <ChatbotReactionAnswer answer={answer} />
       <div className="mr-5">
         <span className="font-semibold">Keywords:</span> {keywords}
       </div>
