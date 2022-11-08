@@ -1,33 +1,39 @@
 import React from "react";
-import { setMany, clear } from "idb-keyval";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { telegramReducer } from "./telegramSlice";
+import { clearIDB, saveTelegramStateToIDB } from "../../api/IDB_API";
 
 export const SaveButton = () => {
+  
+  console.log('@SaveButton');
+
   const [readyForClear, setReadyForClear] = React.useState(false);
 
   const dispatch = useDispatch();
   const telegramAppState = useSelector((state: RootState) => state.telegram);
 
+  //TODO: Get rid of this useEffect and save Telegram state to IDB in recive and sending message
+
   React.useEffect(() => {
-    handleSave();
+    saveTelegramStateToIDB();
+    //handleSave();
   }, [telegramAppState]);
 
-  const handleSave = () => {
-    console.log("run handleSave IDB");
-    setMany([
-      ["idb-account_data", telegramAppState.account_data],
-      ["idb-chats", telegramAppState.chats],
-      ["idb-current_chat", telegramAppState.current_chat],
-      ["idb-messages", telegramAppState.messages],
-    ]).catch((error) =>
-      console.log('Error in setMany to IDB in "SaveButton" ', error)
-    );
-  };
+  // const handleSave = () => {
+  //   console.log("run handleSave IDB");
+  //   setMany([
+  //     ["idb-account_data", telegramAppState.account_data],
+  //     ["idb-chats", telegramAppState.chats],
+  //     ["idb-current_chat", telegramAppState.current_chat],
+  //     ["idb-messages", telegramAppState.messages],
+  //   ]).catch((error) =>
+  //     console.log('@SaveButton => Error in setMany to IDB ', error)
+  //   );
+  // };
 
   const handleClear = () => {
-    clear();
+    clearIDB();
     setReadyForClear(false);
     dispatch(telegramReducer.actions.clearAndExit());
   };

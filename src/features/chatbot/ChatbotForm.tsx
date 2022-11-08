@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { ChatbotFormButtons } from "./ChatbotFormButtons";
-import { saveChatbotToIDB } from "./chatbotIDB";
+import { saveChatbotToIDB } from "../../api/IDB_API";
 import { chatbotReducer } from "./chatbotSlice";
 
 type IinputStatus =
@@ -20,19 +20,24 @@ export const ChatbotForm = () => {
   const chatbotState = useSelector((state: RootState) => state.chatbot);
 
   const listOfReactions = Object.keys(chatbotState.reactions).map(
-    (reaction) => <option key={reaction}>{reaction}</option>
+    (reaction) => (
+      <option key={reaction} value={reaction}>
+        {reaction}
+      </option>
+    )
   );
 
   const [inputStatus, setInputStatus] = React.useState<IinputStatus>("");
+  const [parentOfReaction, setParentOfReaction] = React.useState("");
   const [inputOneContent, setInputOneContent] = React.useState("");
   const [inputTwoContent, setInputTwoContent] = React.useState("");
   const [inputThreeContent, setInputThreeContent] = React.useState("");
   //const [inputButtonsContent, setInputButtonsContent] = React.useState('{"keyboard":[["buttonOne"],["buttonTwo","ButtonThree"]],"resize_keyboard":true,"one_time_keyboard":true}');
-  const [inputButtonsContent, setInputButtonsContent] = React.useState('{"keyboard":[["buttonOne"],["buttonTwo","ButtonThree"]],"resize_keyboard":true,"one_time_keyboard":true}');
+  const [inputButtonsContent, setInputButtonsContent] = React.useState("");
 
   const handleAddButtons = (buttonsMarkup: string) => {
     setInputButtonsContent(buttonsMarkup);
-  }
+  };
 
   const handleNewReaction = (event: React.BaseSyntheticEvent) => {
     event.preventDefault();
@@ -61,8 +66,10 @@ export const ChatbotForm = () => {
       );
       return;
     }
-    if (newReactionName.includes('~') || newKeywords.includes('~')) {
-      setInputStatus("Please do not use tilda sign ('~') in the reactions names or keywords");
+    if (newReactionName.includes("~") || newKeywords.includes("~")) {
+      setInputStatus(
+        "Please do not use tilda sign ('~') in the reactions names or keywords"
+      );
       return;
     }
     // TODO: Add checking of uniq keyword
@@ -70,11 +77,14 @@ export const ChatbotForm = () => {
       setInputStatus("One of this keyword already exist for another reaction.");
       return;
     }
-    if (newReactionParent && chatbotState.intents[newReactionParent + '~' + newKeywords]) {
+    if (
+      newReactionParent &&
+      chatbotState.intents[newReactionParent + "~" + newKeywords]
+    ) {
       setInputStatus("One of this keyword already exist for another reaction.");
       return;
     }
-    if (newRaactionAnswer.includes('??reply_markup=')) {
+    if (newRaactionAnswer.includes("??reply_markup=")) {
       setInputStatus("Please don't include '??reply_markup=' in your answer");
       return;
     }
@@ -91,13 +101,14 @@ export const ChatbotForm = () => {
       chatbotReducer.actions.addIntent({
         keywords: newKeywords,
         pointerToAction: newReactionName,
-        parent: newReactionParent
+        parent: newReactionParent,
       })
     );
 
     saveChatbotToIDB();
 
     setInputStatus("");
+    setParentOfReaction("");
     setInputOneContent("");
     setInputTwoContent("");
     setInputThreeContent("");
@@ -112,8 +123,12 @@ export const ChatbotForm = () => {
       >
         <label>
           Reaction parent:
-          <select className="block w-full my-2 border-2">
-            <option></option>
+          <select
+            className="block w-full my-2 border-2"
+            value={parentOfReaction}
+            onChange={(e) => setParentOfReaction(e.target.value)}
+          >
+            <option value=""></option>
             {listOfReactions}
           </select>
         </label>
@@ -148,12 +163,14 @@ export const ChatbotForm = () => {
           />
         </label>
 
-        <input type="submit" value="Add new reaction" className="my-button" />
+        <input 
+          type="submit" 
+          value="Add new reaction" 
+          className="bg-orange-600 p-4 rounded-xl hover:bg-red-600 font-semibold" 
+        />
         <span className="font-bold text-red-500">{inputStatus}</span>
       </form>
-      <ChatbotFormButtons 
-        handleAddButtons={handleAddButtons}
-      />
+      <ChatbotFormButtons handleAddButtons={handleAddButtons} />
     </div>
   );
 };

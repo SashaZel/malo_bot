@@ -12,14 +12,14 @@ export const ChatbotReactionAnswer: React.FunctionComponent<{answer: string}> = 
     // console.log("@ChatbotReactionAnswer markup ", markup);
     // console.log("@ChatbotReactionAnswer JSON.parse ", markupParsed);
     if (markupParsed.keyboard) {
-      markupReadyForDisplay = markupParsed.keyboard.map((rowOfButtons: string[]) => {
+      markupReadyForDisplay = markupParsed.keyboard.map((rowOfButtons: string[], indexY: number) => {
         const buttonsInRow = rowOfButtons.length;
         return (
-          <div key={String(rowOfButtons)}>{
-            rowOfButtons.map((btnElement) => (
+          <div key={String(rowOfButtons) + indexY}>{
+            rowOfButtons.map((btnElement, indexX) => (
               <span 
-                key={btnElement}
-                className="inline-block border-2 p-1 m-1 bg-pink-200 text-center"
+                key={btnElement + indexX + indexY}
+                className="inline-block p-1 m-1 bg-lime-200 text-center"
                 style={{"width": `${300 / buttonsInRow - 4*(buttonsInRow-1)}px`}}
               >
                 {btnElement}

@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { saveChatbotToIDB } from "./chatbotIDB";
+import { saveChatbotToIDB } from "../../api/IDB_API";
 import { chatbotReducer } from "./chatbotSlice";
 
 export const KeywordButton: React.FC<{ keyword: string }> = ({ keyword }) => {

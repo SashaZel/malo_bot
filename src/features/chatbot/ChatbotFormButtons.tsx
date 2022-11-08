@@ -9,6 +9,7 @@ export const ChatbotFormButtons: React.FC<{
   const [firstButton, setFirstButton] = React.useState("");
   const [secondButton, setSecondButton] = React.useState("");
   const [thirdButton, setThirdButton] = React.useState("");
+  const [forthButton, setForthButton] = React.useState("");
 
   const handleCheckboxChange = (e: React.BaseSyntheticEvent) => {
     e.stopPropagation();
@@ -21,21 +22,42 @@ export const ChatbotFormButtons: React.FC<{
 
   // TODO: Refactor this component without useEffect. May be with three functions of handling onChange input
 
-  React.useEffect(() => {
+  // React.useEffect(() => {
+  //   let markupFromInputs = "";
+
+  //   if (firstButton || secondButton || thirdButton) {
+  //     markupFromInputs = `{"keyboard":[${
+  //       [firstButton, secondButton, thirdButton]
+  //         .filter((buttonText) => buttonText !== "")
+  //         .map((buttonText) => '["' + buttonText + '"]')
+  //         .join(",")
+  //       }],"resize_keyboard":true,"one_time_keyboard":true}`;
+  //     //console.log("@ChatbotFormButtons ", markupFromInputs);
+  //   }
+
+  //   handleAddButtons(markupFromInputs);
+  // }, [firstButton, secondButton, thirdButton]);
+
+  const createAndSendMarkup = ({
+    first = firstButton, 
+    second = secondButton, 
+    third = thirdButton,
+    forth = forthButton
+  }) => {
     let markupFromInputs = "";
 
-    if (firstButton || secondButton || thirdButton) {
+    if (first || second || third || forth) {
       markupFromInputs = `{"keyboard":[${
-        [firstButton, secondButton, thirdButton]
+        [first, second, third, forth]
           .filter((buttonText) => buttonText !== "")
           .map((buttonText) => '["' + buttonText + '"]')
           .join(",")
         }],"resize_keyboard":true,"one_time_keyboard":true}`;
-      //console.log("@ChatbotFormButtons ", markupFromInputs);
+      console.log("@ChatbotFormButtons ", markupFromInputs);
     }
 
     handleAddButtons(markupFromInputs);
-  }, [firstButton, secondButton, thirdButton]);
+  }
 
   //handleAddButtons('aaa');
 
@@ -52,21 +74,39 @@ export const ChatbotFormButtons: React.FC<{
           <form>
             <input
               type="text"
-              onChange={(e) => setFirstButton(e.target.value)}
+              onChange={(e) => {
+                  setFirstButton(e.target.value);
+                  createAndSendMarkup({ first: e.target.value });
+                }}
               value={firstButton}
-              className="block border-2 border-rose-300 my-1 p-2 bg-pink-200 max-w-xl text-center"
+              className="block border-2 border-neutral-400 my-1 p-2 bg-lime-200 max-w-xl text-center"
             />
             <input
               type="text"
-              onChange={(e) => setSecondButton(e.target.value)}
+              onChange={(e) => {
+                setSecondButton(e.target.value);
+                createAndSendMarkup({ second: e.target.value })
+              }}
               value={secondButton}
-              className="block border-2 border-rose-300 my-1 p-2 bg-pink-200 max-w-lg text-center"
+              className="block border-2 border-neutral-400 my-1 p-2 bg-lime-200 max-w-xl text-center"
             />
             <input
               type="text"
-              onChange={(e) => setThirdButton(e.target.value)}
+              onChange={(e) => {
+                setThirdButton(e.target.value);
+                createAndSendMarkup({ third: e.target.value })
+              }}
               value={thirdButton}
-              className="block border-2 border-rose-300 my-1 p-2 bg-pink-200 max-w-lg text-center"
+              className="block border-2 border-neutral-400 my-1 p-2 bg-lime-200 max-w-xl text-center"
+            />
+            <input
+              type="text"
+              onChange={(e) => {
+                setForthButton(e.target.value);
+                createAndSendMarkup({ forth: e.target.value })
+              }}
+              value={forthButton}
+              className="block border-2 border-neutral-400 my-1 p-2 bg-lime-200 max-w-xl text-center"
             />
           </form>
         </div>

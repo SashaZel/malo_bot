@@ -50,6 +50,7 @@ export const chatbotReducer = createSlice({
     },
 
     removeIntent: (state, action: PayloadAction<{ keyword: string }>) => {
+      // TODO: Add checking for removing not the last keyword for given pointer to reaction
       delete state.intents[action.payload.keyword];
     },
 
@@ -86,7 +87,7 @@ export const chatbotReducer = createSlice({
       for (const [keyword, pointerToReaction] of Object.entries(
         state.intents
       )) {
-        if (pointerToReaction === action.payload.reactionForRemoving) {
+        if (pointerToReaction.includes(action.payload.reactionForRemoving) ) {
           intentsForRemoving.push(keyword);
         }
       }
@@ -94,7 +95,15 @@ export const chatbotReducer = createSlice({
         delete state.intents[keywordForRemoving];
       });
       // TODO: Remove child reactions too
-      delete state.reactions[action.payload.reactionForRemoving];
+      const childsOfReactionForRemoving = [];
+      for (const [reaction, answer] of Object.entries(state.reactions)) {
+        if (reaction.includes(action.payload.reactionForRemoving)) {
+          childsOfReactionForRemoving.push(reaction);
+        }
+      }
+      childsOfReactionForRemoving.map((reactionForRemoving) => {
+        delete state.reactions[reactionForRemoving];
+      })
     },
   },
 });

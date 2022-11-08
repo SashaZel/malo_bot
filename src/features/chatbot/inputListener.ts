@@ -1,4 +1,4 @@
-import { chatbotReducer, IChatbot } from "./chatbotSlice";
+import { IChatbot } from "./chatbotSlice";
 import { store } from "../../app/store";
 import { IAnswer } from "../../common/types";
 import { IChat, telegramReducer } from "../telegram-api/telegramSlice";
@@ -38,15 +38,12 @@ export function listenAndAnswer({
     return { text: "", markup: ""};
   }
   const pointerToReaction =
-    // TODO: fix last reaction issue for each chat
     chatbotState.intents[lastReaction + "~" + inputMessage] ||
     chatbotState.intents[inputMessage];
   if (!pointerToReaction) {
-    //store.dispatch(chatbotReducer.actions.setLastReaction(''));
     store.dispatch(telegramReducer.actions.setLastReaction({ chatID: inputChatID, lastReactionForThisChat: "" }));
     return { text: `You said: "${inputMessage}"`, markup: "" };
   }
-  // TODO: fix last reaction issue for each chat
   //store.dispatch(chatbotReducer.actions.setLastReaction(pointerToReaction));
   store.dispatch(telegramReducer.actions.setLastReaction({ chatID: inputChatID, lastReactionForThisChat: pointerToReaction }));
   //console.log(chatbotState.reactions[pointerToReaction]);

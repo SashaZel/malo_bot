@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+// TODO: Move all IDB querries to IDB_API
 import { entries, get, set } from "idb-keyval";
 import { useDispatch, useSelector } from "react-redux";
 import { ChooseUser } from "./ChooseUser";
@@ -8,8 +8,14 @@ import { TelegramAPI } from "./TelegramAPI";
 import { IAccount, telegramReducer } from "./telegramSlice";
 import { SaveButton } from "./SaveButton";
 import { RootState } from "../../app/store";
+import { ChatbotPanel } from "../chatbot/ChatbotPanel";
+import { LeftColumn } from "../just-info-pages/LeftColumn";
+import { RightColumn } from "../just-info-pages/RightColumn";
+import { TelegramForm } from "./TelegramForm";
+import { checkTelegramAccount } from "../../api/telegramAPI";
+import { getInitialLoginDataFromIDB } from "../../api/IDB_API";
 
-type LoginStatus = "login_yes" | "login_no" | "login_waiting";
+type ILoginStatus = "login_yes" | "login_no" | "login_waiting";
 
 export const TelegramPanel = () => {
   //console.log("@TelegramPanel");
@@ -18,69 +24,152 @@ export const TelegramPanel = () => {
   const currentAccount = useSelector(
     (state: RootState) => state.telegram.account_data
   );
-  const [loginStatus, setLoginStatus] = React.useState<LoginStatus>("login_no");
+  const [loginStatus, setLoginStatus] = React.useState<ILoginStatus>("login_no");
   const [wrongLogin, setWrongLogin] = React.useState(false);
-  const [ connectError, setConnectError ] = React.useState<null | string>(null);
+  const [connectError, setConnectError] = React.useState<null | string>(null);
 
   React.useEffect(() => {
-    get("idb-account_data").then((IDBaccountData: IAccount) => {
-      if (!IDBaccountData) return;
-      checkLogin(IDBaccountData, true);
-    });
+    
+    const initialLoading = async () => {
+      const {IDBAccountData, hasIDBError} = await getInitialLoginDataFromIDB();
+      if (hasIDBError) {
+        setConnectError(
+          "Your browser do not support IndexedDB. Please use desktop or laptop PC and upgrade your browser"
+        );
+      }
+      if (!IDBAccountData) return;
+      checkLogin(IDBAccountData, true);
+    }
+
+    initialLoading();
+
+    // get("idb-account_data")
+    //   .then((IDBaccountData: IAccount) => {
+    //     if (!IDBaccountData) return;
+    //     checkLogin(IDBaccountData, true);
+    //   })
+    //   .catch((err) => {
+    //     console.error("@TelegramPanel => No IDB available ", err);
+    //     setConnectError(
+    //       "Your browser do not support IndexedDB. Please use desktop or laptop PC and upgrade your browser"
+    //     );
+    //   });
   }, []);
 
-  const checkLogin = (accountData: IAccount, loadFromIDB: boolean) => {
+  const checkLogin = async (accountData: IAccount, loadFromIDB: boolean) => {
     setLoginStatus("login_waiting");
-    axios
-      .get(`https://api.telegram.org/bot${accountData.bot_token}/getMe`)
-      .then((response) => {
-        setConnectError(null);
-        //console.log("@checkLogin ", response.data);
-        if (response.data.ok && !loadFromIDB) {
-          set("idb-account_data", accountData).catch((error) =>
-            console.error("set idb-account_data failed", error)
-          );
-          dispatch(telegramReducer.actions.setAccountData(accountData));
+    const { accountIsValid, errorInCheck } = await checkTelegramAccount(
+      accountData.bot_token
+    );
+
+    setConnectError(null);
+    //console.log("@checkLogin ", response.data);
+    if (accountIsValid && !loadFromIDB && !errorInCheck) {
+      set("idb-account_data", accountData).catch((error) =>
+        console.error("@TelegramPanel set idb-account_data failed", error)
+      );
+      dispatch(telegramReducer.actions.setAccountData(accountData));
+      setLoginStatus("login_yes");
+    }
+    if (accountIsValid && loadFromIDB && !errorInCheck) {
+      entries()
+        .then((entries) => {
+          //console.log("idb entries ", entries);
+          entries.map(([IDBKey, IDBValue]) => {
+            if (IDBKey === "idb-account_data") {
+              dispatch(telegramReducer.actions.setAccountData(IDBValue));
+            }
+            if (IDBKey === "idb-messages") {
+              dispatch(telegramReducer.actions.setAllMessages(IDBValue));
+            }
+            if (IDBKey === "idb-chats") {
+              dispatch(telegramReducer.actions.setAllChats(IDBValue));
+            }
+            if (IDBKey === "idb-current_chat") {
+              dispatch(telegramReducer.actions.setCurrentChat(IDBValue));
+            }
+          });
           setLoginStatus("login_yes");
-        }
-        if (response.data.ok && loadFromIDB) {
-          entries()
-            .then((entries) => {
-              //console.log("idb entries ", entries);
-              entries.map(([IDBKey, IDBValue]) => {
-                if (IDBKey === "idb-account_data") {
-                  dispatch(telegramReducer.actions.setAccountData(IDBValue))
-                }
-                if (IDBKey === "idb-messages") {
-                  dispatch(telegramReducer.actions.setAllMessages(IDBValue));
-                }
-                if (IDBKey === "idb-chats") {
-                  dispatch(telegramReducer.actions.setAllChats(IDBValue));
-                }
-                if (IDBKey === "idb-current_chat") {
-                  dispatch(telegramReducer.actions.setCurrentChat(IDBValue));
-                }
-              });
-              setLoginStatus("login_yes");
-            })
-            .catch((error) =>
-              console.log(
-                'Fail to save state of app in IDB in "SaveButton"',
-                error
-              )
-            );
-        }
-        if (!response.data.ok) {
-          setLoginStatus("login_no");
-        }
-      })
-      .catch((error) => {
-        console.error("checkLogin error: ", error);
-        setWrongLogin(true);
-        setLoginStatus("login_no");
-        setConnectError(error.message + '. Please check Internet connection or try again.')
-      });
+        })
+        .catch((error) =>
+          console.log(
+            "@TelegramPanel => fail to get saved data from IDB",
+            error
+          )
+        );
+    }
+    if (!accountIsValid) {
+      setLoginStatus("login_no");
+    }
+
+    if (errorInCheck) {
+      setWrongLogin(true);
+      setLoginStatus("login_no");
+      if (errorInCheck instanceof Error) {
+        setConnectError(
+          errorInCheck.message +
+            ". Please check Internet connection or try again."
+        );
+      } else {
+        setConnectError("Please check Internet connection or try again.");
+      }
+    }
   };
+
+  // const checkLogin = (accountData: IAccount, loadFromIDB: boolean) => {
+  //   setLoginStatus("login_waiting");
+  //   axios
+  //     .get(`https://api.telegram.org/bot${accountData.bot_token}/getMe`)
+  //     .then((response) => {
+  //       setConnectError(null);
+  //       //console.log("@checkLogin ", response.data);
+  //       if (response.data.ok && !loadFromIDB) {
+  //         set("idb-account_data", accountData).catch((error) =>
+  //           console.error("@TelegramPanel set idb-account_data failed", error)
+  //         );
+  //         dispatch(telegramReducer.actions.setAccountData(accountData));
+  //         setLoginStatus("login_yes");
+  //       }
+  //       if (response.data.ok && loadFromIDB) {
+  //         entries()
+  //           .then((entries) => {
+  //             //console.log("idb entries ", entries);
+  //             entries.map(([IDBKey, IDBValue]) => {
+  //               if (IDBKey === "idb-account_data") {
+  //                 dispatch(telegramReducer.actions.setAccountData(IDBValue));
+  //               }
+  //               if (IDBKey === "idb-messages") {
+  //                 dispatch(telegramReducer.actions.setAllMessages(IDBValue));
+  //               }
+  //               if (IDBKey === "idb-chats") {
+  //                 dispatch(telegramReducer.actions.setAllChats(IDBValue));
+  //               }
+  //               if (IDBKey === "idb-current_chat") {
+  //                 dispatch(telegramReducer.actions.setCurrentChat(IDBValue));
+  //               }
+  //             });
+  //             setLoginStatus("login_yes");
+  //           })
+  //           .catch((error) =>
+  //             console.log(
+  //               "@TelegramPanel => fail to get saved data from IDB",
+  //               error
+  //             )
+  //           );
+  //       }
+  //       if (!response.data.ok) {
+  //         setLoginStatus("login_no");
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("@TelegramPanel checkLogin error: ", error);
+  //       setWrongLogin(true);
+  //       setLoginStatus("login_no");
+  //       setConnectError(
+  //         error.message + ". Please check Internet connection or try again."
+  //       );
+  //     });
+  // };
 
   const handleLogin = (e: React.BaseSyntheticEvent) => {
     e.preventDefault();
@@ -96,31 +185,51 @@ export const TelegramPanel = () => {
 
   if (loginStatus === "login_yes" && currentAccount.bot_name) {
     return (
-      <div className="p-1 md:p-2">
-      <h2 className="m-1 lg:m-2 text-xl font-semibold border-b-2">Telegram chats</h2>
-      <p className="mx-2">Choose chat, browse querries and answers. Write a messages by the hand.</p>
-      <p className="mx-2">User have to interact with chatbot first.</p>
-      <p className="mx-2">All messages saved automaticly.</p>
-        <SaveButton />
-        <ChooseUser />
-        <TelegramAPI />
-        <MessagesList />
+      <div>
+        <LeftColumn>
+          <SaveButton />
+          <ChooseUser />
+        </LeftColumn>
+        <div className="flex">
+          <div className="w-3/12"></div>
+          <header className="w-9/12">This is header</header>
+        </div>
+        <div className="flex">
+          <div className="w-3/12"></div>
+          <ChatbotPanel />
+          <RightColumn>
+            <TelegramAPI />
+            <TelegramForm />
+            <MessagesList />
+          </RightColumn>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="p-1 md:p-2">
-      <h2 className="m-1 lg:m-2 text-xl font-semibold border-b-2">Frontend-only Telegram chatbot</h2>
-      <p className="mx-2 pt-2">No-coding chatbot. Just add an answer and keywords. Your bot is ready!</p>
-      <p className="mx-2 pt-2">No backend needs. Chatbot lives on your machine. Keep your browser open. To quit chatbot just close the browser.</p>
-      <p className="mx-2 pt-2">All changes save automaticly. Open this page again - and your chatbot is ready again with full history available.</p>
+    <div className="my-3 pt-9 px-2 md:px-4 bg-indigo-50 rounded-xl shadow-lg">
+      <h2 className="m-1 lg:m-2 text-xl font-semibold border-b-2">
+        Frontend-only Telegram chatbot
+      </h2>
+      <p className="mx-2 pt-2">
+        No-coding chatbot. Just add an answer and keywords. Your bot is ready!
+      </p>
+      <p className="mx-2 pt-2">
+        No backend needs. Chatbot lives on your machine. Keep your browser open.
+        To quit chatbot just close the browser.
+      </p>
+      <p className="mx-2 pt-2">
+        All changes save automaticly. Open this page again - and your chatbot is
+        ready again with full history available.
+      </p>
       <h3 className="text-xl ml-2 pt-4">
         {loginStatus !== "login_waiting" ? "Please Log in:" : "Waiting..."}
       </h3>
       <div className={`m-1 p-2 border-2 ${wrongLogin && "border-red-300"}`}>
         <p className="text-red-500">
-          {connectError || (wrongLogin && "Error: Wrong Bot username or token. Try again.")}
+          {connectError ||
+            (wrongLogin && "Error: Wrong Bot username or token. Try again.")}
         </p>
         <form onSubmit={(e: React.SyntheticEvent) => handleLogin(e)}>
           <label>

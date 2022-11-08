@@ -18,7 +18,7 @@ export const MessagesList = () => {
   }
 
   return (
-    <div className="md:m-3">
+    <div className="m-4 2xl:mr-12 mb-72">
       {msgList.map((message: IMessage) => {
         if (currentChat?.id === message?.chat?.id) {
           return <Message key={message?.message_id} message_id={message?.message_id} />

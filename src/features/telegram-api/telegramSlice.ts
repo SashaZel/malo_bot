@@ -25,7 +25,6 @@ export interface IChat {
   first_name: string;
   last_name: string;
   username: string;
-  // TODO: fix last reaction issue for each chat
   lastReaction: string;
   unread_msg?: number;
 }
@@ -79,9 +78,14 @@ export const telegramReducer = createSlice({
     },
     addMessage: (
       state,
-      action: PayloadAction<{ message: IMessage; update_id: number }>
+      action: PayloadAction<{ message: IMessage; markup: string; update_id: number }>
     ): void => {
-      state.messages.push(action.payload.message);
+      const messageReadyForAdd = action.payload.message;
+      const markupReadyForAdd = action.payload.markup;
+      if (markupReadyForAdd) {
+        messageReadyForAdd.text = messageReadyForAdd.text + "??reply_markup=" + markupReadyForAdd;
+      }
+      state.messages.push(messageReadyForAdd);
       if (action.payload.update_id !== 0) {
         state.account_data.update_id = action.payload.update_id + 1;
       }
