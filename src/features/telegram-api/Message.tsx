@@ -18,7 +18,7 @@ export const Message: React.FC<{ message_id: number }> = ({ message_id }) => {
   );
   const messageStyle =
     botName === message?.from?.username
-      ? "ml-auto bg-neutral-200 text-neutral-800 rounded-l-2xl rounded-tr-2xl text-right"
+      ? "ml-auto border-2 bg-neutral-200 text-neutral-800 rounded-l-2xl rounded-tr-2xl text-right dark:bg-black dark:text-neutral-100 dark:border-neutral-700"
       : "bg-neutral-700 text-neutral-100 rounded-r-2xl rounded-tl-2xl";
 
   const { text, markup } = splitTextAndMarkup(message.text);
@@ -61,7 +61,7 @@ export const Message: React.FC<{ message_id: number }> = ({ message_id }) => {
       <div className={`w-fit max-w-xs my-1 p-3 ${messageStyle}`}>
         <div>{text}</div>
         <div className="max-w-xs">{markupReadyForDisplay}</div>
-        <span className="text-neutral-400 inline-block">
+        <span className="text-neutral-400 inline-block dark:text-lime-400">
           {` ${String(localTime.getHours()).padStart(2, "0")}:${String(
             localTime.getMinutes()
           ).padStart(2, "0")}`}

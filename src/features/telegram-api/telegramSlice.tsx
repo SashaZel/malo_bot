@@ -42,22 +42,6 @@ export interface ITelegram {
   messages: IMessage[];
 }
 
-// const INITIAL_CHAT: IChat = {
-//   id: 5122222407,
-//   first_name: "Al",
-//   last_name: "Zel",
-//   username: "sasha_zelenkov",
-//   unread_msg: 0,
-// };
-
-// const INITIAL_CHAT_2: IChat = {
-//   id: 5122222408,
-//   first_name: "Nikolay",
-//   last_name: "Zelllenkov",
-//   username: "kolya_zelenkov",
-//   unread_msg: 3,
-// };
-
 const INITIAL_STATE: ITelegram = {
   account_data: {
     bot_token: "",
@@ -91,14 +75,19 @@ export const telegramReducer = createSlice({
       }
     },
     addChatToChats: (state, action: PayloadAction<IChat>): void => {
+      const chatCandidat = action.payload;
       if (
-        state.chats.map((chat: IChat) => chat.id).includes(action.payload.id)
+        state.chats.map((chat: IChat) => chat.id).includes(chatCandidat.id)
       ) {
         return;
       }
+      chatCandidat.lastReaction = "";
       state.chats.push(action.payload);
     },
-    setCurrentChat: (state, action: PayloadAction<IChat>): void => {
+    setCurrentChat: (state, action: PayloadAction<IChat | null>): void => {
+      if(!action.payload) {
+        return;
+      }
       state.current_chat = action.payload;
     },
     setLastReaction: (
@@ -116,13 +105,25 @@ export const telegramReducer = createSlice({
       });
     },
     setAllMessages: (state, action: PayloadAction<IMessage[]>): void => {
+      if (action.payload.length === 0) {
+        return;
+      }
       state.messages = action.payload;
     },
     setAllChats: (state, action: PayloadAction<IChat[]>): void => {
+      if (action.payload.length === 0) {
+        return;
+      }
       state.chats = action.payload;
+    },
+    logOut: (state) => {
+      state.account_data = INITIAL_STATE.account_data;
     },
     clearAndExit: (state) => {
       state.account_data = INITIAL_STATE.account_data;
+      state.chats = INITIAL_STATE.chats;
+      state.current_chat = INITIAL_STATE.current_chat;
+      state.messages = INITIAL_STATE.messages;
     },
   },
 });

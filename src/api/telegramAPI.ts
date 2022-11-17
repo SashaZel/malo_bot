@@ -10,7 +10,7 @@ import {
 export type Ifunction = (
   messageText: string,
   account_data: IAccount,
-  current_chat: IChat,
+  current_chat: Omit<IChat, "lastReaction" | "unread_msg">,
   messageMarkup: string
 ) => void;
 
@@ -21,6 +21,7 @@ export interface IParamsForSend {
 }
 
 export const checkTelegramAccount = async (botTocken: string) => {
+  console.log('@telegramAPI checkTelegramAccount()')
   try {
     const response = await axios.get(
       `https://api.telegram.org/bot${botTocken}/getMe`
@@ -109,10 +110,15 @@ export const sendMessage: Ifunction = async (
   }
 };
 
+interface IResultsOfPolling {
+  update_id: number;
+  message: IMessage;
+}
+
 export const pollingForMessages = async (
   botToken: string,
   updateID: number
-): Promise<{ resultOfPolling: any[]; errorOfPolling: Error | null }> => {
+): Promise<{ resultOfPolling: IResultsOfPolling[]; errorOfPolling: Error | null }> => {
   try {
     const response = await axios.get(
       `https://api.telegram.org/bot${botToken}/getUpdates`,
@@ -124,7 +130,7 @@ export const pollingForMessages = async (
       }
     );
 
-    const responseDataResult = response?.data?.result;
+    const responseDataResult: IResultsOfPolling | undefined = response?.data?.result;
     const responseDataOK = response?.data?.ok;
 
     if (responseDataOK === true && Array.isArray(responseDataResult)) {

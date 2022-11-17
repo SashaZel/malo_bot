@@ -86,7 +86,7 @@ export const ChatbotReaction: React.FC<{
 
   return (
     <div
-      className="relative border-2 border-cyan-800 rounded-bl-xl rounded-tr-xl p-2 mt-1 mr-1 mb-1"
+      className="relative border-2 border-cyan-800 dark:border-none dark:bg-neutral-800 rounded-bl-xl rounded-tr-xl p-2 mt-1 mr-1 mb-1"
       style={{ marginLeft: deepthInIntentTree + "em" }}
     >
       <div
@@ -141,7 +141,9 @@ export const ChatbotReaction: React.FC<{
       </div>
       <div className="flex justify-between">
         <h4>
-          <span className="font-semibold">Reaction: </span>
+          <span className="font-semibold dark:text-neutral-400">
+            Reaction:{" "}
+          </span>
           {reactionName}
         </h4>
         <form onSubmit={(e) => handleAddNewKeyword(e)} className="block">
@@ -149,12 +151,12 @@ export const ChatbotReaction: React.FC<{
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            className="border-2 border-neutral-200 rounded-bl-lg w-1/2"
+            className="border-2 border-neutral-200 rounded-bl-lg w-1/2 dark:border-neutral-700 dark:bg-neutral-900"
           />
           <input
             type="submit"
             value="Add keywords"
-            className="border-2 border-neutral-200 rounded-tr-lg px-2 bg-neutral-200 hover:border-neutral-400"
+            className="border-2 border-neutral-200 rounded-tr-lg px-2 bg-neutral-200 hover:border-neutral-400 dark:border-neutral-700 dark:bg-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-500"
           />
         </form>
       </div>
@@ -162,12 +164,12 @@ export const ChatbotReaction: React.FC<{
       <div className="mr-5">
         <span className="font-semibold">Keywords:</span> {keywords}
       </div>
-      <div className="absolute right-0 bottom-0 z-10 m-1 p-1 pt-2 bg-white border-neutral-300 hover:border-red-600 border-2">
+      <div className="absolute right-0 bottom-0 z-10 m-1 p-1 pt-2 bg-white border-neutral-300 hover:border-red-600 border-2 dark:bg-neutral-500 dark:border-neutral-500 dark:hover:border-red-600">
         <button onClick={handleRemoveWarning} className="w-6">
           <img src={binPicture} alt="del reaction" />
         </button>
       </div>
-      <div className="absolute right-10 bottom-0 z-10 m-1 p-1 pt-2 bg-white border-neutral-300 hover:border-emerald-600 border-2">
+      <div className="absolute right-10 bottom-0 z-10 m-1 p-1 pt-2 bg-white border-neutral-300 hover:border-emerald-600 border-2 dark:bg-neutral-500 dark:border-neutral-500 dark:hover:border-green-600">
         <button onClick={handleReactionAnswerEdit} className="w-6">
           <img src={pencilPicture} alt="edit reaction" />
         </button>

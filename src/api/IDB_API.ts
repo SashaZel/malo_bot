@@ -1,7 +1,7 @@
-import { get, set, clear, setMany } from "idb-keyval";
+import { get, set, clear, setMany, entries, del } from "idb-keyval";
 import { store } from "../app/store";
 import { IChatbot } from "../features/chatbot/chatbotSlice";
-import { IAccount } from "../features/telegram-api/telegramSlice";
+import { IAccount, ITelegram } from "../features/telegram-api/telegramSlice";
 
 export const getInitialLoginDataFromIDB = async (): Promise<{
   IDBAccountData: IAccount | null;
@@ -10,19 +10,27 @@ export const getInitialLoginDataFromIDB = async (): Promise<{
   console.log("@IDB_API getInitialLoginDataFromIDB()");
   try {
     const result: IAccount | undefined = await get("idb-account_data");
-    if(
+    if (
       typeof result?.bot_name === "string" &&
       typeof result.bot_token === "string" &&
       typeof result.update_id === "number"
     ) {
-      return {IDBAccountData: result, hasIDBError: false}
+      return { IDBAccountData: result, hasIDBError: false };
     }
 
-    return {IDBAccountData: null, hasIDBError: false}
-
+    return { IDBAccountData: null, hasIDBError: false };
   } catch (error) {
     console.error("@IDB_API getInitialLoginDataFromIDB() ", error);
-  return {IDBAccountData: null, hasIDBError: true}
+    return { IDBAccountData: null, hasIDBError: true };
+  }
+};
+
+export const saveTelegramAccountDataToIDB = (accountData: IAccount) => {
+  console.log("@IDB_API saveTelegramAccountDataToIDB()");
+  try {
+    set("idb-account_data", accountData);
+  } catch (error) {
+    console.error("@IDB_API saveTelegramAccountDataToIDB() ", error);
   }
 };
 
@@ -47,10 +55,6 @@ export const getChatbotFromIDB = async (): Promise<IChatbot | undefined> => {
   return chatbotState;
 };
 
-export const clearIDB = () => {
-  clear();
-};
-
 export const saveTelegramStateToIDB = () => {
   console.log("@IDB_API saveTelegramStateToIDB()");
   const telegramAppState = store.getState().telegram;
@@ -63,5 +67,50 @@ export const saveTelegramStateToIDB = () => {
     ]);
   } catch (error) {
     console.error("@IDB_API saveTelegramStateToIDB() ", error);
+  }
+};
+
+export const getAvailableDataFromIDB = async (): Promise<
+  Omit<ITelegram, "account_data">
+> => {
+  console.log("@IDB_API getAvailableDataFromIDB()");
+  const resultFromIDB: Omit<ITelegram, "account_data"> = {
+    current_chat: null,
+    chats: [],
+    messages: [],
+  };
+  try {
+    const allEntriesFromIDB = await entries();
+    allEntriesFromIDB.map(([IDBKey, IDBValue]) => {
+      if (IDBKey === "idb-messages") {
+        resultFromIDB.messages = IDBValue;
+      }
+      if (IDBKey === "idb-chats") {
+        resultFromIDB.chats = IDBValue;
+      }
+      if (IDBKey === "idb-current_chat") {
+        resultFromIDB.current_chat = IDBValue;
+      }
+    });
+    return resultFromIDB;
+  } catch (error) {
+    console.error("@IDB_API getAvailableDataFromIDB() ", error);
+    return resultFromIDB;
+  }
+};
+
+export const deleteAccountDataIDB = () => {
+  try {
+    del("idb-account_data");
+  } catch (error) {
+    console.error("@IDB_API deleteAccountDataIDB() ", error);
+  }
+};
+
+export const clearIDB = () => {
+  try {
+    clear();
+  } catch (error) {
+    console.error("@IDB_API clearIDB() ", error);
   }
 };

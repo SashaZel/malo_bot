@@ -5,7 +5,7 @@ import { RootState } from "../../app/store";
 import { listenAndAnswer } from "../chatbot/inputListener";
 import { pollingForMessages, sendMessage } from "../../api/telegramAPI";
 
-export const TelegramAPI = () => {
+export const TelegramListenerOfUpdates = () => {
   const isPooling = React.useRef(false);
   const account_data = useSelector(
     (state: RootState) => state.telegram.account_data

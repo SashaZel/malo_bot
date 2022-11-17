@@ -2,11 +2,10 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { telegramReducer } from "./telegramSlice";
-import { clearIDB, saveTelegramStateToIDB } from "../../api/IDB_API";
+import { clearIDB, deleteAccountDataIDB, saveTelegramStateToIDB } from "../../api/IDB_API";
 
 export const SaveButton = () => {
-  
-  console.log('@SaveButton');
+  console.log("@SaveButton");
 
   const [readyForClear, setReadyForClear] = React.useState(false);
 
@@ -32,14 +31,19 @@ export const SaveButton = () => {
   //   );
   // };
 
+  const handleLogOut = () => {
+    dispatch(telegramReducer.actions.logOut());
+    deleteAccountDataIDB();
+  };
+
   const handleClear = () => {
+    dispatch(telegramReducer.actions.clearAndExit());
     clearIDB();
     setReadyForClear(false);
-    dispatch(telegramReducer.actions.clearAndExit());
   };
 
   return (
-    <div className="border-2 m-1 p-2">
+    <div className="">
       <div
         className={`fixed ${
           !readyForClear && "hidden"
@@ -69,15 +73,45 @@ export const SaveButton = () => {
       </div>
 
       <span className="font-semibold inline-block mr-1">Your bot: </span>
-      <a
+      <p>
+        <a
         href={`https://t.me/${telegramAppState.account_data.bot_name}`}
         target="blank"
         className="inline-block mr-4"
       >
         https://t.me/{telegramAppState.account_data.bot_name}
       </a>
-      <button onClick={() => setReadyForClear(true)} className="my-1 border-2 p-2 bg-slate-200 hover:bg-slate-300 border-slate-300">
+      </p>
+      
+      <button
+        onClick={handleLogOut}
+        className="my-1 p-2 w-full text-lg hover:bg-neutral-100 text-left font-semibold text-neutral-500 dark:hover:bg-neutral-800 dark:text-neutral-400"
+      >
+        Log out.
+      </button>
+      <button
+        onClick={() => setReadyForClear(true)}
+        className="my-1 p-2 w-full text-lg hover:bg-neutral-100 text-left font-semibold text-neutral-500 dark:hover:bg-neutral-800 dark:text-neutral-400"
+      >
         Clear IndexedDB and Log out.
+      </button>
+      <button
+        onClick={handleLogOut}
+        className="my-1 p-2 w-full text-lg hover:bg-neutral-100 text-left font-semibold text-neutral-500 dark:hover:bg-neutral-800 dark:text-neutral-400"
+      >
+        Docs
+      </button>
+      <button
+        onClick={handleLogOut}
+        className="my-1 p-2 w-full text-lg hover:bg-neutral-100 text-left font-semibold text-neutral-500 dark:hover:bg-neutral-800 dark:text-neutral-400"
+      >
+        Settings
+      </button>
+      <button
+        onClick={handleLogOut}
+        className="my-1 p-2 w-full text-lg hover:bg-neutral-100 text-left font-semibold text-neutral-500 dark:hover:bg-neutral-800 dark:text-neutral-400"
+      >
+        Contact
       </button>
     </div>
   );

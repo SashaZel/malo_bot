@@ -33,7 +33,7 @@ export const ChatbotReactionAnswer: React.FunctionComponent<{answer: string}> = 
   }
 
   return (
-    <div className="my-1 border-t-2 border-b-2">
+    <div className="my-1 border-t-2 border-b-2 dark:border-neutral-700">
         <h4 className="font-semibold">Answer: </h4>
         <div>&quot;{text}&quot;</div>
         <div>{markupReadyForDisplay}</div>
