@@ -1,0 +1,56 @@
+import React from "react";
+import poster from "../assets/pictures/poster_small.png";
+import logoBlack from "../assets/logos/logo_black.svg";
+import { Link } from "react-router-dom";
+
+export const Index = () => {
+  return (
+    <div className="m-4 2xl:m-6 2xl:w-10/12">
+      <div
+        className="h-[700px] pt-16 bg-white dark:bg-neutral-100"
+        style={{
+          backgroundImage: `url("${poster}")`,
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "right",
+        }}
+      >
+        <img src={logoBlack} alt="logo" className="block w-1/2 ml-12" />
+        <h4 className="text-black ml-4 mt-8 text-3xl index-page-slackey-font">
+          Frontend <span className="text-4xl">only</span>{" "}
+        </h4>
+        <h4 className="text-black ml-12 mt-2 text-4xl index-page-slackey-font">
+          Telegram <span className="text-3xl">chatbot</span>
+        </h4>
+        <p className="text-neutral-500 text-2xl ml-36 mt-36">
+          No back-end needs.{" "}
+        </p>
+        <p className="text-neutral-500 text-2xl ml-4">
+          Your bot live in your browser.
+        </p>
+        <p className="text-neutral-500 text-2xl ml-14">
+          but able to answer to anyone
+        </p>
+        <Link
+          to={"docs"}
+          className="inline-block mt-12 ml-28 p-2 px-6 font-semibold text-xl bg-orange-600 hover:bg-red-600 rounded-md"
+        >
+          Try it now!
+        </Link>
+      </div>
+      <h2 className="m-1 lg:m-2 text-xl font-semibold border-b-2">
+        Frontend-only Telegram chatbot
+      </h2>
+      <p className="mx-2 pt-2">
+        No-coding chatbot. Just add an answer and keywords. Your bot is ready!
+      </p>
+      <p className="mx-2 pt-2">
+        No backend needs. Chatbot lives on your machine. Keep your browser open.
+        To quit chatbot just close the browser.
+      </p>
+      <p className="mx-2 pt-2">
+        All changes save automaticly. Open this page again - and your chatbot is
+        ready again with full history available.
+      </p>
+    </div>
+  );
+};

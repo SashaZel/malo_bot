@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { AppDispatch, RootState } from "../../app/store";
+import { DUMMY_CHATS_LIST6 } from "../../common/dummyData";
 
 export interface IMessage {
   message_id: number;
@@ -26,7 +28,7 @@ export interface IChat {
   last_name: string;
   username: string;
   lastReaction: string;
-  unread_msg?: number;
+  date_of_last_display: number;
 }
 
 export interface IAccount {
@@ -49,7 +51,7 @@ const INITIAL_STATE: ITelegram = {
     update_id: 0,
   },
   current_chat: null,
-  chats: [],
+  chats: DUMMY_CHATS_LIST6,
   messages: [],
 };
 
@@ -62,12 +64,17 @@ export const telegramReducer = createSlice({
     },
     addMessage: (
       state,
-      action: PayloadAction<{ message: IMessage; markup: string; update_id: number }>
+      action: PayloadAction<{
+        message: IMessage;
+        markup: string;
+        update_id: number;
+      }>
     ): void => {
       const messageReadyForAdd = action.payload.message;
       const markupReadyForAdd = action.payload.markup;
       if (markupReadyForAdd) {
-        messageReadyForAdd.text = messageReadyForAdd.text + "??reply_markup=" + markupReadyForAdd;
+        messageReadyForAdd.text =
+          messageReadyForAdd.text + "??reply_markup=" + markupReadyForAdd;
       }
       state.messages.push(messageReadyForAdd);
       if (action.payload.update_id !== 0) {
@@ -76,33 +83,38 @@ export const telegramReducer = createSlice({
     },
     addChatToChats: (state, action: PayloadAction<IChat>): void => {
       const chatCandidat = action.payload;
-      if (
-        state.chats.map((chat: IChat) => chat.id).includes(chatCandidat.id)
-      ) {
+      if (state.chats.map((chat: IChat) => chat.id).includes(chatCandidat.id)) {
         return;
       }
       chatCandidat.lastReaction = "";
       state.chats.push(action.payload);
     },
     setCurrentChat: (state, action: PayloadAction<IChat | null>): void => {
-      if(!action.payload) {
+      if (!action.payload) {
         return;
       }
       state.current_chat = action.payload;
     },
     setLastReaction: (
       state,
-      action: PayloadAction<{ chatID: number; lastReactionForThisChat: string;}>
+      action: PayloadAction<{ chatID: number; lastReactionForThisChat: string }>
     ): void => {
       state.chats = state.chats.map((chat) => {
         if (chat.id === action.payload.chatID) {
-          return ({
+          return {
             ...chat,
-            lastReaction: action.payload.lastReactionForThisChat
-          });
+            lastReaction: action.payload.lastReactionForThisChat,
+          };
         }
         return chat;
       });
+    },
+    setLastDateOfDisplay: (state, action: PayloadAction<{chatID: number, lastDateOfDisplay: number}>) => {
+      state.chats.forEach((chat) => {
+        if (chat.id === action.payload.chatID) {
+          chat.date_of_last_display = action.payload.lastDateOfDisplay;
+        }
+      })
     },
     setAllMessages: (state, action: PayloadAction<IMessage[]>): void => {
       if (action.payload.length === 0) {
@@ -127,3 +139,34 @@ export const telegramReducer = createSlice({
     },
   },
 });
+
+export const selectorChatStatus = (
+  state: RootState,
+  chatID: number
+): { isActive: boolean; unreadMsgs: number } => {
+
+  let thisChatIsActive = false;
+  if (state.telegram?.current_chat?.id === chatID) {
+    thisChatIsActive = true;
+  }
+
+  const chatLastDateOfDisplay = state.telegram.chats.find(
+    (chat) => chat.id === chatID
+  )?.date_of_last_display;
+  const unreadMessages = state.telegram.messages.filter(
+    (msg) =>
+      msg.from.id === chatID &&
+      chatLastDateOfDisplay !== undefined &&
+      chatLastDateOfDisplay < msg.date
+  ).length;
+
+  return {
+    isActive: thisChatIsActive,
+    unreadMsgs: unreadMessages
+  } 
+};
+
+export const thunkSetLastTimeOfDisplay = (requiredChatID: number) => (dispatch: AppDispatch) => {
+  const dateNowInSec = Math.ceil(Date.now()/1000);
+  dispatch(telegramReducer.actions.setLastDateOfDisplay({chatID: requiredChatID, lastDateOfDisplay: dateNowInSec}));
+}

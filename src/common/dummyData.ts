@@ -7,7 +7,7 @@ export const DUMMY_CHATS_LIST: IChat[] = [
     last_name: "Zel",
     username: "sasha_zelenkov",
     lastReaction: "Dog",
-    unread_msg: 0,
+    date_of_last_display: 0,
   },
   {
     id: 5122222409,
@@ -15,7 +15,7 @@ export const DUMMY_CHATS_LIST: IChat[] = [
     last_name: "Zelllenkov",
     username: "kolya_zelenkov",
     lastReaction: "Cat",
-    unread_msg: 3,
+    date_of_last_display: 3,
   },
   {
     id: 5122222443,
@@ -23,7 +23,7 @@ export const DUMMY_CHATS_LIST: IChat[] = [
     last_name: "Zel",
     username: "sasha_zelenkov",
     lastReaction: "Dog",
-    unread_msg: 0,
+    date_of_last_display: 0,
   },
   {
     id: 5122222400,
@@ -31,7 +31,7 @@ export const DUMMY_CHATS_LIST: IChat[] = [
     last_name: "Zelllenkov",
     username: "kolya_zelenkov",
     lastReaction: "Cat",
-    unread_msg: 3,
+    date_of_last_display: 3,
   },
   {
     id: 5122222497,
@@ -39,7 +39,7 @@ export const DUMMY_CHATS_LIST: IChat[] = [
     last_name: "Zel",
     username: "sasha_zelenkov",
     lastReaction: "Dog",
-    unread_msg: 0,
+    date_of_last_display: 0,
   },
   {
     id: 5122221555,
@@ -47,7 +47,7 @@ export const DUMMY_CHATS_LIST: IChat[] = [
     last_name: "Zelllenkov",
     username: "kolya_zelenkov",
     lastReaction: "Cat",
-    unread_msg: 3,
+    date_of_last_display: 3,
   },
   {
     id: 5122222440,
@@ -55,7 +55,7 @@ export const DUMMY_CHATS_LIST: IChat[] = [
     last_name: "Zelllenkov",
     username: "kolya_zelenkov",
     lastReaction: "Cat",
-    unread_msg: 3,
+    date_of_last_display: 3,
   },
   {
     id: 5122222456,
@@ -63,7 +63,7 @@ export const DUMMY_CHATS_LIST: IChat[] = [
     last_name: "Zelllenkov",
     username: "kolya_zelenkov",
     lastReaction: "Cat",
-    unread_msg: 3,
+    date_of_last_display: 3,
   },
   {
     id: 512222246,
@@ -71,7 +71,7 @@ export const DUMMY_CHATS_LIST: IChat[] = [
     last_name: "Zelllenkov",
     username: "kolya_zelenkov",
     lastReaction: "Cat",
-    unread_msg: 3,
+    date_of_last_display: 3,
   },
   {
     id: 5122222445,
@@ -79,7 +79,7 @@ export const DUMMY_CHATS_LIST: IChat[] = [
     last_name: "Zelllenkov",
     username: "kolya_zelenkov",
     lastReaction: "Cat",
-    unread_msg: 3,
+    date_of_last_display: 3,
   },
   {
     id: 5122222498,
@@ -87,7 +87,7 @@ export const DUMMY_CHATS_LIST: IChat[] = [
     last_name: "Zelllenkov",
     username: "kolya_zelenkov",
     lastReaction: "Cat",
-    unread_msg: 3,
+    date_of_last_display: 3,
   },
 ];
 
@@ -98,7 +98,7 @@ export const DUMMY_CHATS_LIST2: IChat[] = [
     last_name: "Zel",
     username: "sasha_zelenkov",
     lastReaction: "Dog",
-    unread_msg: 0,
+    date_of_last_display: 0,
   },
   {
     id: 5122222409,
@@ -106,7 +106,7 @@ export const DUMMY_CHATS_LIST2: IChat[] = [
     last_name: "Zelllenkov",
     username: "kolya_zelenkov",
     lastReaction: "Cat",
-    unread_msg: 3,
+    date_of_last_display: 3,
   },
 ];
 
@@ -117,7 +117,7 @@ export const DUMMY_CHATS_LIST3: IChat[] = [
     last_name: "Zel",
     username: "sasha_zelenkov",
     lastReaction: "Dog",
-    unread_msg: 0,
+    date_of_last_display: 0,
   },
   {
     id: 5122222409,
@@ -125,7 +125,7 @@ export const DUMMY_CHATS_LIST3: IChat[] = [
     last_name: "Zelllenkov",
     username: "kolya_zelenkov",
     lastReaction: "Cat",
-    unread_msg: 3,
+    date_of_last_display: 3,
   },
   {
     id: 5122222443,
@@ -133,7 +133,7 @@ export const DUMMY_CHATS_LIST3: IChat[] = [
     last_name: "Zel",
     username: "sasha_zelenkov",
     lastReaction: "Dog",
-    unread_msg: 0,
+    date_of_last_display: 0,
   },
 ];
 
@@ -144,7 +144,7 @@ export const DUMMY_CHATS_LIST6: IChat[] = [
     last_name: "Zel",
     username: "sasha_zelenkov",
     lastReaction: "Dog",
-    unread_msg: 0,
+    date_of_last_display: 0,
   },
   {
     id: 5122222409,
@@ -152,7 +152,7 @@ export const DUMMY_CHATS_LIST6: IChat[] = [
     last_name: "Zelllenkov",
     username: "kolya_zelenkov",
     lastReaction: "Cat",
-    unread_msg: 3,
+    date_of_last_display: 3,
   },
   {
     id: 5122222443,
@@ -160,7 +160,7 @@ export const DUMMY_CHATS_LIST6: IChat[] = [
     last_name: "Zel",
     username: "sasha_zelenkov",
     lastReaction: "Dog",
-    unread_msg: 0,
+    date_of_last_display: 0,
   },
   {
     id: 5122222400,
@@ -168,7 +168,7 @@ export const DUMMY_CHATS_LIST6: IChat[] = [
     last_name: "Zelllenkov",
     username: "kolya_zelenkov",
     lastReaction: "Cat",
-    unread_msg: 3,
+    date_of_last_display: 3,
   },
   {
     id: 5122222497,
@@ -176,7 +176,7 @@ export const DUMMY_CHATS_LIST6: IChat[] = [
     last_name: "Zel",
     username: "sasha_zelenkov",
     lastReaction: "Dog",
-    unread_msg: 0,
+    date_of_last_display: 0,
   },
   {
     id: 5122221555,
@@ -184,7 +184,7 @@ export const DUMMY_CHATS_LIST6: IChat[] = [
     last_name: "Zelllenkov",
     username: "kolya_zelenkov",
     lastReaction: "Cat",
-    unread_msg: 3,
+    date_of_last_display: 3,
   },
 ];
 
@@ -195,7 +195,7 @@ export const DUMMY_CHATS_LIST7: IChat[] = [
     last_name: "Zel",
     username: "sasha_zelenkov",
     lastReaction: "Dog",
-    unread_msg: 0,
+    date_of_last_display: 0,
   },
   {
     id: 5122222409,
@@ -203,7 +203,7 @@ export const DUMMY_CHATS_LIST7: IChat[] = [
     last_name: "Zelllenkov",
     username: "kolya_zelenkov",
     lastReaction: "Cat",
-    unread_msg: 3,
+    date_of_last_display: 3,
   },
   {
     id: 5122222443,
@@ -211,7 +211,7 @@ export const DUMMY_CHATS_LIST7: IChat[] = [
     last_name: "Zel",
     username: "sasha_zelenkov",
     lastReaction: "Dog",
-    unread_msg: 0,
+    date_of_last_display: 0,
   },
   {
     id: 5122222400,
@@ -219,7 +219,7 @@ export const DUMMY_CHATS_LIST7: IChat[] = [
     last_name: "Zelllenkov",
     username: "kolya_zelenkov",
     lastReaction: "Cat",
-    unread_msg: 3,
+    date_of_last_display: 3,
   },
   {
     id: 5122222497,
@@ -227,7 +227,7 @@ export const DUMMY_CHATS_LIST7: IChat[] = [
     last_name: "Zel",
     username: "sasha_zelenkov",
     lastReaction: "Dog",
-    unread_msg: 0,
+    date_of_last_display: 0,
   },
   {
     id: 5122221555,
@@ -235,7 +235,7 @@ export const DUMMY_CHATS_LIST7: IChat[] = [
     last_name: "Zelllenkov",
     username: "kolya_zelenkov",
     lastReaction: "Cat",
-    unread_msg: 3,
+    date_of_last_display: 3,
   },
   {
     id: 5122222440,
@@ -243,7 +243,7 @@ export const DUMMY_CHATS_LIST7: IChat[] = [
     last_name: "Zelllenkov",
     username: "kolya_zelenkov",
     lastReaction: "Cat",
-    unread_msg: 3,
+    date_of_last_display: 3,
   },
   {
     id: 5122222456,
@@ -251,6 +251,6 @@ export const DUMMY_CHATS_LIST7: IChat[] = [
     last_name: "Zelllenkov",
     username: "kolya_zelenkov",
     lastReaction: "Cat",
-    unread_msg: 3,
+    date_of_last_display: 3,
   },
 ];

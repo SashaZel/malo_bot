@@ -1,14 +1,28 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../../app/store";
+import { useDispatch, useSelector } from "react-redux";
+import { saveTelegramStateToIDB } from "../../api/IDB_API";
+import { AppDispatch, RootState } from "../../app/store";
 import { Message } from "./Message";
-import { IMessage } from "./telegramSlice";
+import { IMessage, thunkSetLastTimeOfDisplay } from "./telegramSlice";
 
 export const MessagesList = () => {
+
+  //console.log('@MessageList');
+
+  const dispatch: AppDispatch = useDispatch();
   const msgList = useSelector((state: RootState) => state.telegram.messages);
   const currentChat = useSelector(
     (state: RootState) => state.telegram.current_chat
   );
+
+  React.useEffect(() => {
+    if (currentChat) {
+      dispatch(
+        thunkSetLastTimeOfDisplay(currentChat?.id)
+      );
+    }
+    saveTelegramStateToIDB();
+  }, [msgList, currentChat?.id]);
 
   const listOfMessegesInCurrentChat = msgList.map((message: IMessage) => {
     if (currentChat?.id === message?.chat?.id) {

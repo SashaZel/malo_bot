@@ -1,24 +1,9 @@
 import React from "react";
-import { useDispatch } from "react-redux";
 import { ChatbotForm } from "./ChatbotForm";
-import { getChatbotFromIDB } from "../../api/IDB_API";
 import { ChatbotListOfReactions } from "./ChatbotListOfReactions";
-import { chatbotReducer } from "./chatbotSlice";
 
 export const ChatbotPanel = () => {
   //console.log("@ChatbotPanel");
-  const dispatch = useDispatch();
-
-  React.useEffect(() => {
-    const getChatbotState = async () => {
-      const chatbotState = await getChatbotFromIDB();
-      //console.log("@ChatbotPanel - we have got it!", chatbotState);
-      if (!chatbotState) return;
-      if (!chatbotState.intents || !chatbotState.reactions) return;
-      dispatch(chatbotReducer.actions.setState({ newState: chatbotState }));
-    };
-    getChatbotState();
-  }, []);
 
   return (
     <div className="w-full">

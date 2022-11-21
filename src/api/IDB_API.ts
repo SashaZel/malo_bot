@@ -58,6 +58,9 @@ export const getChatbotFromIDB = async (): Promise<IChatbot | undefined> => {
 export const saveTelegramStateToIDB = () => {
   console.log("@IDB_API saveTelegramStateToIDB()");
   const telegramAppState = store.getState().telegram;
+  if (!telegramAppState.account_data.bot_name || !telegramAppState.account_data.bot_token) {
+    return;
+  }
   try {
     setMany([
       ["idb-account_data", telegramAppState.account_data],

@@ -10,7 +10,7 @@ import {
 export type Ifunction = (
   messageText: string,
   account_data: IAccount,
-  current_chat: Omit<IChat, "lastReaction" | "unread_msg">,
+  current_chat: Omit<IChat, "lastReaction" | "date_of_last_display">,
   messageMarkup: string
 ) => void;
 
@@ -42,7 +42,7 @@ export const sendMessage: Ifunction = async (
   current_chat,
   messageMarkup
 ) => {
-  // console.log("ready to send: ", messageText);
+  console.log("@telegramAPI sendMessage()");
   // console.log('TAPI currentChat ', current_chat);
   // console.log('TAPI currentAccount ', current_chat);
   if (!messageText || !current_chat || !current_chat) {
@@ -119,6 +119,7 @@ export const pollingForMessages = async (
   botToken: string,
   updateID: number
 ): Promise<{ resultOfPolling: IResultsOfPolling[]; errorOfPolling: Error | null }> => {
+  console.log("@telegramAPI pollingForMessages()")
   try {
     const response = await axios.get(
       `https://api.telegram.org/bot${botToken}/getUpdates`,
@@ -141,7 +142,7 @@ export const pollingForMessages = async (
       "@telegramAPI => Error in data format from pollingForMessages()"
     );
   } catch (error) {
-    console.error("@telegramAPI ", error);
+    console.error("@telegramAPI pollingForMessages()", error);
     if (error instanceof Error) {
       return { resultOfPolling: [], errorOfPolling: error };
     } else {

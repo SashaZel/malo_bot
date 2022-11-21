@@ -19,7 +19,7 @@ export const ChatbotReactionAnswer: React.FunctionComponent<{answer: string}> = 
             rowOfButtons.map((btnElement, indexX) => (
               <span 
                 key={btnElement + indexX + indexY}
-                className="inline-block p-1 m-1 bg-lime-200 text-center"
+                className="inline-block p-1 m-1 bg-lime-200 text-center text-neutral-700"
                 style={{"width": `${300 / buttonsInRow - 4*(buttonsInRow-1)}px`}}
               >
                 {btnElement}

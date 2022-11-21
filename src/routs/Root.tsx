@@ -1,26 +1,33 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ChooseUser } from "./ChooseUser";
-import { MessagesList } from "./MessagesList";
-import { TelegramListenerOfUpdates } from "./TelegramListenerOfUpdates";
-import { IAccount, telegramReducer } from "./telegramSlice";
-import { SaveButton } from "./SaveButton";
-import { RootState } from "../../app/store";
-import { ChatbotPanel } from "../chatbot/ChatbotPanel";
-import { LeftColumn } from "../just-info-pages/LeftColumn";
-import { TelegramForm } from "./TelegramForm";
-import { checkTelegramAccount } from "../../api/telegramAPI";
+import { Outlet } from "react-router-dom";
+import { TelegramListenerOfUpdates } from "../features/telegram-api/TelegramListenerOfUpdates";
+import {
+  IAccount,
+  telegramReducer,
+} from "../features/telegram-api/telegramSlice";
+import { SaveButton } from "../features/telegram-api/SaveButton";
+import { RootState } from "../app/store";
+import { LeftColumn } from "../features/just-info-pages/LeftColumn";
+import { checkTelegramAccount } from "../api/telegramAPI";
 import {
   getAvailableDataFromIDB,
   getInitialLoginDataFromIDB,
   saveTelegramAccountDataToIDB,
-} from "../../api/IDB_API";
-import { TelegramLogInForm } from "./TelegramLogInForm";
+} from "../api/IDB_API";
+import { TelegramLogInForm } from "../features/telegram-api/TelegramLogInForm";
+import { HeaderOfPage } from "../features/just-info-pages/HeaderOfPage";
+import { ChatbotIndicator } from "../features/chatbot/ChatbotIndicator";
 
 type ILoginStatus = "login_yes" | "login_no" | "login_waiting";
 
-export const TelegramPanel = () => {
+export const Root = () => {
   //console.log("@TelegramPanel");
+  const [darkMode, setDarkMode] = React.useState(false);
+
+  const handleDarkMode = (isDark: boolean) => {
+    setDarkMode(isDark);
+  };
 
   const dispatch = useDispatch();
   const currentAccount = useSelector(
@@ -116,33 +123,40 @@ export const TelegramPanel = () => {
     checkLogin(newAccountData, false);
   };
 
+  let activeLoginElement = null;
+
   if (loginStatus === "login_yes" && currentAccount.bot_name) {
-    return (
-      <div>
-        <LeftColumn>
-          <SaveButton />
-        </LeftColumn>
-        <div className="flex">
-          <div className="w-3/12"></div>
-          <div className="w-6/12">
-            <ChooseUser />
-            <ChatbotPanel />
-          </div>
-          <div className="w-3/12">
-            <TelegramListenerOfUpdates />
-            <TelegramForm />
-            <MessagesList />
-          </div>
-        </div>
-      </div>
+    activeLoginElement = (
+      <>
+        <TelegramListenerOfUpdates />
+        <ChatbotIndicator />
+        <SaveButton />
+      </>
+    );
+  } else {
+    activeLoginElement = (
+      <TelegramLogInForm
+        handleLogin={handleLogin}
+        loginStatus={loginStatus}
+        connectError={connectError}
+      />
     );
   }
 
   return (
-    <TelegramLogInForm
-      handleLogin={handleLogin}
-      loginStatus={loginStatus}
-      connectError={connectError}
-    />
+    <div className={darkMode ? "dark" : ""}>
+      <div className="min-h-screen bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white">
+        <HeaderOfPage handleDarkMode={handleDarkMode} />
+        <LeftColumn>
+          {activeLoginElement}
+        </LeftColumn>
+        <div className="flex">
+          <div className="w-1/4"></div>
+          <div className="w-3/4">
+            <Outlet />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };

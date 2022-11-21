@@ -92,10 +92,10 @@ export const ChatbotReaction: React.FC<{
       <div
         className={`fixed ${
           !readyForRemove && "hidden"
-        } top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-8 bg-white border-4 border-red-600 z-40`}
+        } top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-8 bg-white border-4 border-red-600 z-40 dark:bg-neutral-200`}
       >
         <div className="">
-          <span className="font-semibold border-b-2">{`Remove "${reactionName}" reaction and all reaction childs?`}</span>
+          <span className="font-semibold text-black border-b-2 border-neutral-400">{`Remove "${reactionName}" reaction and all reaction childs?`}</span>
           <div className="text-center mt-2">
             <button
               onClick={handleDelReaction}
@@ -105,7 +105,7 @@ export const ChatbotReaction: React.FC<{
             </button>
             <button
               onClick={handleRemoveCancel}
-              className="bg-red-200 p-4 rounded-md text-black hover:bg-orange-300 ml-2 font-semibold"
+              className="bg-neutral-300 p-4 rounded-md text-black hover:bg-orange-600 ml-2 font-semibold dark:bg-neutral-400 dark:hover:bg-orange-600"
             >
               Cancel
             </button>

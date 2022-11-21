@@ -6,44 +6,40 @@ export const TelegramLogInForm: React.FC<{
   connectError: string | null;
 }> = ({ handleLogin, loginStatus, connectError }) => {
   return (
-    <div className="my-3 pt-9 px-2 md:px-4 bg-indigo-50 rounded-xl shadow-lg">
-      <h2 className="m-1 lg:m-2 text-xl font-semibold border-b-2">
-        Frontend-only Telegram chatbot
-      </h2>
-      <p className="mx-2 pt-2">
-        No-coding chatbot. Just add an answer and keywords. Your bot is ready!
-      </p>
-      <p className="mx-2 pt-2">
-        No backend needs. Chatbot lives on your machine. Keep your browser open.
-        To quit chatbot just close the browser.
-      </p>
-      <p className="mx-2 pt-2">
-        All changes save automaticly. Open this page again - and your chatbot is
-        ready again with full history available.
-      </p>
-      <h3 className="text-xl ml-2 pt-4">
+    <div className="my-3 bg-neutral-100 dark:bg-neutral-800">
+      <h3 className="text-xl ml-2">
         {loginStatus !== "login_waiting" ? "Please Log in:" : "Waiting..."}
       </h3>
-      <div className={`m-1 p-2 border-2 ${connectError && "border-red-300"}`}>
-        <p className="text-red-500">{connectError}</p>
+      <div
+        className={`p-2 border-2 ${
+          connectError ? "border-red-400 dark:border-red-800" : "border-neutral-100 dark:border-neutral-800"
+        }`}
+      >
+        <p className="text-red-600">{connectError}</p>
         <form onSubmit={(e: React.SyntheticEvent) => handleLogin(e)}>
           <label>
             <p>Bot username:</p>
-            <input className="border-2 w-full" />
+            <input className="border-2 w-full dark:text-neutral-800 dark:bg-neutral-200" />
           </label>
           <label>
             <p>Token:</p>
-            <input className="border-2 w-full" />
+            <input className="border-2 w-full dark:text-neutral-800 dark:bg-neutral-200" />
           </label>
-          <input type="submit" value="Log In" className="my-button" />
+          <input
+            type="submit"
+            value="Log In"
+            className="mt-2 py-1 px-6 font-semibold bg-orange-600 hover:bg-red-600 rounded-md"
+          />
         </form>
       </div>
       <div>
-        <h4 className="text-lg font-semibold mx-2 mt-4">
+        <h4 className="text-sm font-semibold mx-2">
           How to get bot username and token?
         </h4>
-        <p className="mx-2 mt-2">Get username and token from @BotFather.</p>
-        <p className="mx-2 mb-4">
+        <p className="text-sm mx-2 text-neutral-500">
+          Get username and token from @BotFather.
+        </p>
+        <p className="text-sm mx-2 text-neutral-500">
           See detailed guide{" "}
           <a
             className="underline"

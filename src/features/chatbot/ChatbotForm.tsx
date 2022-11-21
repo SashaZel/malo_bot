@@ -7,9 +7,9 @@ import { chatbotReducer } from "./chatbotSlice";
 
 type IinputStatus =
   | ""
-  | "please write name"
-  | "please write answer"
-  | "please write at least one keyword"
+  | "Please write a name"
+  | "Please write an answer"
+  | "Please write at least one keyword"
   | "This reaction name already exist. Please choose another."
   | "One of this keyword already exist for another reaction."
   | "Please do not use tilda sign ('~') in the reactions names or keywords"
@@ -34,6 +34,13 @@ export const ChatbotForm = () => {
   const [inputThreeContent, setInputThreeContent] = React.useState("");
   //const [inputButtonsContent, setInputButtonsContent] = React.useState('{"keyboard":[["buttonOne"],["buttonTwo","ButtonThree"]],"resize_keyboard":true,"one_time_keyboard":true}');
   const [inputButtonsContent, setInputButtonsContent] = React.useState("");
+  const [showButtonsMenu, setShowButtonsMenu] = React.useState(false);
+
+  const handleCheckboxChange = (e: React.BaseSyntheticEvent) => {
+    e.stopPropagation();
+    //console.log("@Checkbox ", e);
+    setShowButtonsMenu(e.target.checked);
+  };
 
   const handleAddButtons = (buttonsMarkup: string) => {
     setInputButtonsContent(buttonsMarkup);
@@ -49,15 +56,15 @@ export const ChatbotForm = () => {
     const newKeywords = event.target[3].value;
 
     if (!newReactionName || newReactionName.trim() === "") {
-      setInputStatus("please write name");
+      setInputStatus("Please write a name");
       return;
     }
     if (!newRaactionAnswer || newRaactionAnswer.trim() === "") {
-      setInputStatus("please write answer");
+      setInputStatus("Please write an answer");
       return;
     }
     if (!newKeywords || newKeywords.trim() === "") {
-      setInputStatus("please write at least one keyword");
+      setInputStatus("Please write at least one keyword");
       return;
     }
     if (chatbotState.reactions[newReactionName]) {
@@ -112,7 +119,8 @@ export const ChatbotForm = () => {
     setInputOneContent("");
     setInputTwoContent("");
     setInputThreeContent("");
-    //setInputButtonsContent("");
+    setInputButtonsContent("");
+    setShowButtonsMenu(false);
   };
 
   return (
@@ -174,11 +182,24 @@ export const ChatbotForm = () => {
         <input
           type="submit"
           value="Add new reaction"
-          className="bg-orange-600 p-4 rounded-xl hover:bg-red-600 font-semibold"
+          className="inline-block bg-orange-600 p-4 rounded-xl hover:bg-red-600 font-semibold"
         />
-        <span className="font-bold text-red-500">{inputStatus}</span>
+        <span className="inline-block ml-4 text-red-500">{inputStatus}</span>
       </form>
-      <ChatbotFormButtons handleAddButtons={handleAddButtons} />
+      <form>
+        <label>
+          <input
+            type="checkbox"
+            checked={showButtonsMenu}
+            onChange={(e) => handleCheckboxChange(e)}
+            className="hue-rotate-180 scale-125 mt-4 mr-2"
+          />
+          Add Buttons
+        </label>
+      </form>
+      {showButtonsMenu && (
+        <ChatbotFormButtons handleAddButtons={handleAddButtons} />
+      )}
     </div>
   );
 };

@@ -6,18 +6,16 @@ import { listenAndAnswer } from "../chatbot/inputListener";
 import { pollingForMessages, sendMessage } from "../../api/telegramAPI";
 
 export const TelegramListenerOfUpdates = () => {
+  console.log("@TelegramListenerOfUpdates");
+
   const isPooling = React.useRef(false);
   const account_data = useSelector(
     (state: RootState) => state.telegram.account_data
   );
   const dispatch = useDispatch();
 
-  //console.log("@TelegramAPI");
-
   React.useEffect(() => {
-
     // Mount long polling listener for getting new messages from Telegram
-    // TODO: Fix doubling the callbacks when re-renders component!!!
 
     let delay = 1000;
     let timeout: number | null;
@@ -48,7 +46,7 @@ export const TelegramListenerOfUpdates = () => {
           username: resultOfPolling[i].message.chat.username,
           lastReaction: "",
           //TODO: Do something with unread msgs
-          unread_msg: 0,
+          date_of_last_display: 0,
         };
         dispatch(telegramReducer.actions.addChatToChats(newChat));
         dispatch(
@@ -86,7 +84,6 @@ export const TelegramListenerOfUpdates = () => {
         timeout = null;
         timeout = setTimeout(getBotUpdates, delay);
       }
-
     };
 
     getBotUpdates();
@@ -97,5 +94,5 @@ export const TelegramListenerOfUpdates = () => {
     };
   }, [account_data.update_id]);
 
-  return <div>Hi Telegramm API!</div>;
+  return null;
 };

@@ -11,11 +11,27 @@ export interface IChatbot {
   reactions: {
     [action: string]: string;
   };
+  settings: {
+    isActive: boolean;
+    defaultAnswer: {
+      addCitationOfUserMessage: boolean;
+      firstPartOfAnswer: string;
+      secondPartOfAnswer: string;
+    };
+  };
 }
 
 const INITIAL_STATE: IChatbot = {
   intents: {},
   reactions: {},
+  settings: {
+    isActive: true,
+    defaultAnswer: {
+      addCitationOfUserMessage: true,
+      firstPartOfAnswer: 'You said: "',
+      secondPartOfAnswer: '"',
+    },
+  },
 };
 
 export const chatbotReducer = createSlice({
@@ -25,6 +41,23 @@ export const chatbotReducer = createSlice({
     setState: (state, action: PayloadAction<{ newState: IChatbot }>) => {
       state.intents = action.payload.newState.intents;
       state.reactions = action.payload.newState.reactions;
+      state.settings = action.payload.newState.settings;
+    },
+
+    settingIsActive: (state, action: PayloadAction<{ activeChatbot: boolean }>) => {
+      state.settings.isActive = action.payload.activeChatbot;
+    },
+
+    settingAddCitation: (state, action: PayloadAction<{ addCit: boolean }>) => {
+      state.settings.defaultAnswer.addCitationOfUserMessage = action.payload.addCit;
+    },
+
+    settingFirstPartOfDefaultAnswer: (state, action: PayloadAction<{firstPart: string}>) => {
+      state.settings.defaultAnswer.firstPartOfAnswer = action.payload.firstPart;
+    },
+
+    settingSecondPartOfDefaultAnswer: (state, action: PayloadAction<{secondPart: string}>) => {
+      state.settings.defaultAnswer.secondPartOfAnswer = action.payload.secondPart;
     },
 
     addIntent: (
@@ -67,7 +100,9 @@ export const chatbotReducer = createSlice({
         ? action.payload.reactionParent + "~" + action.payload.reactionName
         : action.payload.reactionName;
       const readyReactionAnswer = action.payload.buttonMarkup
-        ? action.payload.answer + "??reply_markup=" + action.payload.buttonMarkup
+        ? action.payload.answer +
+          "??reply_markup=" +
+          action.payload.buttonMarkup
         : action.payload.answer;
       state.reactions[readyReactionName] = readyReactionAnswer;
     },
@@ -87,7 +122,7 @@ export const chatbotReducer = createSlice({
       for (const [keyword, pointerToReaction] of Object.entries(
         state.intents
       )) {
-        if (pointerToReaction.includes(action.payload.reactionForRemoving) ) {
+        if (pointerToReaction.includes(action.payload.reactionForRemoving)) {
           intentsForRemoving.push(keyword);
         }
       }
@@ -103,7 +138,7 @@ export const chatbotReducer = createSlice({
       }
       childsOfReactionForRemoving.map((reactionForRemoving) => {
         delete state.reactions[reactionForRemoving];
-      })
+      });
     },
   },
 });
