@@ -1,5 +1,5 @@
 .env
-src/common/dummyData.ts
+
 # Logs
 logs
 *.log
@@ -9,6 +9,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+src/common/dummyData.ts
 WIP-images
 node_modules
 dist
