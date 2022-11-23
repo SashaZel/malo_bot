@@ -1,4 +1,5 @@
 .env
+src/common/dummyData.ts
 # Logs
 logs
 *.log

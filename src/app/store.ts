@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { chatbotReducer } from "../features/chatbot/chatbotSlice";
-import { telegramReducer } from "../features/telegram-api/telegramSlice";
+import { telegramReducer } from "../features/telegram/telegramSlice";
 
 export const store = configureStore({
   reducer: {

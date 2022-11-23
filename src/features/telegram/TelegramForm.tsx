@@ -24,7 +24,7 @@ export const TelegramForm = () => {
 
   return (
     <div className="fixed h-full p-4 2xl:pr-12 w-3/12 flex flex-col justify-end items-baseline pointer-events-none">
-      <div className="z-40 w-full bg-gradient-to-br p-1 mb-24 rounded-bl-xl rounded-tr-xl from-teal-900 via-teal-900 to-cyan-800 shadow-2xl shadow-white pointer-events-auto dark:shadow-none">
+      <div className="z-40 w-full bg-gradient-to-br p-1 mb-12 rounded-bl-xl rounded-tr-xl from-teal-900 via-teal-900 to-cyan-800 shadow-2xl shadow-white pointer-events-auto dark:shadow-none">
       <form className="text-right p-2" onSubmit={(e) => handleSubmit(e)}>
         <label>
           <h3 className="text-xl mt-2 mb-2 text-white ">

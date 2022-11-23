@@ -1,7 +1,7 @@
 import { IChatbot } from "./chatbotSlice";
 import { store } from "../../app/store";
 import { IAnswer } from "../../common/types";
-import { IChat, telegramReducer } from "../telegram-api/telegramSlice";
+import { IChat, telegramReducer } from "../telegram/telegramSlice";
 
 export function splitTextAndMarkup(answer: string): IAnswer {
   const splitAnswer = answer.split("??reply_markup=");
@@ -57,9 +57,10 @@ export function listenAndAnswer({
     return {
       text:
         chatbotState.settings.defaultAnswer.firstPartOfAnswer +
-        (chatbotState.settings.defaultAnswer.addCitationOfUserMessage ?
-          inputMessage +
-            chatbotState.settings.defaultAnswer.secondPartOfAnswer : ""),
+        (chatbotState.settings.defaultAnswer.addCitationOfUserMessage
+          ? inputMessage +
+            chatbotState.settings.defaultAnswer.secondPartOfAnswer
+          : ""),
       markup: "",
     };
   }

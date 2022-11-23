@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { AppDispatch, RootState } from "../../app/store";
-import { DUMMY_CHATS_LIST6 } from "../../common/dummyData";
 
 export interface IMessage {
   message_id: number;
@@ -51,7 +50,7 @@ const INITIAL_STATE: ITelegram = {
     update_id: 0,
   },
   current_chat: null,
-  chats: DUMMY_CHATS_LIST6,
+  chats: [],
   messages: [],
 };
 

@@ -1,4 +1,4 @@
-import { IChat } from "../features/telegram-api/telegramSlice";
+import { IChat } from "../features/telegram/telegramSlice";
 
 export const DUMMY_CHATS_LIST: IChat[] = [
   {

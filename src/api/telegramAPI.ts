@@ -5,7 +5,7 @@ import {
   IChat,
   IMessage,
   telegramReducer,
-} from "../features/telegram-api/telegramSlice";
+} from "../features/telegram/telegramSlice";
 
 export type Ifunction = (
   messageText: string,
@@ -21,7 +21,7 @@ export interface IParamsForSend {
 }
 
 export const checkTelegramAccount = async (botTocken: string) => {
-  console.log('@telegramAPI checkTelegramAccount()')
+  console.log("@telegramAPI checkTelegramAccount()");
   try {
     const response = await axios.get(
       `https://api.telegram.org/bot${botTocken}/getMe`
@@ -118,8 +118,11 @@ interface IResultsOfPolling {
 export const pollingForMessages = async (
   botToken: string,
   updateID: number
-): Promise<{ resultOfPolling: IResultsOfPolling[]; errorOfPolling: Error | null }> => {
-  console.log("@telegramAPI pollingForMessages()")
+): Promise<{
+  resultOfPolling: IResultsOfPolling[];
+  errorOfPolling: Error | null;
+}> => {
+  console.log("@telegramAPI pollingForMessages()");
   try {
     const response = await axios.get(
       `https://api.telegram.org/bot${botToken}/getUpdates`,
@@ -131,7 +134,8 @@ export const pollingForMessages = async (
       }
     );
 
-    const responseDataResult: IResultsOfPolling | undefined = response?.data?.result;
+    const responseDataResult: IResultsOfPolling | undefined =
+      response?.data?.result;
     const responseDataOK = response?.data?.ok;
 
     if (responseDataOK === true && Array.isArray(responseDataResult)) {

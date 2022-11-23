@@ -1,12 +1,9 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
-import { TelegramListenerOfUpdates } from "../features/telegram-api/TelegramListenerOfUpdates";
-import {
-  IAccount,
-  telegramReducer,
-} from "../features/telegram-api/telegramSlice";
-import { SaveButton } from "../features/telegram-api/SaveButton";
+import { TelegramListenerOfUpdates } from "../features/telegram/TelegramListenerOfUpdates";
+import { IAccount, telegramReducer } from "../features/telegram/telegramSlice";
+import { SaveButton } from "../features/telegram/SaveButton";
 import { RootState } from "../app/store";
 import { LeftColumn } from "../features/just-info-pages/LeftColumn";
 import { checkTelegramAccount } from "../api/telegramAPI";
@@ -15,7 +12,7 @@ import {
   getInitialLoginDataFromIDB,
   saveTelegramAccountDataToIDB,
 } from "../api/IDB_API";
-import { TelegramLogInForm } from "../features/telegram-api/TelegramLogInForm";
+import { TelegramLogInForm } from "../features/telegram/TelegramLogInForm";
 import { HeaderOfPage } from "../features/just-info-pages/HeaderOfPage";
 import { ChatbotIndicator } from "../features/chatbot/ChatbotIndicator";
 
@@ -147,9 +144,7 @@ export const Root = () => {
     <div className={darkMode ? "dark" : ""}>
       <div className="min-h-screen bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white">
         <HeaderOfPage handleDarkMode={handleDarkMode} />
-        <LeftColumn>
-          {activeLoginElement}
-        </LeftColumn>
+        <LeftColumn>{activeLoginElement}</LeftColumn>
         <div className="flex">
           <div className="w-1/4"></div>
           <div className="w-3/4">

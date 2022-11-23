@@ -1,4 +1,4 @@
-import { IAccount, IChat } from "../features/telegram-api/telegramSlice";
+import { IAccount, IChat } from "../features/telegram/telegramSlice";
 
 export type Ifunction = (
   messageText: string,
@@ -6,7 +6,6 @@ export type Ifunction = (
   current_chat: IChat,
   messageMarkup: string
 ) => void;
-
 
 export interface IParamsForSend {
   chat_id: number;

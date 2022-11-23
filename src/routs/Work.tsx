@@ -1,8 +1,8 @@
 import React from "react";
 import { ChatbotPanel } from "../features/chatbot/ChatbotPanel";
-import { ChooseUser } from "../features/telegram-api/ChooseUser";
-import { MessagesList } from "../features/telegram-api/MessagesList";
-import { TelegramForm } from "../features/telegram-api/TelegramForm";
+import { ChooseUser } from "../features/telegram/ChooseUser";
+import { MessagesList } from "../features/telegram/MessagesList";
+import { TelegramForm } from "../features/telegram/TelegramForm";
 
 export const Work = () => {
   return (

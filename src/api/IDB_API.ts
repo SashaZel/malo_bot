@@ -1,7 +1,7 @@
 import { get, set, clear, setMany, entries, del } from "idb-keyval";
 import { store } from "../app/store";
 import { IChatbot } from "../features/chatbot/chatbotSlice";
-import { IAccount, ITelegram } from "../features/telegram-api/telegramSlice";
+import { IAccount, ITelegram } from "../features/telegram/telegramSlice";
 
 export const getInitialLoginDataFromIDB = async (): Promise<{
   IDBAccountData: IAccount | null;
@@ -58,7 +58,10 @@ export const getChatbotFromIDB = async (): Promise<IChatbot | undefined> => {
 export const saveTelegramStateToIDB = () => {
   console.log("@IDB_API saveTelegramStateToIDB()");
   const telegramAppState = store.getState().telegram;
-  if (!telegramAppState.account_data.bot_name || !telegramAppState.account_data.bot_token) {
+  if (
+    !telegramAppState.account_data.bot_name ||
+    !telegramAppState.account_data.bot_token
+  ) {
     return;
   }
   try {
