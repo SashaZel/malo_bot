@@ -21,9 +21,40 @@ export interface IChatbot {
   };
 }
 
+const initialExampleIntents = {
+  "/start": "Start",
+  "FirstDog~dog": "FirstDog~SecondDog",
+  "FirstDog~woof": "FirstDog~SecondDog",
+  "Hello": "Greeting",
+  "dog": "FirstDog",
+  "game": "quiz",
+  "hello": "Greeting",
+  "hi": "Greeting",
+  "let's play!": "quiz",
+  "quiz": "quiz",
+  "quiz~A: cube": "quiz~A",
+  "quiz~B: sphere": "quiz~B",
+  "quiz~C: irregularly shaped ellipsoid": "quiz~C",
+  "quiz~D: flat": "quiz~D",
+  "woof": "FirstDog",
+  "привет!": "Greeting",
+};
+
+const initialExampleReactions = {
+  "FirstDog": "First dog's answer.",
+  "FirstDog~SecondDog": "Second dog's answer.",
+  "Greeting": "Hello, dear friend!",
+  "Start": "Welcome!",
+  "quiz": 'What is the shape of the Earth???reply_markup={"keyboard":[["A: cube"],["B: sphere"],["C: irregularly shaped ellipsoid"],["D: flat"]],"resize_keyboard":true,"one_time_keyboard":true}',
+  "quiz~A": "Are you kidding? Of course, NO!",
+  "quiz~B": "Mmm... no, not exactly a sphere...",
+  "quiz~C": "You are right! Smart one!",
+  "quiz~D": "Oh, Jesus... No...",
+};
+
 const INITIAL_STATE: IChatbot = {
-  intents: {},
-  reactions: {},
+  intents: initialExampleIntents,
+  reactions: initialExampleReactions,
   settings: {
     isActive: true,
     defaultAnswer: {
@@ -44,20 +75,31 @@ export const chatbotReducer = createSlice({
       state.settings = action.payload.newState.settings;
     },
 
-    settingIsActive: (state, action: PayloadAction<{ activeChatbot: boolean }>) => {
+    settingIsActive: (
+      state,
+      action: PayloadAction<{ activeChatbot: boolean }>
+    ) => {
       state.settings.isActive = action.payload.activeChatbot;
     },
 
     settingAddCitation: (state, action: PayloadAction<{ addCit: boolean }>) => {
-      state.settings.defaultAnswer.addCitationOfUserMessage = action.payload.addCit;
+      state.settings.defaultAnswer.addCitationOfUserMessage =
+        action.payload.addCit;
     },
 
-    settingFirstPartOfDefaultAnswer: (state, action: PayloadAction<{firstPart: string}>) => {
+    settingFirstPartOfDefaultAnswer: (
+      state,
+      action: PayloadAction<{ firstPart: string }>
+    ) => {
       state.settings.defaultAnswer.firstPartOfAnswer = action.payload.firstPart;
     },
 
-    settingSecondPartOfDefaultAnswer: (state, action: PayloadAction<{secondPart: string}>) => {
-      state.settings.defaultAnswer.secondPartOfAnswer = action.payload.secondPart;
+    settingSecondPartOfDefaultAnswer: (
+      state,
+      action: PayloadAction<{ secondPart: string }>
+    ) => {
+      state.settings.defaultAnswer.secondPartOfAnswer =
+        action.payload.secondPart;
     },
 
     addIntent: (
@@ -129,7 +171,6 @@ export const chatbotReducer = createSlice({
       intentsForRemoving.map((keywordForRemoving) => {
         delete state.intents[keywordForRemoving];
       });
-      // TODO: Remove child reactions too
       const childsOfReactionForRemoving = [];
       for (const [reaction, answer] of Object.entries(state.reactions)) {
         if (reaction.includes(action.payload.reactionForRemoving)) {

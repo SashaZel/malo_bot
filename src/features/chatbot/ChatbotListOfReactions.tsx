@@ -10,5 +10,5 @@ export const ChatbotListOfReactions = () => {
     selectorListOfAllReactions(state)
   );
 
-  return <div>{reactions}</div>;
+  return <div className="mt-6">{reactions}</div>;
 };
