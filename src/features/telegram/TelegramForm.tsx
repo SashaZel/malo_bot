@@ -13,6 +13,7 @@ export const TelegramForm = () => {
   );
 
   const handleSubmit = (e: React.BaseSyntheticEvent) => {
+    
     e.preventDefault();
     if (!currentChat) {
       setText("No available chats");

@@ -8,16 +8,25 @@ import { Settings } from "../routs/Settings";
 import { Work } from "../routs/Work";
 import { Index } from "../routs";
 import { About } from "../routs/About";
+import { ErrorPage } from "../routs/ErrorPage";
 
 export function App(): React.ReactElement {
   const router = createBrowserRouter([
+
+    {
+    path: "/",
+    errorElement: <ErrorPage />,
+    children: [
+
+
     {
       path: "/malo_bot/",
       element: <Root />,
+      errorElement: <ErrorPage />,
       children: [
         {
           index: true,
-          element: <Index />
+          element: <Index />,
         },
         {
           path: "docs",
@@ -29,14 +38,19 @@ export function App(): React.ReactElement {
         },
         {
           path: "work",
-          element: <Work />
+          element: <Work />,
         },
         {
           path: "about",
-          element: <About />
-        }
+          element: <About />,
+        },
       ],
     },
+
+
+  ]
+  }
+
   ]);
 
   return (

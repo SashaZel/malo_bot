@@ -7,11 +7,10 @@ export const Index = () => {
   return (
     <div className="m-4 2xl:m-6 2xl:w-10/12">
       <div
-        className="h-[700px] pt-8 bg-white dark:bg-neutral-100"
+        className="h-[900px] bg-bottom xl:bg-right xl:h-[700px] pt-2 xl:pt-8 bg-white dark:bg-neutral-100"
         style={{
           backgroundImage: `url("${poster}")`,
           backgroundRepeat: "no-repeat",
-          backgroundPosition: "right",
         }}
       >
         <img src={logoBlack} alt="logo" className="block w-1/2 ml-12" />
@@ -21,21 +20,21 @@ export const Index = () => {
         <h4 className="text-black ml-12 mt-2 text-4xl index-page-slackey-font">
           Telegram <span className="text-3xl">chatbot</span>
         </h4>
-        <p className="text-neutral-700 text-2xl ml-28 mt-36">
+        <p className="text-neutral-700 text-lg xl:text-2xl ml-28 mt-12 xl:mt-36 shadow- shadow-white">
           No back-end needs.{" "}
         </p>
-        <p className="text-neutral-700 text-2xl ml-8">
+        <p className="text-neutral-700  text-lg xl:text-2xl ml-8">
           Your bot live in your browser.
         </p>
-        <p className="text-neutral-700 text-2xl ml-12">
+        <p className="text-neutral-700  text-lg xl:text-2xl ml-12">
           but able to answer
         </p>
-        <p className="text-neutral-700 text-2xl ml-36">
+        <p className="text-neutral-700  text-lg xl:text-2xl ml-36">
           to anyone
         </p>
         <Link
           to={"docs"}
-          className="inline-block mt-10 ml-28 p-2 px-6 font-semibold text-xl bg-orange-600 hover:bg-red-600 rounded-md"
+          className="inline-block mt-10 ml-28 p-2 px-6 font-semibold text-xl bg-orange-600 hover:bg-red-600 rounded-md shadow-lg"
         >
           Try it now!
         </Link>
