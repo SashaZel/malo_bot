@@ -6,7 +6,7 @@ export const LeftColumn = (props: React.PropsWithChildren) => {
   return (
     <div className="fixed h-full w-3/12 -translate-y-14 border-r-2 border-neutral-200 dark:border-neutral-700">
       <div className="pb-2 mr-2 ml-4 2xl:ml-12">
-        <Link to={'/'}><img src={mainLogo} alt="malo_bot logo" /></Link>
+        <Link to={'/malo_bot/'}><img src={mainLogo} alt="malo_bot logo" /></Link>
       </div>
       <div className="h-[75%] 2xl:ml-12 flex flex-col justify-between">
         <div>

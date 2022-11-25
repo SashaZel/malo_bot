@@ -1,9 +1,8 @@
 import { IChatbot } from "./chatbotSlice";
 import { store } from "../../app/store";
-import { IAnswer } from "../../common/types";
 import { IChat, telegramReducer } from "../telegram/telegramSlice";
 
-export function splitTextAndMarkup(answer: string): IAnswer {
+export function splitTextAndMarkup(answer: string): { text: string, markup: string} {
   const splitAnswer = answer.split("??reply_markup=");
   if (splitAnswer.length === 1) {
     return { text: splitAnswer[0], markup: "" };
@@ -20,7 +19,7 @@ export function listenAndAnswer({
 }: {
   inputMessage: string;
   inputChatID: number;
-}): IAnswer {
+}): { text: string, markup: string} {
   const chatbotState: IChatbot = store.getState().chatbot;
   const listOfChats: IChat[] = store.getState().telegram.chats;
   let lastReaction = "";

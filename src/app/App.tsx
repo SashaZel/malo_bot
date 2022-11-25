@@ -12,7 +12,7 @@ import { About } from "../routs/About";
 export function App(): React.ReactElement {
   const router = createBrowserRouter([
     {
-      path: "/",
+      path: "/malo_bot/",
       element: <Root />,
       children: [
         {

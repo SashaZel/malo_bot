@@ -139,6 +139,13 @@ export const telegramReducer = createSlice({
   },
 });
 
+export const selectorIsLoggedIn = (state: RootState): boolean => {
+  if (state.telegram.account_data.bot_name && state.telegram.account_data.bot_token) {
+    return true;
+  }
+  return false;
+}
+
 export const selectorChatStatus = (
   state: RootState,
   chatID: number

@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { ChatButton } from "./ChatButton";
-import { IChat, telegramReducer } from "./telegramSlice";
+import { IChat, selectorIsLoggedIn, telegramReducer } from "./telegramSlice";
 
 export const ChooseUser = () => {
   const dispatch = useDispatch();
@@ -13,6 +13,7 @@ export const ChooseUser = () => {
     (state: RootState) => state.telegram.chats
   );
   const botName = useSelector((state: RootState) => state.telegram.account_data.bot_name);
+  const isLoggedIn = useSelector((state: RootState) => selectorIsLoggedIn(state));
 
   const currentChatList = availableChats.map((chat: IChat, indexInList) => (
     <ChatButton
@@ -32,9 +33,11 @@ export const ChooseUser = () => {
   const emptyChatListCard = (
     <div className="pt-8 pb-4 pl-2 w-full border-2 rounded-xl dark:border-neutral-800 dark:bg-neutral-800 col-span-3">
       <h3 className="text-xl font-semibold text-red-700">No available chats yet</h3>
-      <p className="text-neutral-700 dark:text-neutral-500">Your users have to contact your bot first.</p> 
-      <p className="text-neutral-700 dark:text-neutral-500">Provide them a link to this chatbot via another means of communication:</p>
-      <p className="font-semibold">
+      {isLoggedIn ? 
+      <div>
+        <p className="text-neutral-700 dark:text-neutral-500">Your users have to contact your bot first.</p> 
+        <p className="text-neutral-700 dark:text-neutral-500">Provide them a link to this chatbot via another means of communication:</p>
+        <p className="font-semibold">
         <a
           href={`https://t.me/${botName}`}
           target="blank"
@@ -43,6 +46,10 @@ export const ChooseUser = () => {
           https://t.me/{botName}
         </a>
       </p>
+        </div>
+       : 
+      <p className="text-neutral-700 dark:text-neutral-500">Please log-in to start work.</p>
+      }
     </div>
   );
 
