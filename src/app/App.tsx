@@ -10,7 +10,7 @@ import { Index } from "../routs";
 import { About } from "../routs/About";
 import { ErrorPage } from "../routs/ErrorPage";
 
-export function App(): React.ReactElement {
+export default function App(): React.ReactElement {
   const router = createBrowserRouter([
 
     {
