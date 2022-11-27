@@ -1,11 +1,14 @@
 import React from "react";
+import { Tooltip, Modal } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { saveChatbotToIDB } from "../../api/IDB_API";
 import { chatbotReducer, selectorKeywordsList } from "./chatbotSlice";
-import binPicture from "../../assets/pictures/icons8-bin-60.png";
-import pencilPicture from "../../assets/pictures/pencil.png";
+import Close from "@mui/icons-material/Close";
+import BorderColor from "@mui/icons-material/BorderColor";
+import DeleteForever from "@mui/icons-material/DeleteForever";
 import { ChatbotReactionAnswer } from "./ChatbotReactionAnswer";
+import { splitTextAndMarkup } from "./inputListener";
 
 export const ChatbotReaction: React.FC<{
   reactionName: string;
@@ -18,7 +21,7 @@ export const ChatbotReaction: React.FC<{
   const [inputValue, setInputValue] = React.useState("");
   const [readyForRemove, setReadyForRemove] = React.useState(false);
   const [answerEditMode, setAnswerEditMode] = React.useState(false);
-  const [answerInput, setAnswerInput] = React.useState(answer);
+  const [answerInput, setAnswerInput] = React.useState(splitTextAndMarkup(answer));
   const deepthInIntentTree = reactionName.split("~").length;
 
   const handleAddNewKeyword = (e: React.BaseSyntheticEvent) => {
@@ -72,73 +75,81 @@ export const ChatbotReaction: React.FC<{
 
   const handleAnswerEdit = (e: React.BaseSyntheticEvent) => {
     e.preventDefault();
-    const answer = e.target[0].value;
+    const answerText = e.target[0].value;
     //console.log('@@@answer ', answer)
     dispatcher(
       chatbotReducer.actions.editAnswer({
         reactionName: reactionName,
-        newAnswer: answer,
+        newAnswer: answerText + (answerInput.markup ? ("??reply_markup=" + answerInput.markup) : ""),
       })
     );
     saveChatbotToIDB();
     setAnswerEditMode(false);
   };
 
+  const handleEditInputChange = (e: React.BaseSyntheticEvent) => {
+    setAnswerInput({ ...answerInput, text:e.target.value})
+  }
+
+  const modalWindowForEdit = (
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/2 p-4 bg-neutral-100 border-2 border-black">
+      <div className="flex justify-between">
+        <h3 className="font-semibold">{`Edit answer for "${reactionName}" reaction.`}</h3>
+        <button
+          onClick={handleReactionEditCancel}
+          className="block text-red-700"
+        >
+          <Close />
+        </button>
+      </div>
+      <div className="text-center mt-2">
+        <form onSubmit={(e: React.BaseSyntheticEvent) => handleAnswerEdit(e)}>
+          <input
+            value={answerInput.text}
+            onChange={(e: React.BaseSyntheticEvent) => handleEditInputChange(e)}
+            className="border-2 p-1 rounded-md my-2 w-full"
+          />
+          <button className="bg-orange-600 p-2 rounded-xl hover:bg-red-600 font-semibold">
+            Save Changes
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+
+  const modalWindowForDel = (
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-8 bg-neutral-100 border-4 border-red-600">
+      <div className="">
+        <span className="font-semibold text-black border-b-2 border-neutral-400">{`Remove "${reactionName}" reaction and all reaction childs?`}</span>
+        <div className="text-center mt-2">
+          <button
+            onClick={handleDelReaction}
+            className="bg-red-600 p-4 rounded-md hover:bg-orange-600 text-white font-semibold"
+          >
+            Remove
+          </button>
+          <button
+            onClick={handleRemoveCancel}
+            className="bg-neutral-300 p-4 rounded-md text-black hover:bg-orange-600 ml-2 font-semibold dark:bg-neutral-400 dark:hover:bg-orange-600"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <div
       className="relative border-2 border-cyan-800 dark:border-none dark:bg-neutral-800 rounded-bl-xl rounded-tr-xl p-2 mt-1 mr-1 mb-1"
       style={{ marginLeft: deepthInIntentTree + "em" }}
     >
-      <div
-        className={`fixed ${
-          !readyForRemove && "hidden"
-        } top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-8 bg-white border-4 border-red-600 z-40 dark:bg-neutral-200`}
-      >
-        <div className="">
-          <span className="font-semibold text-black border-b-2 border-neutral-400">{`Remove "${reactionName}" reaction and all reaction childs?`}</span>
-          <div className="text-center mt-2">
-            <button
-              onClick={handleDelReaction}
-              className="bg-red-600 p-4 rounded-md hover:bg-orange-600 text-white font-semibold"
-            >
-              Remove
-            </button>
-            <button
-              onClick={handleRemoveCancel}
-              className="bg-neutral-300 p-4 rounded-md text-black hover:bg-orange-600 ml-2 font-semibold dark:bg-neutral-400 dark:hover:bg-orange-600"
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      </div>
-      <div
-        className={`fixed ${
-          !answerEditMode && "hidden"
-        } top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 p-4 bg-white border-4 rounded-2xl border-red-500 z-10`}
-      >
-        <div className="flex justify-between">
-          <h3 className="font-semibold">{`Edit answer for "${reactionName}" reaction.`}</h3>
-          <button
-            onClick={handleReactionEditCancel}
-            className="block border-2 border-red-500 p-1 rounded-md"
-          >
-            X
-          </button>
-        </div>
-        <div className="text-center mt-2">
-          <form onSubmit={(e: React.BaseSyntheticEvent) => handleAnswerEdit(e)}>
-            <input
-              value={answerInput}
-              onChange={(e) => setAnswerInput(e.target.value)}
-              className="border-2 p-1 rounded-md my-2 w-full"
-            />
-            <button className="bg-pink-700 p-2 rounded-xl hover:bg-pink-600 border-2 border-pink-700 text-yellow-200">
-              Save Changes
-            </button>
-          </form>
-        </div>
-      </div>
+      <Modal open={readyForRemove} onClose={handleRemoveCancel}>
+        {modalWindowForDel}
+      </Modal>
+      <Modal open={answerEditMode} onClose={handleReactionEditCancel}>
+        {modalWindowForEdit}
+      </Modal>
       <div className="flex justify-between">
         <h4>
           <span className="font-semibold dark:text-neutral-400">
@@ -164,15 +175,19 @@ export const ChatbotReaction: React.FC<{
       <div className="mr-5">
         <span className="font-semibold">Keywords:</span> {keywords}
       </div>
-      <div className="absolute right-0 bottom-0 z-10 m-1 p-1 pt-2 bg-white border-neutral-300 hover:border-red-600 border-2 dark:bg-neutral-500 dark:border-neutral-500 dark:hover:border-red-600">
-        <button onClick={handleRemoveWarning} className="w-6">
-          <img src={binPicture} alt="del reaction" />
-        </button>
+      <div className="absolute right-2 bottom-0 z-10 m-1 p-1 pt-2 text-neutral-500 hover:text-red-600">
+        <Tooltip arrow enterDelay={500} title="Delete this chatbot reaction">
+          <button onClick={handleRemoveWarning} className="w-6">
+            <DeleteForever fontSize="large" />
+          </button>
+        </Tooltip>
       </div>
-      <div className="absolute right-10 bottom-0 z-10 m-1 p-1 pt-2 bg-white border-neutral-300 hover:border-emerald-600 border-2 dark:bg-neutral-500 dark:border-neutral-500 dark:hover:border-green-600">
-        <button onClick={handleReactionAnswerEdit} className="w-6">
-          <img src={pencilPicture} alt="edit reaction" />
-        </button>
+      <div className="absolute right-10 bottom-0 z-10 m-1 p-1 pt-2 text-neutral-500 hover:text-emerald-600 dark:hover:text-green-600">
+        <Tooltip arrow enterDelay={500} title="Edit answer for this reaction">
+          <button onClick={handleReactionAnswerEdit} className="w-6">
+            <BorderColor fontSize="large" />
+          </button>
+        </Tooltip>
       </div>
     </div>
   );

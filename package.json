@@ -9,6 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "11.10.5",
+    "@emotion/styled": "11.10.5",
+    "@mui/icons-material": "5.10.15",
+    "@mui/material": "5.10.15",
     "@reduxjs/toolkit": "1.8.5",
     "axios": "1.1.2",
     "idb-keyval": "6.2.0",

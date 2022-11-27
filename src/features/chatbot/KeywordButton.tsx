@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { saveChatbotToIDB } from "../../api/IDB_API";
 import { chatbotReducer } from "./chatbotSlice";
+import Close from "@mui/icons-material/Close";
 
 export const KeywordButton: React.FC<{ keyword: string }> = ({ keyword }) => {
   
@@ -23,8 +24,8 @@ export const KeywordButton: React.FC<{ keyword: string }> = ({ keyword }) => {
       {keywordForDisplay} 
       <button
         onClick={() => handleDeleteKeyword()}
-        className="border-2 m-1 text-xs font-bold text-red-500 bg-white rounded-lg p-1 translate-x-3 -translate-y-3 dark:bg-neutral-700 dark:border-neutral-700 dark:text-orange-500"
-      >X</button>
+        className=" m-1 text-red-500 p-1 pr-2 translate-x-3 -translate-y-3 dark:text-orange-500"
+      ><Close fontSize="small" /></button>
     </div>
   );
 }

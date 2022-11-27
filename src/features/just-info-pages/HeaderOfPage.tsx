@@ -1,5 +1,8 @@
 import React from "react";
 import classes from "./headerOfPage.module.css";
+import DarkMode from "@mui/icons-material/DarkMode"
+import LightMode from "@mui/icons-material/LightMode"
+
 
 export const HeaderOfPage: React.FC<{
   handleDarkMode: (isDark: boolean) => void;
@@ -13,7 +16,7 @@ export const HeaderOfPage: React.FC<{
         <div className="flex align-right pr-4 2xl:pr-12">
 
         <div className="ml-auto">
-          <span className="inline-block mx-2 font-semibold text-neutral-500">Light</span> 
+          <span className="inline-block mx-2 font-semibold text-neutral-500"><LightMode /></span> 
           <label className={classes.switch}>
             <input
               onChange={(e) => handleDarkMode(e.target.checked)}
@@ -21,7 +24,7 @@ export const HeaderOfPage: React.FC<{
             />
             <span className={classes.slider}></span>
           </label>{" "}
-          <span className="inline-block mx-1 font-semibold text-neutral-500">Dark</span> 
+          <span className="inline-block mx-1 font-semibold text-neutral-500"><DarkMode /></span> 
         </div>
         </div>
         
