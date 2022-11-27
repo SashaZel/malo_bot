@@ -1,8 +1,6 @@
 ![malo_bot](/src/assets/logos/logo_black.svg)
 
-# malo_bot
-
-A frontend-only no-coding Telegram chatbot app.
+a frontend-only no-coding Telegram chatbot app.
 
 ## Example app
 
@@ -10,13 +8,13 @@ A frontend-only no-coding Telegram chatbot app.
 
 ## Features
 
-- Free to use Telegram chatbot.
+- Free to use your own Telegram chatbot.
 - Support complicated logic with nested answers.
 - No backend needs, chatbot lives in your browser and uses only your PC.
 - Autosave all chats, messages and chatbot settings.
-- Can work in background if your browser is open
-- Support multi-users mode
-- No coding skills require
+- Can work in background if your browser is open.
+- Support multi-users mode.
+- No coding skills require.
 
 ## Easy way to create and program
 
@@ -37,4 +35,4 @@ No anything of the above you need with malo_bot. Check out the [Docs](https://sa
 
 ## About
 
-malo_bot is developed and maintained by [Alexander Zelenkov](https://www.zelenkov.space/)
+**malo_bot** is developed and maintained by [Alexander Zelenkov](https://www.zelenkov.space/)
