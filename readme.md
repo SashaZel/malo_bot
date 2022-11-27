@@ -1,32 +1,40 @@
-# Test pet project
-My pet project for learning new stack:
+![malo_bot](/src/assets/logos/logo_black.svg)
 
-Frontend-only Telegram chatbot.
-Live demo:
-https://sashazel.github.io/vite-test/index.html
+# malo_bot
 
-DONE:
-- try Vite
-- set ESlint
-- set Prettier
-- first steps in TypeScript
-- first steps in Redux
-- try nanoid
-- hooks of Redux toolkit
-- try Tailwind
-- try local IndexedDB with idb-keyval
-- connect Redux with IndexedDB
-- set .env in Vite
-- HOC React
-- mastering Tailwind
-- use axios
-- first steps in vanilla Telegram API
-- make Telegram client for chatting via bot
-- make frontend Telegram bot echo
-- make frontend Telegram bot
-- make auth for Telegram bot creation
-- deploy app
+A frontend-only no-coding Telegram chatbot app.
 
-TODO list:
-- make advanced UI for Telegram bot app
-- make admin CRM with frontend-only Telegram bot
+## Example app
+
+[https://sashazel.github.io/malo_bot/](https://sashazel.github.io/malo_bot/)
+
+## Features
+
+- Free to use Telegram chatbot.
+- Support complicated logic with nested answers.
+- No backend needs, chatbot lives in your browser and uses only your PC.
+- Autosave all chats, messages and chatbot settings.
+- Can work in background if your browser is open
+- Support multi-users mode
+- No coding skills require
+
+## Easy way to create and program
+
+Have you ever heard about chatbots and started to dig into the topic, the first things you encounter are requirement for coding experience and some server facility.
+No anything of the above you need with malo_bot. Check out the [Docs](https://sashazel.github.io/malo_bot/docs) for getting started.
+
+## Roadmap
+
+- Make multi language support
+- Make custom setting IndexedDB
+- Make tests
+- Make pictures upload
+- Make commands menu
+- Make CRM-like admin panel
+- Make infinity scrolling and pagination
+- Make status of messages
+- Make ability to build ecommerce chatbot  
+
+## About
+
+malo_bot is developed and maintained by [Alexander Zelenkov](https://www.zelenkov.space/)
