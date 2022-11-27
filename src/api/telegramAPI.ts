@@ -21,7 +21,9 @@ export interface IParamsForSend {
 }
 
 export const checkTelegramAccount = async (botTocken: string) => {
-  console.log("@telegramAPI checkTelegramAccount()");
+
+  //console.log("@telegramAPI checkTelegramAccount()");
+
   try {
     const response = await axios.get(
       `https://api.telegram.org/bot${botTocken}/getMe`
@@ -42,13 +44,13 @@ export const sendMessage: Ifunction = async (
   current_chat,
   messageMarkup
 ) => {
-  console.log("@telegramAPI sendMessage()");
-  // console.log('TAPI currentChat ', current_chat);
-  // console.log('TAPI currentAccount ', current_chat);
+
+  //console.log("@telegramAPI sendMessage()");
+
   if (!messageText || !current_chat || !current_chat) {
     return;
   }
-  //console.log("ready to send after checks: ", messageText);
+  
   const paramsForSend: IParamsForSend = {
     chat_id: current_chat.id,
     text: messageText,
@@ -58,30 +60,6 @@ export const sendMessage: Ifunction = async (
     paramsForSend.reply_markup = messageMarkup;
   }
 
-  // axios
-  //   .get(
-  //     `https://api.telegram.org/bot${account_data.bot_token}/sendMessage`,
-  //     {
-  //       params: paramsForSend,
-  //     }
-  //   )
-  //   .then(function (response) {
-  //     //console.log("response from sendMessage", response);
-  //     const message: IMessage = {
-  //       message_id: response.data.result.message_id,
-  //       from: response.data.result.from,
-  //       chat: response.data.result.chat,
-  //       date: response.data.result.date,
-  //       text: response.data.result.text,
-  //     };
-  //     dispatch(
-  //       // TODO: Add markup of buttons for messeges sent by bot
-  //       telegramReducer.actions.addMessage({ message: message, markup: messageMarkup, update_id: 0 })
-  //     );
-  //   })
-  //   .catch(function (error) {
-  //     console.log('@TelegramAPI => Fail to send message ', error);
-  //   });
   try {
     const response = await axios.get(
       `https://api.telegram.org/bot${account_data.bot_token}/sendMessage`,
@@ -90,7 +68,6 @@ export const sendMessage: Ifunction = async (
       }
     );
 
-    //console.log("response from sendMessage", response);
     const message: IMessage = {
       message_id: response.data.result.message_id,
       from: response.data.result.from,
@@ -122,7 +99,9 @@ export const pollingForMessages = async (
   resultOfPolling: IResultsOfPolling[];
   errorOfPolling: Error | null;
 }> => {
-  console.log("@telegramAPI pollingForMessages()");
+
+  //console.log("@telegramAPI pollingForMessages()");
+
   try {
     const response = await axios.get(
       `https://api.telegram.org/bot${botToken}/getUpdates`,

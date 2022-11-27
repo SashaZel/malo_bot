@@ -1,6 +1,7 @@
 import React from "react";
 
 export const Docs = () => {
+  
   return (
     <div className="m-4 p-4 2xl:p- 2xl:m-8 2xl:w-5/6">
       <h3 className="text-2xl mt-8 font-semibold border-b-2 border-neutral-200 dark:border-neutral-700">

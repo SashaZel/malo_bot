@@ -8,9 +8,9 @@ export const ChatbotReactionAnswer: React.FunctionComponent<{answer: string}> = 
   let markupReadyForDisplay = null;
 
   if (markup) {
+    
     const markupParsed = JSON.parse(markup);
-    // console.log("@ChatbotReactionAnswer markup ", markup);
-    // console.log("@ChatbotReactionAnswer JSON.parse ", markupParsed);
+
     if (markupParsed.keyboard) {
       markupReadyForDisplay = markupParsed.keyboard.map((rowOfButtons: string[], indexY: number) => {
         const buttonsInRow = rowOfButtons.length;

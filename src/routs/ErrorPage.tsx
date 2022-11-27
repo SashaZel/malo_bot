@@ -3,6 +3,7 @@ import poster from "../assets/pictures/poster_small.png";
 import { isRouteErrorResponse, Link, useRouteError } from "react-router-dom";
 
 export const ErrorPage = () => {
+  
   const error = useRouteError();
   console.error(error);
 

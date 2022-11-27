@@ -19,7 +19,9 @@ import { ChatbotIndicator } from "../features/chatbot/ChatbotIndicator";
 type ILoginStatus = "login_yes" | "login_no" | "login_waiting";
 
 export const Root = () => {
-  //console.log("@TelegramPanel");
+
+  //console.log("@Root");
+
   const [darkMode, setDarkMode] = React.useState(false);
 
   const handleDarkMode = (isDark: boolean) => {

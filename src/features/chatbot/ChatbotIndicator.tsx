@@ -14,7 +14,6 @@ export const ChatbotIndicator = () => {
   React.useEffect(() => {
     const getChatbotState = async () => {
       const chatbotState = await getChatbotFromIDB();
-      //console.log("@ChatbotPanel - we have got it!", chatbotState);
       if (!chatbotState) return;
       if (!chatbotState.intents || !chatbotState.reactions) return;
       dispatch(chatbotReducer.actions.setState({ newState: chatbotState }));

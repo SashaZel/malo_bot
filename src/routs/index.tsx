@@ -4,6 +4,7 @@ import logoBlack from "../assets/logos/logo_black.svg";
 import { Link } from "react-router-dom";
 
 export const Index = () => {
+  
   return (
     <div className="m-4 2xl:m-6 2xl:w-10/12">
       <div

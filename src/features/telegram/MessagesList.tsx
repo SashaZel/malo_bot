@@ -35,7 +35,7 @@ export const MessagesList = () => {
 
   if (!currentChat || msgList.length === 0) {
     return (
-      <div>
+      <div className="mt-24 text-center font-bold text-4xl text-neutral-200 dark:text-neutral-800">
         <h3>No messages.</h3>
       </div>
     );

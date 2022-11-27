@@ -3,6 +3,7 @@ import { ChatbotForm } from "./ChatbotForm";
 import { ChatbotListOfReactions } from "./ChatbotListOfReactions";
 
 export const ChatbotPanel = () => {
+  
   //console.log("@ChatbotPanel");
 
   return (

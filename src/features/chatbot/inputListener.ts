@@ -20,15 +20,16 @@ export function listenAndAnswer({
   inputMessage: string;
   inputChatID: number;
 }): { text: string, markup: string} {
+
   const chatbotState: IChatbot = store.getState().chatbot;
   const listOfChats: IChat[] = store.getState().telegram.chats;
+
   let lastReaction = "";
   for (let i = 0; i < listOfChats.length; i++) {
     if (listOfChats[i].id === inputChatID) {
       lastReaction = listOfChats[i].lastReaction;
     }
   }
-  //const chatbotState = useSelector((state: RootState) => state.chatbot);
   if (
     !chatbotState ||
     !chatbotState.intents ||
@@ -52,7 +53,7 @@ export function listenAndAnswer({
         lastReactionForThisChat: "",
       })
     );
-    // TODO: Add custom markup from chatbot settings
+    
     return {
       text:
         chatbotState.settings.defaultAnswer.firstPartOfAnswer +
@@ -63,13 +64,13 @@ export function listenAndAnswer({
       markup: "",
     };
   }
-  //store.dispatch(chatbotReducer.actions.setLastReaction(pointerToReaction));
+  
   store.dispatch(
     telegramReducer.actions.setLastReaction({
       chatID: inputChatID,
       lastReactionForThisChat: pointerToReaction,
     })
   );
-  //console.log(chatbotState.reactions[pointerToReaction]);
+  
   return splitTextAndMarkup(chatbotState.reactions[pointerToReaction]);
 }

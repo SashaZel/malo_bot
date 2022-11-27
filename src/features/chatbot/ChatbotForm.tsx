@@ -79,7 +79,7 @@ export const ChatbotForm = () => {
       );
       return;
     }
-    // TODO: Add checking of uniq keyword
+    // TODO: Add checking of uniqe keyword
     if (!newReactionParent && chatbotState.intents[newKeywords]) {
       setInputStatus("One of this keyword already exist for another reaction.");
       return;

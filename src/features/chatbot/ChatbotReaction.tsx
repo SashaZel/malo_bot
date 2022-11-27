@@ -34,7 +34,7 @@ export const ChatbotReaction: React.FC<{
       reactionNameWithoutParent = reactionName.slice(lastSlashSymbol + 1);
     }
     const inputString = e.target[0].value;
-    //console.log(inputString);
+
     if (!inputString) return;
     dispatcher(
       chatbotReducer.actions.addIntent({
@@ -76,7 +76,7 @@ export const ChatbotReaction: React.FC<{
   const handleAnswerEdit = (e: React.BaseSyntheticEvent) => {
     e.preventDefault();
     const answerText = e.target[0].value;
-    //console.log('@@@answer ', answer)
+
     dispatcher(
       chatbotReducer.actions.editAnswer({
         reactionName: reactionName,

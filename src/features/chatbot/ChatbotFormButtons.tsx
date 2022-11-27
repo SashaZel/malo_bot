@@ -3,24 +3,13 @@ import React from "react";
 export const ChatbotFormButtons: React.FC<{
   handleAddButtons: (s: string) => void;
 }> = ({ handleAddButtons }) => {
-  //console.log("@ChatbotFormButtons render");
 
-  //const [showButtonsMenu, setShowButtonsMenu] = React.useState(false);
+  //console.log("@ChatbotFormButtons");
+
   const [firstButton, setFirstButton] = React.useState("");
   const [secondButton, setSecondButton] = React.useState("");
   const [thirdButton, setThirdButton] = React.useState("");
   const [forthButton, setForthButton] = React.useState("");
-
-  // const handleCheckboxChange = (e: React.BaseSyntheticEvent) => {
-  //   e.stopPropagation();
-  //   //console.log("@Checkbox ", e);
-  //   setShowButtonsMenu(e.target.checked);
-  //   setFirstButton("");
-  //   setSecondButton("");
-  //   setThirdButton("");
-  // };
-
-  // TODO: Refactor this component for clearning buttons after submit new reaction
 
   const createAndSendMarkup = ({
     first = firstButton,
@@ -35,7 +24,6 @@ export const ChatbotFormButtons: React.FC<{
         .filter((buttonText) => buttonText !== "")
         .map((buttonText) => '["' + buttonText + '"]')
         .join(",")}],"resize_keyboard":true,"one_time_keyboard":true}`;
-      //console.log("@ChatbotFormButtons ", markupFromInputs);
     }
 
     handleAddButtons(markupFromInputs);

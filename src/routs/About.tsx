@@ -1,6 +1,7 @@
 import React from "react";
 
 export const About = () => {
+  
   return <div className="w-5/6 2xl:w-2/3 mx-8 mt-72 font-semibold text-lg text-neutral-500 dark:text-neutral-400">
     <p className="text-4xl text-right">Hi, I&apos;m Alexander Zelenkov.</p>
     <p className="mt-12">I created this app for fun and hope you&apos;ll enjoy it.</p>

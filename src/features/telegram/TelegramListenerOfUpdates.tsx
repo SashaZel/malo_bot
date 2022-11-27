@@ -6,7 +6,8 @@ import { listenAndAnswer } from "../chatbot/inputListener";
 import { pollingForMessages, sendMessage } from "../../api/telegramAPI";
 
 export const TelegramListenerOfUpdates = () => {
-  console.log("@TelegramListenerOfUpdates");
+
+  //console.log("@TelegramListenerOfUpdates");
 
   const isPooling = React.useRef(false);
   const account_data = useSelector(
@@ -45,7 +46,6 @@ export const TelegramListenerOfUpdates = () => {
           last_name: resultOfPolling[i].message.chat.last_name,
           username: resultOfPolling[i].message.chat.username,
           lastReaction: "",
-          //TODO: Do something with unread msgs
           date_of_last_display: 0,
         };
         dispatch(telegramReducer.actions.addChatToChats(newChat));

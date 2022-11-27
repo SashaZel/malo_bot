@@ -7,6 +7,7 @@ import LightMode from "@mui/icons-material/LightMode"
 export const HeaderOfPage: React.FC<{
   handleDarkMode: (isDark: boolean) => void;
 }> = ({ handleDarkMode }) => {
+  
   return (
     <div className="flex">
       <div className="w-3/12">

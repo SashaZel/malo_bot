@@ -8,7 +8,8 @@ import Tooltip from "@mui/material/Tooltip";
 import Close from "@mui/icons-material/Close";
 
 export const SaveButton = () => {
-  console.log("@SaveButton");
+
+  //console.log("@SaveButton");
 
   const [readyForClear, setReadyForClear] = React.useState(false);
 
@@ -16,6 +17,7 @@ export const SaveButton = () => {
   const telegramAppState = useSelector((state: RootState) => state.telegram);
 
   const handleLogOut = () => {
+    //FIXME: bug in log out - removing data;
     dispatch(telegramReducer.actions.logOut());
     deleteAccountDataIDB();
   };

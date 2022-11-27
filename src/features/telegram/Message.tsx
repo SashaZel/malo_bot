@@ -5,6 +5,7 @@ import { splitTextAndMarkup } from "../chatbot/inputListener";
 import { IMessage } from "./telegramSlice";
 
 export const Message: React.FC<{ message_id: number }> = ({ message_id }) => {
+
   const message: IMessage | undefined = useSelector((state: RootState) =>
     state.telegram.messages.find((msg) => msg.message_id === message_id)
   );
@@ -24,9 +25,9 @@ export const Message: React.FC<{ message_id: number }> = ({ message_id }) => {
   const { text, markup } = splitTextAndMarkup(message.text);
   let markupReadyForDisplay = null;
   if (markup) {
+    
     const markupParsed = JSON.parse(markup);
-    // console.log("@ChatbotReactionAnswer markup ", markup);
-    // console.log("@ChatbotReactionAnswer JSON.parse ", markupParsed);
+
     if (markupParsed.keyboard) {
       markupReadyForDisplay = markupParsed.keyboard.map(
         (rowOfButtons: string[], indexY: number) => {

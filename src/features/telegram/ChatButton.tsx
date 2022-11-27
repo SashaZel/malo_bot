@@ -50,18 +50,13 @@ export const ChatButton: React.FC<{
   indexInList: number;
   totalChats: number;
 }> = ({ chat, indexInList, totalChats }) => {
+
   //console.log('@ChatButton');
 
   const dispatch = useDispatch();
   const chatStatus = useSelector((state: RootState) =>
     selectorChatStatus(state, chat.id)
   );
-
-  // React.useEffect(() => {
-  //   if (chatStatus.isActive) {
-  //    dispatch(telegramReducer.actions.setLastDateOfDisplay({ chatID: chat.id }));
-  //  }
-  // }, [])
 
   const styleForActiveOrNotChat = chatStatus.isActive
     ? " border-lime-500 bg-gradient-to-br from-lime-500 via-lime-500 to-yellow-300 text-black"

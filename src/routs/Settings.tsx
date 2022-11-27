@@ -5,14 +5,12 @@ import { RootState } from "../app/store";
 import { chatbotReducer } from "../features/chatbot/chatbotSlice";
 
 export const Settings = () => {
+  
   const dispatch = useDispatch();
   const chatbotSettings = useSelector(
     (state: RootState) => state.chatbot.settings
   );
   const citCurrent = chatbotSettings.defaultAnswer.addCitationOfUserMessage;
-
-  // const [ inputIsActive, setInputIsActive ] = React.useState(chatbotSettings.isActive);
-  // const [ inputAddCitation, setAddCitation ] = React.useState
 
   return (
     <div className="m-4 2xl:m-8">

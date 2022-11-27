@@ -240,12 +240,3 @@ export const selectorListOfAllReactions = (state: RootState) => {
     />
   ));
 };
-
-// First variant of simple selector returned NOT ordered list of reactions
-// export const selectorListOfAllReactions = (
-//   state: RootState
-// ) => {
-//   return Object.entries(state.chatbot.reactions).map(
-//     ([reactionName, answer]) => <ChatbotReaction key={reactionName} reactionName={reactionName} answer={answer} />
-//   );
-// }

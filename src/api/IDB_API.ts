@@ -7,7 +7,9 @@ export const getInitialLoginDataFromIDB = async (): Promise<{
   IDBAccountData: IAccount | null;
   hasIDBError: boolean;
 }> => {
-  console.log("@IDB_API getInitialLoginDataFromIDB()");
+
+  //console.log("@IDB_API getInitialLoginDataFromIDB()");
+
   try {
     const result: IAccount | undefined = await get("idb-account_data");
     if (
@@ -26,7 +28,9 @@ export const getInitialLoginDataFromIDB = async (): Promise<{
 };
 
 export const saveTelegramAccountDataToIDB = (accountData: IAccount) => {
-  console.log("@IDB_API saveTelegramAccountDataToIDB()");
+
+  //console.log("@IDB_API saveTelegramAccountDataToIDB()");
+
   try {
     set("idb-account_data", accountData);
   } catch (error) {
@@ -35,7 +39,9 @@ export const saveTelegramAccountDataToIDB = (accountData: IAccount) => {
 };
 
 export const saveChatbotToIDB = async (): Promise<void> => {
-  console.log("@IDB_API saveChatbotToIDB()");
+
+  //console.log("@IDB_API saveChatbotToIDB()");
+
   const chatbotState = store.getState().chatbot;
   try {
     set("idb-chatbot", chatbotState);
@@ -45,7 +51,9 @@ export const saveChatbotToIDB = async (): Promise<void> => {
 };
 
 export const getChatbotFromIDB = async (): Promise<IChatbot | undefined> => {
-  console.log("@IDB_API getChatbotFromIDB()");
+
+  //console.log("@IDB_API getChatbotFromIDB()");
+
   let chatbotState;
   try {
     chatbotState = await get("idb-chatbot");
@@ -56,7 +64,9 @@ export const getChatbotFromIDB = async (): Promise<IChatbot | undefined> => {
 };
 
 export const saveTelegramStateToIDB = () => {
-  console.log("@IDB_API saveTelegramStateToIDB()");
+
+  //console.log("@IDB_API saveTelegramStateToIDB()");
+
   const telegramAppState = store.getState().telegram;
   if (
     !telegramAppState.account_data.bot_name ||
@@ -79,7 +89,9 @@ export const saveTelegramStateToIDB = () => {
 export const getAvailableDataFromIDB = async (): Promise<
   Omit<ITelegram, "account_data">
 > => {
-  console.log("@IDB_API getAvailableDataFromIDB()");
+
+  //console.log("@IDB_API getAvailableDataFromIDB()");
+
   const resultFromIDB: Omit<ITelegram, "account_data"> = {
     current_chat: null,
     chats: [],
