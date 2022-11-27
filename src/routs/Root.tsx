@@ -15,6 +15,7 @@ import {
 import { TelegramLogInForm } from "../features/telegram/TelegramLogInForm";
 import { HeaderOfPage } from "../features/just-info-pages/HeaderOfPage";
 import { ChatbotIndicator } from "../features/chatbot/ChatbotIndicator";
+import chaos from "../assets/pictures/chaos.svg";
 
 type ILoginStatus = "login_yes" | "login_no" | "login_waiting";
 
@@ -149,7 +150,7 @@ export const Root = () => {
         <LeftColumn>{activeLoginElement}</LeftColumn>
         <div className="flex">
           <div className="w-1/4"></div>
-          <div className="w-3/4">
+          <div className="w-3/4"  style={{ backgroundImage: `url(${chaos})`, backgroundRepeat: "repeat-y" }}>
             <Outlet />
           </div>
         </div>

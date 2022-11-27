@@ -40,17 +40,22 @@ export const Index = () => {
           Try it now!
         </Link>
       </div>
-      <h2 className="m-1 lg:m-2 text-xl font-semibold border-b-2">
+      <h2 className="pt-12 lg:m-2 text-2xl font-semibold border-b-2">
         Frontend-only Telegram chatbot
       </h2>
-      <p className="mx-2 pt-2">
-        No-coding chatbot. Just add an answer and keywords. Your bot is ready!
+      <p className="mx-8 pt-8 text-xl">
+        No-coding chatbot.
+      </p> 
+      <p className="mx-4 text-xl">Just add an answer and keywords. Your bot is ready!
       </p>
-      <p className="mx-2 pt-2">
-        No backend needs. Chatbot lives on your machine. Keep your browser open.
+      <p className="mx-2 pt-8 text-xl text-right">
+        No backend needs. Chatbot lives on your machine. 
+      </p>
+      <p className="text-xl text-right"> 
+        Keep your browser open.
         To quit chatbot just close the browser.
       </p>
-      <p className="mx-2 pt-2">
+      <p className="mx-2 pt-8">
         All changes save automaticly. Open this page again - and your chatbot is
         ready again with full history available.
       </p>

@@ -4,8 +4,8 @@ import { saveChatbotToIDB } from "../api/IDB_API";
 import { RootState } from "../app/store";
 import { chatbotReducer } from "../features/chatbot/chatbotSlice";
 
+
 export const Settings = () => {
-  
   const dispatch = useDispatch();
   const chatbotSettings = useSelector(
     (state: RootState) => state.chatbot.settings
@@ -13,11 +13,11 @@ export const Settings = () => {
   const citCurrent = chatbotSettings.defaultAnswer.addCitationOfUserMessage;
 
   return (
-    <div className="m-4 2xl:m-8">
+    <div className="m-4 2xl:m-8 pb-12">
       <h2 className="text-xl font-semibold border-b-2 border-neutral-200 dark:border-neutral-700">
         Settings
       </h2>
-      <label className="block mt-6 text-lg">
+      <label className="block text-lg mt-36">
         Chatbot is active:
         <input
           type="checkbox"

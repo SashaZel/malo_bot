@@ -5,6 +5,7 @@ import { AppDispatch, RootState } from "../../app/store";
 import { Message } from "./Message";
 import { IMessage, thunkSetLastTimeOfDisplay } from "./telegramSlice";
 
+
 export const MessagesList = () => {
 
   //console.log('@MessageList');
@@ -35,7 +36,7 @@ export const MessagesList = () => {
 
   if (!currentChat || msgList.length === 0) {
     return (
-      <div className="mt-24 text-center font-bold text-4xl text-neutral-200 dark:text-neutral-800">
+      <div className="mt-24 py-4 text-center font-bold text-4xl bg-white text-neutral-200 dark:text-neutral-800 dark:bg-neutral-900">
         <h3>No messages.</h3>
       </div>
     );
