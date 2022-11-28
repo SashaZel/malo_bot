@@ -8,18 +8,21 @@ a frontend-only no-coding Telegram chatbot app.
 
 ## Features
 
-- Free to use your own Telegram chatbot.
+- Free Telegram chatbot.
 - Support complicated logic with nested answers.
-- No backend needs, chatbot lives in your browser and uses only your PC.
-- Autosave all chats, messages and chatbot settings.
+- No backend or server needs. 
+- Chatbot lives in your browser and uses only your PC.
+- Save all chats, messages and chatbot settings automaticly.
 - Can work in background if your browser is open.
 - Support multi-users mode.
 - No coding skills require.
 
 ## Easy way to create and program
 
-Have you ever heard about chatbots and started to dig into the topic, the first things you encounter are requirement for coding experience and some server facility.
-No anything of the above you need with malo_bot. Check out the [Docs](https://sashazel.github.io/malo_bot/docs) for getting started.
+Have you ever heard about chatbots? And if you started to dig into the topic, the first things you encounter are requirement for coding experience, some server facility or ask to subscribe to some vendor.
+No anything of the above you need with malo_bot. 
+Free. Live in your machine. No additional software. 
+Check out the [Docs](https://sashazel.github.io/malo_bot/docs) for getting started.
 
 ## Roadmap
 
