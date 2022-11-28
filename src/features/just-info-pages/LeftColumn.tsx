@@ -2,9 +2,23 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Tooltip from "@mui/material/Tooltip";
 import mainLogo from "../../assets/logos/logo_main.svg";
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
+import { selectorUnreadMsgs } from "../telegram/telegramSlice";
 
 export const LeftColumn = (props: React.PropsWithChildren) => {
-  
+  const unreadMessages = useSelector((state: RootState) =>
+    selectorUnreadMsgs(state)
+  );
+  const unreadMsgIcon =
+    unreadMessages === 0 ? (
+      ""
+    ) : (
+      <span className="inline-block ml-2 px-2 bg-orange-600 text-white rounded-sm">
+        {unreadMessages}
+      </span>
+    );
+
   return (
     <div className="fixed h-full w-3/12 -translate-y-14 border-r-2 border-neutral-200 dark:border-neutral-700">
       <div className="pb-2 mr-2 ml-4 2xl:ml-12">
@@ -44,12 +58,16 @@ export const LeftColumn = (props: React.PropsWithChildren) => {
                 </Tooltip>
               </li>
               <li>
-                <Tooltip enterDelay={1000} followCursor title="Set chatbot answers, browse chats and write direct message to users.">
+                <Tooltip
+                  enterDelay={1000}
+                  followCursor
+                  title="Set chatbot answers, browse chats and write direct message to users."
+                >
                   <Link
                     to={"work"}
                     className="block my-1 p-2 w-full text-lg hover:bg-neutral-100 text-left font-semibold text-neutral-500 dark:hover:bg-neutral-800 dark:text-neutral-400"
                   >
-                    Working Area
+                    Working Area {unreadMsgIcon}
                   </Link>
                 </Tooltip>
               </li>

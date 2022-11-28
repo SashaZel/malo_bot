@@ -108,12 +108,15 @@ export const telegramReducer = createSlice({
         return chat;
       });
     },
-    setLastDateOfDisplay: (state, action: PayloadAction<{chatID: number, lastDateOfDisplay: number}>) => {
+    setLastDateOfDisplay: (
+      state,
+      action: PayloadAction<{ chatID: number; lastDateOfDisplay: number }>
+    ) => {
       state.chats.forEach((chat) => {
         if (chat.id === action.payload.chatID) {
           chat.date_of_last_display = action.payload.lastDateOfDisplay;
         }
-      })
+      });
     },
     setAllMessages: (state, action: PayloadAction<IMessage[]>): void => {
       if (action.payload.length === 0) {
@@ -140,17 +143,19 @@ export const telegramReducer = createSlice({
 });
 
 export const selectorIsLoggedIn = (state: RootState): boolean => {
-  if (state.telegram.account_data.bot_name && state.telegram.account_data.bot_token) {
+  if (
+    state.telegram.account_data.bot_name &&
+    state.telegram.account_data.bot_token
+  ) {
     return true;
   }
   return false;
-}
+};
 
 export const selectorChatStatus = (
   state: RootState,
   chatID: number
 ): { isActive: boolean; unreadMsgs: number } => {
-
   let thisChatIsActive = false;
   if (state.telegram?.current_chat?.id === chatID) {
     thisChatIsActive = true;
@@ -168,11 +173,44 @@ export const selectorChatStatus = (
 
   return {
     isActive: thisChatIsActive,
-    unreadMsgs: unreadMessages
-  } 
+    unreadMsgs: unreadMessages,
+  };
 };
 
-export const thunkSetLastTimeOfDisplay = (requiredChatID: number) => (dispatch: AppDispatch) => {
-  const dateNowInSec = Math.ceil(Date.now()/1000);
-  dispatch(telegramReducer.actions.setLastDateOfDisplay({chatID: requiredChatID, lastDateOfDisplay: dateNowInSec}));
-}
+export const selectorUnreadMsgs = (state: RootState) => {
+  const botUsername = state?.telegram?.account_data?.bot_name;
+  if (
+    !state.telegram ||
+    !botUsername ||
+    !Array.isArray(state.telegram.chats) ||
+    !Array.isArray(state.telegram.messages)
+  ) {
+    return 0;
+  }
+  const lastDisplayedDateList = state.telegram.chats.map(
+    (chat) => chat.date_of_last_display
+  );
+  if (lastDisplayedDateList.length === 0) {
+    return 0;
+  }
+  const lastDisplayedDate = Math.max(...lastDisplayedDateList);
+  const messagesList = state.telegram.messages;
+  if (messagesList.length === 0) {
+    return 0;
+  }
+  const unreadMsgs = messagesList.filter(
+    (msg) => msg.date > lastDisplayedDate && msg.from.username !== botUsername
+  ).length;
+  return unreadMsgs;
+};
+
+export const thunkSetLastTimeOfDisplay =
+  (requiredChatID: number) => (dispatch: AppDispatch) => {
+    const dateNowInSec = Math.ceil(Date.now() / 1000);
+    dispatch(
+      telegramReducer.actions.setLastDateOfDisplay({
+        chatID: requiredChatID,
+        lastDateOfDisplay: dateNowInSec,
+      })
+    );
+  };
