@@ -20,8 +20,10 @@ a frontend-only no-coding Telegram chatbot app.
 ## Easy way to create and program
 
 Have you ever heard about chatbots? And if you started to dig into the topic, the first things you encounter are requirement for coding experience, some server facility or ask to subscribe to some vendor.
-No anything of the above you need with malo_bot. 
-Free. Live in your machine. No additional software. 
+No anything of the above you need with malo_bot.
+
+Free. Lives in your machine. You need only browser. 
+
 Check out the [Docs](https://sashazel.github.io/malo_bot/docs) for getting started.
 
 ## Roadmap
