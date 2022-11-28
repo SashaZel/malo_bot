@@ -38,6 +38,7 @@ export const ErrorPage = () => {
           <Link
             to={"/malo_bot/"}
             className="bg-neutral-200 p-4 rounded-md hover:bg-neutral-300"
+            reloadDocument
           >
             Go to Main page
           </Link>

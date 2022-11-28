@@ -31,15 +31,17 @@ export const Message: React.FC<{ message_id: number }> = ({ message_id }) => {
     if (markupParsed.keyboard) {
       markupReadyForDisplay = markupParsed.keyboard.map(
         (rowOfButtons: string[], indexY: number) => {
-          const buttonsInRow = rowOfButtons.length;
+          //For multi-buttons rows
+          //const buttonsInRow = rowOfButtons.length;
           return (
             <div key={String(rowOfButtons) + indexY}>
               {rowOfButtons.map((btnElement, indexX) => (
                 <span
                   key={btnElement + indexX + indexY}
-                  className="inline-block bg-neutral-300 text-xs text-center text-neutral-700"
+                  className="inline-block bg-neutral-300 text-xs text-center text-neutral-700 dark:bg-neutral-500 dark:text-neutral-900 "
                   style={{
-                    width: `${100 / buttonsInRow - 4 * (buttonsInRow - 1)}px`,
+                    //width: `${100 / buttonsInRow - 4 * (buttonsInRow - 1)}px`,
+                    width: "200px"
                   }}
                 >
                   {btnElement}
@@ -59,9 +61,9 @@ export const Message: React.FC<{ message_id: number }> = ({ message_id }) => {
 
   return (
     <div className="w-full">
-      <div className={`w-fit max-w-xs my-1 p-3 ${messageStyle}`}>
+      <div className={`w-fit max-w-[18rem] my-1 p-3 ${messageStyle}`}>
         <div>{text}</div>
-        <div className="max-w-xs">{markupReadyForDisplay}</div>
+        <div>{markupReadyForDisplay}</div>
         <span className="text-neutral-400 inline-block dark:text-lime-400">
           {` ${String(localTime.getHours()).padStart(2, "0")}:${String(
             localTime.getMinutes()
