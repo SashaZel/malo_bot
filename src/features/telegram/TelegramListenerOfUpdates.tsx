@@ -32,7 +32,19 @@ export const TelegramListenerOfUpdates = () => {
       );
 
       for (let i = 0; i < resultOfPolling.length; i++) {
-        //TODO: add guard for type checking
+
+        if (
+            !resultOfPolling[i] ||
+            !resultOfPolling[i].message ||
+            !resultOfPolling[i].message.message_id ||
+            !resultOfPolling[i].message.from ||
+            !resultOfPolling[i].message.chat ||
+            !resultOfPolling[i].message.date ||
+            !resultOfPolling[i].message.text
+          ) {
+          continue;
+        }
+
         const message: IMessage = {
           message_id: resultOfPolling[i].message.message_id,
           from: resultOfPolling[i].message.from,
