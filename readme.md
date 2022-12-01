@@ -28,7 +28,6 @@ Check out the [Docs](https://sashazel.github.io/malo_bot/docs) for getting start
 
 ## Roadmap
 
-- Make multi language support
 - Make custom setting IndexedDB
 - Make tests
 - Make pictures upload
