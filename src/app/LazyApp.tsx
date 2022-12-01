@@ -1,4 +1,5 @@
 import React, { Suspense, lazy } from "react";
+import "./i18n";
 
 const App = lazy(() => import("./App"));
 

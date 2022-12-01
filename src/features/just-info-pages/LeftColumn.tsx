@@ -5,8 +5,10 @@ import mainLogo from "../../assets/logos/logo_main.svg";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { selectorUnreadMsgs } from "../telegram/telegramSlice";
+import { useTranslation } from "react-i18next";
 
 export const LeftColumn = (props: React.PropsWithChildren) => {
+  const { t } = useTranslation();
   const unreadMessages = useSelector((state: RootState) =>
     selectorUnreadMsgs(state)
   );
@@ -36,7 +38,7 @@ export const LeftColumn = (props: React.PropsWithChildren) => {
                   to={"settings"}
                   className="block my-1 p-2 w-full text-lg hover:bg-neutral-100 text-left font-semibold text-neutral-500 dark:hover:bg-neutral-800 dark:text-neutral-400"
                 >
-                  Settings
+                  {t("routs.root.setting")}
                 </Link>
               </li>
               <li>
@@ -44,7 +46,7 @@ export const LeftColumn = (props: React.PropsWithChildren) => {
                   to={"about"}
                   className="block my-1 p-2 w-full text-lg hover:bg-neutral-100 text-left font-semibold text-neutral-500 dark:hover:bg-neutral-800 dark:text-neutral-400"
                 >
-                  About this app
+                  {t("routs.root.about")}
                 </Link>
               </li>
               <li>
@@ -53,7 +55,7 @@ export const LeftColumn = (props: React.PropsWithChildren) => {
                     to={"docs"}
                     className="block my-1 p-2 w-full text-lg hover:bg-neutral-100 text-left font-semibold text-neutral-500 dark:hover:bg-neutral-800 dark:text-neutral-400"
                   >
-                    Docs
+                    {t("routs.root.docs")}
                   </Link>
                 </Tooltip>
               </li>
@@ -67,7 +69,8 @@ export const LeftColumn = (props: React.PropsWithChildren) => {
                     to={"work"}
                     className="block my-1 p-2 w-full text-lg hover:bg-neutral-100 text-left font-semibold text-neutral-500 dark:hover:bg-neutral-800 dark:text-neutral-400"
                   >
-                    Working Area {unreadMsgIcon}
+                    {t("routs.root.working")}
+                    {unreadMsgIcon}
                   </Link>
                 </Tooltip>
               </li>
@@ -77,7 +80,7 @@ export const LeftColumn = (props: React.PropsWithChildren) => {
         <div className="border-t-2 border-neutral-200 dark:border-neutral-700">
           <p className="font-semibold text-sm mt-4 text-neutral-500 dark:text-neutral-400">
             <a href="mailto:lll555@yandex.ru" target="blank">
-              Alexander Zelenkov
+              {t("routs.root.alexander")}
             </a>{" "}
             2022
           </p>

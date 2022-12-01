@@ -6,10 +6,12 @@ import { clearIDB, deleteAccountDataIDB } from "../../api/IDB_API";
 import Modal from "@mui/material/Modal";
 import Tooltip from "@mui/material/Tooltip";
 import Close from "@mui/icons-material/Close";
+import { useTranslation } from "react-i18next";
 
 export const SaveButton = () => {
-
   //console.log("@SaveButton");
+
+  const { t } = useTranslation();
 
   const [readyForClear, setReadyForClear] = React.useState(false);
 
@@ -39,16 +41,16 @@ export const SaveButton = () => {
         </button>
       </div>
       <div className="text-center p-10">
-        <p>Are you sure to Log out?</p>
+        <p>{t("routs.root.areYouSure")}</p>
         <p className="text-red-600 text-lg font-semibold text-center">
-          IMPORTANT!!!
+          {t("routs.root.important")}
         </p>
-        <p>All chat data will be lost and IndexedDB will clear up</p>
+        <p>{t("routs.root.allData")}</p>
         <button
           onClick={handleClear}
           className="border-2 mt-2 p-2 border-red-600 bg-slate-200 hover:bg-slate-300"
         >
-          YES. Clear data and log out.
+          {t("routs.root.yes")}
         </button>
       </div>
     </div>
@@ -60,7 +62,7 @@ export const SaveButton = () => {
         {modalForClear}
       </Modal>
       <p className="font-semibold inline-block mr-1 p-2 text-lg text-neutral-500 dark:text-neutral-400">
-        Your bot:{" "}
+        {t("routs.root.yourBot")}
       </p>
       <Tooltip
         enterDelay={1000}
@@ -85,15 +87,19 @@ export const SaveButton = () => {
           onClick={handleLogOut}
           className="p-2 w-full text-lg hover:bg-neutral-100 text-left font-semibold text-neutral-500 dark:hover:bg-neutral-800 dark:text-neutral-400"
         >
-          Log Out
+          {t("routs.root.logOut")}
         </button>
       </Tooltip>
-      <Tooltip enterDelay={1000} followCursor title="Log out and delete all data. Account data, chats, messages and all chatbot settings will remove without recovery option.">
+      <Tooltip
+        enterDelay={1000}
+        followCursor
+        title="Log out and delete all data. Account data, chats, messages and all chatbot settings will remove without recovery option."
+      >
         <button
           onClick={() => setReadyForClear(true)}
           className="p-2 w-full text-lg hover:bg-neutral-100 text-left font-semibold text-neutral-500 dark:hover:bg-neutral-800 dark:text-neutral-400"
         >
-          Delete all data
+          {t("routs.root.delAll")}
         </button>
       </Tooltip>
     </div>

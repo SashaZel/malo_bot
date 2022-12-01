@@ -1,10 +1,13 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 export const TelegramLogInForm: React.FC<{
   handleLogin: (e: React.SyntheticEvent) => void;
   loginStatus: string;
   connectError: string | null;
 }> = ({ handleLogin, loginStatus, connectError }) => {
+
+  const {t} = useTranslation();
   
   return (
     <div className="my-3 bg-neutral-100 dark:bg-neutral-800">
@@ -19,11 +22,11 @@ export const TelegramLogInForm: React.FC<{
         <p className="text-red-600">{connectError}</p>
         <form onSubmit={(e: React.SyntheticEvent) => handleLogin(e)}>
           <label>
-            <p>Bot username:</p>
+            <p>{t('routs.root.botUsername')}</p>
             <input className="border-2 w-full dark:text-neutral-800 dark:bg-neutral-200" />
           </label>
           <label>
-            <p>Token:</p>
+            <p>{t('routs.root.token')}</p>
             <input className="border-2 w-full dark:text-neutral-800 dark:bg-neutral-200" />
           </label>
           <input
@@ -35,19 +38,19 @@ export const TelegramLogInForm: React.FC<{
       </div>
       <div>
         <h4 className="text-sm font-semibold mx-2">
-          How to get bot username and token?
+        {t('routs.root.howToGet')}
         </h4>
         <p className="text-sm mx-2 text-neutral-500">
-          Get username and token from @BotFather.
+        {t('routs.root.getUsername')}
         </p>
         <p className="text-sm mx-2 text-neutral-500">
-          See detailed guide{" "}
+        {t('routs.root.seeDetailed')}
           <a
             className="underline"
             href="https://core.telegram.org/bots/features#botfather"
             target="blank"
           >
-            here
+            {t('routs.root.here')}
           </a>
         </p>
       </div>

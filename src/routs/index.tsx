@@ -2,9 +2,11 @@ import React from "react";
 import poster from "../assets/pictures/poster_small.png";
 import logoBlack from "../assets/logos/logo_black.svg";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export const Index = () => {
-  
+  const { t } = useTranslation();
+
   return (
     <div className="m-4 2xl:m-6 2xl:w-10/12">
       <div
@@ -22,43 +24,34 @@ export const Index = () => {
           Telegram <span className="text-3xl">chatbot</span>
         </h4>
         <p className="text-neutral-700 text-lg xl:text-2xl ml-28 mt-12 xl:mt-36 shadow- shadow-white">
-          No back-end needs.{" "}
+          {t("routs.index.noBack")}{" "}
         </p>
         <p className="text-neutral-700  text-lg xl:text-2xl ml-8">
-          Your bot live in your browser.
+          {t("routs.index.yourCh")}
         </p>
         <p className="text-neutral-700  text-lg xl:text-2xl ml-12">
-          but able to answer
+          {t("routs.index.butAble")}
         </p>
         <p className="text-neutral-700  text-lg xl:text-2xl ml-36">
-          to anyone
+          {t("routs.index.toAnyone")}
         </p>
         <Link
           to={"docs"}
           className="inline-block mt-10 ml-28 p-2 px-6 font-semibold text-xl bg-orange-600 hover:bg-red-600 rounded-md shadow-lg"
         >
-          Try it now!
+          {t("routs.index.tryItNow")}
         </Link>
       </div>
       <h2 className="pt-12 lg:m-2 text-2xl font-semibold border-b-2">
-        Frontend-only Telegram chatbot
+        {t("routs.index.frontendOnly")}
       </h2>
-      <p className="mx-8 pt-8 text-xl">
-        No-coding chatbot.
-      </p> 
-      <p className="mx-4 text-xl">Just add an answer and keywords. Your bot is ready!
-      </p>
+      <p className="mx-8 pt-8 text-xl">{t("routs.index.noCoding")}</p>
+      <p className="mx-4 text-xl">{t("routs.index.just")}</p>
       <p className="mx-2 pt-8 text-xl text-right">
-        No backend needs. Chatbot lives on your machine. 
+        {t("routs.index.noBackend")}
       </p>
-      <p className="text-xl text-right"> 
-        Keep your browser open.
-        To quit chatbot just close the browser.
-      </p>
-      <p className="mx-2 pt-8">
-        All changes save automaticly. Open this page again - and your chatbot is
-        ready again with full history available.
-      </p>
+      <p className="text-xl text-right">{t("routs.index.keep")}</p>
+      <p className="mx-2 pt-8">{t("routs.index.all")}</p>
     </div>
   );
 };

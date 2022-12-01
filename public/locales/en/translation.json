@@ -1,0 +1,40 @@
+{
+  "hello": "Hello dear friend!",
+  "routs": {
+    "index": {
+      "tryItNow": "Try it now!",
+      "noBack": "No back-end needs.",
+      "yourCh": "Your bot live in your browser.",
+      "butAble": "but able to answer",
+      "toAnyone": "to anyone",
+      "frontendOnly": "Frontend-only Telegram chatbot",
+      "noCoding": "No-coding chatbot.",
+      "just": "Just add an answer and keywords. Your bot is ready!",
+      "noBackend": "No backend needs. Chatbot lives on your machine.",
+      "keep": "Keep your browser open. To quit chatbot just close the browser.",
+      "all": "All changes save automaticly. Open this page again - and your chatbot is ready again with full history available."
+
+    },
+    "root": {
+      "setting": "Setting",
+      "about": "About this app",
+      "docs": "Docs",
+      "working": "Working Area",
+      "alexander": "Alexander Zelenkov",
+      "botUsername": "Bot username:",
+      "token": "Token:",
+      "howToGet": "How to get bot username and token?",
+      "getUsername": "Get username and token from @BotFather.",
+      "seeDetailed": "See detailed guide",
+      "here": "here",
+      "disabled": "Chatbot disabled (check Settings)",
+      "areYouSure": "Are you sure to Log out?",
+      "important": "IMPORTANT!!!",
+      "allData": "All chat data will be lost and IndexedDB will clear up",
+      "yes": "YES. Clear data and log out.",
+      "yourBot": "Your bot: ",
+      "logOut": "Log Out",
+      "delAll": "Delete all data"
+    }
+  }
+}
