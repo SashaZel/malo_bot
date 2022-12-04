@@ -1,7 +1,10 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { splitTextAndMarkup } from "./inputListener";
 
 export const ChatbotReactionAnswer: React.FunctionComponent<{answer: string}> = ({answer}) => {
+
+  const { t } = useTranslation();
   
   const { text, markup } = splitTextAndMarkup(answer);
 
@@ -34,7 +37,7 @@ export const ChatbotReactionAnswer: React.FunctionComponent<{answer: string}> = 
 
   return (
     <div className="my-1 border-t-2 border-b-2 dark:border-neutral-700">
-        <h4 className="font-semibold">Answer: </h4>
+        <h4 className="font-semibold">{t("routs.work.answer", "Answer: ")}</h4>
         <div>&quot;{text}&quot;</div>
         <div>{markupReadyForDisplay}</div>
     </div>

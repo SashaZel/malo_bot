@@ -4,6 +4,7 @@ import { RootState } from "../../app/store";
 import { ChatbotFormButtons } from "./ChatbotFormButtons";
 import { saveChatbotToIDB } from "../../api/IDB_API";
 import { chatbotReducer } from "./chatbotSlice";
+import { useTranslation } from "react-i18next";
 
 type IinputStatus =
   | ""
@@ -16,6 +17,8 @@ type IinputStatus =
   | "Please don't include '??reply_markup=' in your answer";
 
 export const ChatbotForm = () => {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
   const chatbotState = useSelector((state: RootState) => state.chatbot);
 
@@ -48,7 +51,7 @@ export const ChatbotForm = () => {
 
   const handleNewReaction = (event: React.BaseSyntheticEvent) => {
     event.preventDefault();
-    console.log("@ChatbotForm handleNew reaction ", event.target[0].value);
+    // console.log("@ChatbotForm handleNew reaction ", event.target[0].value);
 
     const newReactionParent = event.target[0].value;
     const newReactionName = event.target[1].value;
@@ -125,13 +128,15 @@ export const ChatbotForm = () => {
 
   return (
     <div className="p-2 m-1 border-2 bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-800">
-      <h3 className="text-lg font-semibold">Add new reaction</h3>
+      <h3 className="text-lg font-semibold">
+        {t("routs.work.addNew", "Add new reaction")}
+      </h3>
       <form
         onSubmit={(event: React.BaseSyntheticEvent) => handleNewReaction(event)}
       >
         <label>
           <span className="text-neutral-600 dark:text-neutral-400 font-semibold">
-            Reaction parent:
+            {t("routs.work.reactParent", "Reaction parent:")}
           </span>
           <select
             className="block p-1 w-full my-2 border-2 dark:border-neutral-700 dark:bg-neutral-900"
@@ -144,7 +149,7 @@ export const ChatbotForm = () => {
         </label>
         <label>
           <span className="text-neutral-600 dark:text-neutral-400 font-semibold">
-            Reaction name:
+            {t("routs.work.reactName", "Reaction name:")}
           </span>
           <input
             type="text"
@@ -156,7 +161,7 @@ export const ChatbotForm = () => {
         </label>
         <label>
           <span className="text-neutral-600 dark:text-neutral-400 font-semibold">
-            Reaction answer
+            {t("routs.work.reactAnswer", "Reaction answer")}
           </span>
           <input
             type="text"
@@ -168,7 +173,7 @@ export const ChatbotForm = () => {
         </label>
         <label>
           <span className="text-neutral-600 dark:text-neutral-400 font-semibold">
-            Reaction keywords
+            {t("routs.work.reactKeywords", "Reaction keywords")}
           </span>
           <input
             type="text"
@@ -181,7 +186,10 @@ export const ChatbotForm = () => {
 
         <input
           type="submit"
-          value="Add new reaction"
+          value={
+            t("routs.work.addNewReact", "Add new reaction") ??
+            "Add new reaction"
+          }
           className="inline-block bg-orange-600 p-4 rounded-xl hover:bg-red-600 font-semibold"
         />
         <span className="inline-block ml-4 text-red-500">{inputStatus}</span>
@@ -194,7 +202,7 @@ export const ChatbotForm = () => {
             onChange={(e) => handleCheckboxChange(e)}
             className="hue-rotate-180 scale-125 mt-4 mr-2"
           />
-          Add Buttons
+          {t("routs.work.addBtns", "Add Buttons")}
         </label>
       </form>
       {showButtonsMenu && (

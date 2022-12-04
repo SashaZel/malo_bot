@@ -9,11 +9,15 @@ import BorderColor from "@mui/icons-material/BorderColor";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import { ChatbotReactionAnswer } from "./ChatbotReactionAnswer";
 import { splitTextAndMarkup } from "./inputListener";
+import { useTranslation } from "react-i18next";
 
 export const ChatbotReaction: React.FC<{
   reactionName: string;
   answer: string;
 }> = ({ reactionName, answer }) => {
+
+  const { t } = useTranslation();
+
   const dispatcher = useDispatch();
   const keywords = useSelector((state: RootState) =>
     selectorKeywordsList(state, reactionName)
@@ -110,7 +114,7 @@ export const ChatbotReaction: React.FC<{
             className="border-2 p-1 rounded-md my-2 w-full"
           />
           <button className="bg-orange-600 p-2 rounded-xl hover:bg-red-600 font-semibold">
-            Save Changes
+            {t("routs.work.save", "Save Changes")}
           </button>
         </form>
       </div>
@@ -120,19 +124,19 @@ export const ChatbotReaction: React.FC<{
   const modalWindowForDel = (
     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-8 bg-neutral-100 border-4 border-red-600">
       <div className="">
-        <span className="font-semibold text-black border-b-2 border-neutral-400">{`Remove "${reactionName}" reaction and all reaction childs?`}</span>
+        <span className="font-semibold text-black border-b-2 border-neutral-400">{t("routs.work.remove", "Remove") + reactionName + t("routs.work.reactionAnd", "reaction and all reaction childs?")}</span>
         <div className="text-center mt-2">
           <button
             onClick={handleDelReaction}
             className="bg-red-600 p-4 rounded-md hover:bg-orange-600 text-white font-semibold"
           >
-            Remove
+            {t("routs.work.remove", "Remove")}
           </button>
           <button
             onClick={handleRemoveCancel}
             className="bg-neutral-300 p-4 rounded-md text-black hover:bg-orange-600 ml-2 font-semibold dark:bg-neutral-400 dark:hover:bg-orange-600"
           >
-            Cancel
+            {t("routs.work.cancel", "Cancel")}
           </button>
         </div>
       </div>
@@ -153,7 +157,7 @@ export const ChatbotReaction: React.FC<{
       <div className="flex justify-between">
         <h4>
           <span className="font-semibold dark:text-neutral-400">
-            Reaction:{" "}
+            {t("routs.work.reaction", "Reaction: ")}
           </span>
           {reactionName}
         </h4>
@@ -166,24 +170,24 @@ export const ChatbotReaction: React.FC<{
           />
           <input
             type="submit"
-            value="Add keywords"
+            value={t("routs.work.addKeywords", "Add keywords") ?? "Add keywords"}
             className="border-2 border-neutral-200 rounded-tr-lg px-2 bg-neutral-200 hover:border-neutral-400 dark:border-neutral-700 dark:bg-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-500"
           />
         </form>
       </div>
       <ChatbotReactionAnswer answer={answer} />
       <div className="mr-5">
-        <span className="font-semibold">Keywords:</span> {keywords}
+        <span className="font-semibold">{t("routs.work.keywords", "Keywords: ")}</span> {keywords}
       </div>
       <div className="absolute right-2 bottom-0 z-10 m-1 p-1 pt-2 text-neutral-500 hover:text-red-600">
-        <Tooltip arrow enterDelay={500} title="Delete this chatbot reaction">
+        <Tooltip arrow enterDelay={500} title={t("routs.work.deleteThis", "Delete this chatbot reaction")}>
           <button onClick={handleRemoveWarning} className="w-6">
             <DeleteForever fontSize="large" />
           </button>
         </Tooltip>
       </div>
       <div className="absolute right-10 bottom-0 z-10 m-1 p-1 pt-2 text-neutral-500 hover:text-emerald-600 dark:hover:text-green-600">
-        <Tooltip arrow enterDelay={500} title="Edit answer for this reaction">
+        <Tooltip arrow enterDelay={500} title={t("routs.work.editAnsw", "Edit answer for this reaction")}>
           <button onClick={handleReactionAnswerEdit} className="w-6">
             <BorderColor fontSize="large" />
           </button>

@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { IChat, selectorChatStatus, telegramReducer } from "./telegramSlice";
@@ -53,6 +54,8 @@ export const ChatButton: React.FC<{
 
   //console.log('@ChatButton');
 
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
   const chatStatus = useSelector((state: RootState) =>
     selectorChatStatus(state, chat.id)
@@ -82,7 +85,7 @@ export const ChatButton: React.FC<{
         {chat.first_name} {chat.last_name}
       </p>
       <p className="text-xs font-semibold text-neutral-700 dark:text-neutral-500">
-        Unread: <span className={styleForUnreadNumber}>{chatStatus.unreadMsgs}</span>
+        {t("routs.work.unread")}<span className={styleForUnreadNumber}>{chatStatus.unreadMsgs}</span>
         
       </p>
     </div>

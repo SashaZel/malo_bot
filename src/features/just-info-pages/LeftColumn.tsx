@@ -78,7 +78,7 @@ export const LeftColumn = (props: React.PropsWithChildren) => {
           </nav>
         </div>
         <div className="border-t-2 border-neutral-200 dark:border-neutral-700">
-          <p className="font-semibold text-sm mt-4 text-neutral-500 dark:text-neutral-400">
+          <p className="ml-2 font-semibold text-sm mt-4 text-neutral-500 dark:text-neutral-400">
             <a href="mailto:lll555@yandex.ru" target="blank">
               {t("routs.root.alexander")}
             </a>{" "}

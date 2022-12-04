@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { saveChatbotToIDB } from "../api/IDB_API";
 import { RootState } from "../app/store";
@@ -6,6 +7,9 @@ import { chatbotReducer } from "../features/chatbot/chatbotSlice";
 
 
 export const Settings = () => {
+
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
   const chatbotSettings = useSelector(
     (state: RootState) => state.chatbot.settings
@@ -15,10 +19,10 @@ export const Settings = () => {
   return (
     <div className="m-4 2xl:m-8 pb-12">
       <h2 className="text-xl font-semibold border-b-2 border-neutral-200 dark:border-neutral-700">
-        Settings
+        {t("routs.settings.sett")}
       </h2>
       <label className="block text-lg mt-36">
-        Chatbot is active:
+        {t("routs.settings.isActive")}
         <input
           type="checkbox"
           className="hue-rotate-180 scale-150 ml-2"
@@ -34,13 +38,13 @@ export const Settings = () => {
         />
       </label>
       <div>
-        <h3 className="text-lg mt-6">Default answer of chatbot</h3>
+        <h3 className="text-lg mt-6">{t("routs.settings.defAnsw")}</h3>
         <p className="text-neutral-500">
-          Your users get this answer if no match of keywords.
+        {t("routs.settings.yourUsers")}
         </p>
       </div>
       <label className="block text-neutral-500">
-        Add citation of user message:
+      {t("routs.settings.addCit")}
         <input
           type="checkbox"
           className="hue-rotate-180 scale-125 ml-2"

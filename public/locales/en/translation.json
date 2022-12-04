@@ -35,6 +35,47 @@
       "yourBot": "Your bot: ",
       "logOut": "Log Out",
       "delAll": "Delete all data"
+    },
+    "settings": {
+      "sett": "Settings",
+      "isActive": "Chatbot is active:",
+      "defAnsw": "Default answer of chatbot",
+      "yourUsers": "Your users get this answer if no match of keywords.",
+      "addCit": "Add citation of user message:"
+    },
+    "work": {
+      "unread": "Unread: ",
+      "noAvailable": "No available chats yet",
+      "yourUsers": "Your users have to contact your bot first.",
+      "provide": "Provide them a link to this chatbot via another means of communication:",
+      "pleaseLogIn": "Please log-in to start work.",
+      "availChats": "Available chats:",
+      "chatbotAdmin": "Chatbot admin panel",
+      "manage": "Manage your chatbot.",
+      "addOrRem": "Add or remove your responses and keywords for responses.",
+      "allChanges": "All changes will be saved automaticly.",
+      "addNew": "Add new reaction",
+      "reactParent": "Reaction parent:",
+      "reactName": "Reaction name:",
+      "reactAnswer": "Reaction answer:",
+      "reactKeywords": "Reaction keywords:",
+      "addNewReact": "Add new reaction",
+      "addBtns": "Add Buttons",
+      "noChats": "No available chats",
+      "write": "Write a message",
+      "send": "Send Message",
+      "noMsgs": "No messages.",
+      "chatWith": "Chat with",
+      "save": "Save Changes",
+      "remove": "Remove ",
+      "reactionAnd": " reaction and all reaction childs?",
+      "cancel": "Cancel",
+      "reaction": "Reaction: ",
+      "addKeywords": "Add keywords",
+      "keywords": "Keywords:",
+      "answer": "Answer: ",
+      "deleteThis": "Delete this chatbot reaction",
+      "editAnsw": "Edit answer for this reaction"
     }
   }
 }
