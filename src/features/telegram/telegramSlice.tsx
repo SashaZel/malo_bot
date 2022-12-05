@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { AppDispatch, RootState } from "../../app/store";
+import { AppDispatch, RootState, store } from "../../app/store";
+import { saveThunkTelegramStateToIDB } from "../../api/IDB_API";
 
 export interface IMessage {
   message_id: number;
@@ -205,7 +206,8 @@ export const selectorUnreadMsgs = (state: RootState) => {
 };
 
 export const thunkSetLastTimeOfDisplay =
-  (requiredChatID: number) => (dispatch: AppDispatch) => {
+  (requiredChatID: number) => (dispatch: AppDispatch, getState: typeof store.getState) => {
+    const telegramState = getState().telegram;
     const dateNowInSec = Math.ceil(Date.now() / 1000);
     dispatch(
       telegramReducer.actions.setLastDateOfDisplay({
@@ -213,4 +215,5 @@ export const thunkSetLastTimeOfDisplay =
         lastDateOfDisplay: dateNowInSec,
       })
     );
+    saveThunkTelegramStateToIDB(telegramState);
   };

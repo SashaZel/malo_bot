@@ -1,12 +1,13 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { saveChatbotToIDB } from "../../api/IDB_API";
-import { chatbotReducer } from "./chatbotSlice";
+//import { saveChatbotToIDB } from "../../api/IDB_API";
+import { thunkRemoveIntent } from "./chatbotSlice";
 import Close from "@mui/icons-material/Close";
+import { AppDispatch } from "../../app/store";
 
 export const KeywordButton: React.FC<{ keyword: string }> = ({ keyword }) => {
   
-  const dispatch = useDispatch()
+  const dispatch: AppDispatch = useDispatch()
 
   let keywordForDisplay = keyword;
   const lastIndexOfSlash = keyword.lastIndexOf('~');
@@ -15,8 +16,9 @@ export const KeywordButton: React.FC<{ keyword: string }> = ({ keyword }) => {
   }
 
   const handleDeleteKeyword = () => {
-    dispatch(chatbotReducer.actions.removeIntent({ keyword: keyword}));
-    saveChatbotToIDB();
+    // dispatch(chatbotReducer.actions.removeIntent({ keyword: keyword}));
+    // saveChatbotToIDB();
+    dispatch(thunkRemoveIntent({ keyword: keyword }))
   }
 
   return (

@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { IChat, IMessage, telegramReducer } from "./telegramSlice";
 import { RootState } from "../../app/store";
-import { listenAndAnswer } from "../chatbot/inputListener";
+import { useListenAndAnswer } from "../chatbot/inputListener";
 import { pollingForMessages, sendMessage } from "../../api/telegramAPI";
 
 export const TelegramListenerOfUpdates = () => {
@@ -19,7 +19,7 @@ export const TelegramListenerOfUpdates = () => {
     // Mount long polling listener for getting new messages from Telegram
 
     let delay = 1000;
-    let timeout: number | null;
+    let timeout: number | null | NodeJS.Timeout;
 
     const getBotUpdates = async () => {
       if (isPooling.current) return;
@@ -69,7 +69,7 @@ export const TelegramListenerOfUpdates = () => {
           })
         );
 
-        const { text, markup } = listenAndAnswer({
+        const { text, markup } = useListenAndAnswer({
           inputMessage: resultOfPolling[i].message.text,
           inputChatID: resultOfPolling[i].message.chat.id,
         });

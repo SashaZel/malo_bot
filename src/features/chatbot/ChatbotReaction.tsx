@@ -1,14 +1,14 @@
 import React from "react";
 import { Tooltip, Modal } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../app/store";
-import { saveChatbotToIDB } from "../../api/IDB_API";
-import { chatbotReducer, selectorKeywordsList } from "./chatbotSlice";
+import { AppDispatch, RootState } from "../../app/store";
+//import { saveChatbotToIDB } from "../../api/IDB_API";
+import { chatbotReducer, selectorKeywordsList, thunkAddIntent, thunkEditAnswer, thunkRemoveReaction } from "./chatbotSlice";
 import Close from "@mui/icons-material/Close";
 import BorderColor from "@mui/icons-material/BorderColor";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import { ChatbotReactionAnswer } from "./ChatbotReactionAnswer";
-import { splitTextAndMarkup } from "./inputListener";
+import { splitTextAndMarkup } from "../../utils/splitTextAndMarkup";
 import { useTranslation } from "react-i18next";
 
 export const ChatbotReaction: React.FC<{
@@ -18,7 +18,7 @@ export const ChatbotReaction: React.FC<{
 
   const { t } = useTranslation();
 
-  const dispatcher = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const keywords = useSelector((state: RootState) =>
     selectorKeywordsList(state, reactionName)
   );
@@ -39,15 +39,15 @@ export const ChatbotReaction: React.FC<{
     }
     const inputString = e.target[0].value;
 
-    if (!inputString) return;
-    dispatcher(
-      chatbotReducer.actions.addIntent({
+    if (!inputString || typeof inputString !== "string") return;
+    dispatch(
+      thunkAddIntent({
         keywords: inputString,
-        pointerToAction: reactionNameWithoutParent,
+        pointerToReaction: reactionNameWithoutParent,
         parent: keywordParent,
       })
     );
-    saveChatbotToIDB();
+    //saveChatbotToIDB();
     setInputValue("");
   };
 
@@ -60,12 +60,15 @@ export const ChatbotReaction: React.FC<{
   };
 
   const handleDelReaction = () => {
-    dispatcher(
-      chatbotReducer.actions.removeReaction({
-        reactionForRemoving: reactionName,
-      })
-    );
-    saveChatbotToIDB();
+    dispatch(thunkRemoveReaction({
+         reactionForRemoving: reactionName
+        }))
+    // dispatcher(
+    //   chatbotReducer.actions.removeReaction({
+    //     reactionForRemoving: reactionName,
+    //   })
+    // );
+    // saveChatbotToIDB();
     setReadyForRemove(false);
   };
 
@@ -81,13 +84,13 @@ export const ChatbotReaction: React.FC<{
     e.preventDefault();
     const answerText = e.target[0].value;
 
-    dispatcher(
-      chatbotReducer.actions.editAnswer({
+    dispatch(
+      thunkEditAnswer({
         reactionName: reactionName,
         newAnswer: answerText + (answerInput.markup ? ("??reply_markup=" + answerInput.markup) : ""),
       })
     );
-    saveChatbotToIDB();
+    //saveChatbotToIDB();
     setAnswerEditMode(false);
   };
 

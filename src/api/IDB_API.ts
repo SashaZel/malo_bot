@@ -1,5 +1,9 @@
+import React from 'react';
+import { AnyAction } from "@reduxjs/toolkit";
 import { get, set, clear, setMany, entries, del } from "idb-keyval";
-import { store } from "../app/store";
+import { useStore } from "react-redux";
+import { RootState } from "../app/store";
+//import { store } from "../app/store";
 import { IChatbot } from "../features/chatbot/chatbotSlice";
 import { IAccount, ITelegram } from "../features/telegram/telegramSlice";
 
@@ -38,11 +42,28 @@ export const saveTelegramAccountDataToIDB = (accountData: IAccount) => {
   }
 };
 
-export const saveChatbotToIDB = async (): Promise<void> => {
+// export const saveChatbotToIDB = async (): Promise<void> => {
 
-  //console.log("@IDB_API saveChatbotToIDB()");
+//   return null;
 
-  const chatbotState = store.getState().chatbot;
+//   //console.log("@IDB_API saveChatbotToIDB()");
+
+//   // access store via useStore for testing ability
+//   //const store = useStore<RootState, AnyAction>();
+//   //console.log(store);
+
+//   const chatbotState = store.getState().chatbot;
+//   try {
+//     set("idb-chatbot", chatbotState);
+//   } catch (error) {
+//     console.error("@IDB_API saveChatbotToIDB() ", error);
+//   }
+// };
+
+export const saveThunkChatbotToIDB = async ( chatbotState: IChatbot ): Promise<void> => {
+
+  console.log("@saveThunkChatbotToIDB");
+
   try {
     set("idb-chatbot", chatbotState);
   } catch (error) {
@@ -63,11 +84,38 @@ export const getChatbotFromIDB = async (): Promise<IChatbot | undefined> => {
   return chatbotState;
 };
 
-export const saveTelegramStateToIDB = () => {
+// export const saveTelegramStateToIDB = () => {
 
-  //console.log("@IDB_API saveTelegramStateToIDB()");
+//   //console.log("@IDB_API saveTelegramStateToIDB()");
 
-  const telegramAppState = store.getState().telegram;
+//   // access store via useStore for testing ability
+//   //const store = useStore<RootState, AnyAction>();
+//   //console.log(store);
+
+//   const telegramAppState = store.getState().telegram;
+//   if (
+//     !telegramAppState.account_data.bot_name ||
+//     !telegramAppState.account_data.bot_token
+//   ) {
+//     return;
+//   }
+//   try {
+//     setMany([
+//       ["idb-account_data", telegramAppState.account_data],
+//       ["idb-chats", telegramAppState.chats],
+//       ["idb-current_chat", telegramAppState.current_chat],
+//       ["idb-messages", telegramAppState.messages],
+//     ]);
+//   } catch (error) {
+//     console.error("@IDB_API saveTelegramStateToIDB() ", error);
+//   }
+// };
+
+export const saveThunkTelegramStateToIDB = (telegramAppState: ITelegram) => {
+
+  console.log("@saveThunkTelegramStateToIDB");
+
+  //const telegramAppState = store.getState().telegram;
   if (
     !telegramAppState.account_data.bot_name ||
     !telegramAppState.account_data.bot_token

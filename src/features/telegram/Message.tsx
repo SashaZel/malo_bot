@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
-import { splitTextAndMarkup } from "../chatbot/inputListener";
+import { splitTextAndMarkup } from "../../utils/splitTextAndMarkup";
 import { IMessage } from "./telegramSlice";
 
 export const Message: React.FC<{ message_id: number }> = ({ message_id }) => {

@@ -1,16 +1,16 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { saveChatbotToIDB } from "../api/IDB_API";
-import { RootState } from "../app/store";
-import { chatbotReducer } from "../features/chatbot/chatbotSlice";
+//import { saveChatbotToIDB } from "../api/IDB_API";
+import { AppDispatch, RootState } from "../app/store";
+import { chatbotReducer, thunkHandleSettings } from "../features/chatbot/chatbotSlice";
 
 
 export const Settings = () => {
 
   const { t } = useTranslation();
 
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const chatbotSettings = useSelector(
     (state: RootState) => state.chatbot.settings
   );
@@ -27,14 +27,17 @@ export const Settings = () => {
           type="checkbox"
           className="hue-rotate-180 scale-150 ml-2"
           checked={chatbotSettings.isActive}
-          onChange={() => {
-            dispatch(
-              chatbotReducer.actions.settingIsActive({
-                activeChatbot: !chatbotSettings.isActive,
-              })
-            );
-            saveChatbotToIDB();
-          }}
+          onChange={
+            // () => {
+            // dispatch(
+            //   chatbotReducer.actions.settingIsActive({
+            //     activeChatbot: !chatbotSettings.isActive,
+            //   })
+            // );}
+            // saveChatbotToIDB();
+            () => dispatch(thunkHandleSettings({ ...chatbotSettings, isActive: !chatbotSettings.isActive}))
+          
+        }
         />
       </label>
       <div>
@@ -50,19 +53,23 @@ export const Settings = () => {
           className="hue-rotate-180 scale-125 ml-2"
           checked={citCurrent}
           onChange={() => {
-            dispatch(
-              chatbotReducer.actions.settingAddCitation({
-                addCit: !citCurrent,
-              })
-            );
+            // dispatch(
+            //   chatbotReducer.actions.settingAddCitation({
+            //     addCit: !citCurrent,
+            //   })
+            // );
+            // if (citCurrent) {
+            //   dispatch(
+            //     chatbotReducer.actions.settingSecondPartOfDefaultAnswer({
+            //       secondPart: "",
+            //     })
+            //   );
+            // }
+            // saveChatbotToIDB();
+            dispatch(thunkHandleSettings({ ...chatbotSettings, defaultAnswer: { ...chatbotSettings.defaultAnswer, addCitationOfUserMessage: !citCurrent }}))
             if (citCurrent) {
-              dispatch(
-                chatbotReducer.actions.settingSecondPartOfDefaultAnswer({
-                  secondPart: "",
-                })
-              );
+              dispatch(thunkHandleSettings({ ...chatbotSettings, defaultAnswer: { ...chatbotSettings.defaultAnswer, secondPartOfAnswer: ""}}))
             }
-            saveChatbotToIDB();
           }}
         />
       </label>
@@ -77,14 +84,17 @@ export const Settings = () => {
           }em`,
         }}
         value={chatbotSettings.defaultAnswer.firstPartOfAnswer}
-        onChange={(e) => {
-          dispatch(
-            chatbotReducer.actions.settingFirstPartOfDefaultAnswer({
-              firstPart: e.target.value,
-            })
-          );
-          saveChatbotToIDB();
-        }}
+        onChange={
+          // (e) => {
+          // dispatch(
+          //   chatbotReducer.actions.settingFirstPartOfDefaultAnswer({
+          //     firstPart: e.target.value,
+          //   })
+          // ); }
+          // saveChatbotToIDB();
+          (e) => dispatch(thunkHandleSettings({ ...chatbotSettings, defaultAnswer: { ...chatbotSettings.defaultAnswer, firstPartOfAnswer: e.target.value}}))
+       
+      }
       />
       {citCurrent && (
         <span>
@@ -105,12 +115,12 @@ export const Settings = () => {
             }}
             value={chatbotSettings.defaultAnswer.secondPartOfAnswer}
             onChange={(e) => {
-              dispatch(
-                chatbotReducer.actions.settingSecondPartOfDefaultAnswer({
-                  secondPart: e.target.value,
-                })
-              );
-              saveChatbotToIDB();
+              // dispatch(
+              //   chatbotReducer.actions.settingSecondPartOfDefaultAnswer({
+              //     secondPart: e.target.value,
+              //   })
+              // );
+              dispatch(thunkHandleSettings({ ...chatbotSettings, defaultAnswer: { ...chatbotSettings.defaultAnswer, secondPartOfAnswer: e.target.value}}))
             }}
           />
         </span>

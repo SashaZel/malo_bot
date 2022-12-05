@@ -1,9 +1,9 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../app/store";
+import { AppDispatch, RootState } from "../../app/store";
 import { ChatbotFormButtons } from "./ChatbotFormButtons";
-import { saveChatbotToIDB } from "../../api/IDB_API";
-import { chatbotReducer } from "./chatbotSlice";
+//import { saveChatbotToIDB } from "../../api/IDB_API";
+import { chatbotReducer, thunkAddIntent } from "./chatbotSlice";
 import { useTranslation } from "react-i18next";
 
 type IinputStatus =
@@ -19,7 +19,7 @@ type IinputStatus =
 export const ChatbotForm = () => {
   const { t } = useTranslation();
 
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const chatbotState = useSelector((state: RootState) => state.chatbot);
 
   const listOfReactions = Object.keys(chatbotState.reactions).map(
@@ -107,15 +107,23 @@ export const ChatbotForm = () => {
         buttonMarkup: inputButtonsContent,
       })
     );
+    // dispatch(
+    //   chatbotReducer.actions.addIntent({
+    //     keywords: newKeywords,
+    //     pointerToAction: newReactionName,
+    //     parent: newReactionParent,
+    //   })
+    // );
+
+    //saveChatbotToIDB();
+
     dispatch(
-      chatbotReducer.actions.addIntent({
+      thunkAddIntent({
         keywords: newKeywords,
-        pointerToAction: newReactionName,
+        pointerToReaction: newReactionName,
         parent: newReactionParent,
       })
     );
-
-    saveChatbotToIDB();
 
     setInputStatus("");
     setParentOfReaction("");

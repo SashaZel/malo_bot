@@ -1,25 +1,27 @@
+import React from 'react';
 import { IChatbot } from "./chatbotSlice";
 import { store } from "../../app/store";
 import { IChat, telegramReducer } from "../telegram/telegramSlice";
+import { useStore } from "react-redux";
+import { AnyAction } from "@reduxjs/toolkit";
+import { RootState } from "../../app/store";
+import { splitTextAndMarkup } from '../../utils/splitTextAndMarkup';
 
-export function splitTextAndMarkup(answer: string): { text: string, markup: string} {
-  const splitAnswer = answer.split("??reply_markup=");
-  if (splitAnswer.length === 1) {
-    return { text: splitAnswer[0], markup: "" };
-  }
-  if (splitAnswer.length === 2) {
-    return { text: splitAnswer[0], markup: splitAnswer[1] };
-  }
-  return { text: "", markup: "" };
+
+export const sum = (a: number, b: number) => {
+  return a + b;
 }
 
-export function listenAndAnswer({
+export function useListenAndAnswer({
   inputMessage,
   inputChatID,
 }: {
   inputMessage: string;
   inputChatID: number;
 }): { text: string, markup: string} {
+
+  // access store via useStore for testing ability
+  //const store = useStore<RootState, AnyAction>();
 
   const chatbotState: IChatbot = store.getState().chatbot;
   const listOfChats: IChat[] = store.getState().telegram.chats;

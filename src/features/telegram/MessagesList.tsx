@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { saveTelegramStateToIDB } from "../../api/IDB_API";
+//import { saveTelegramStateToIDB } from "../../api/IDB_API";
 import { AppDispatch, RootState } from "../../app/store";
 import { Message } from "./Message";
 import { IMessage, thunkSetLastTimeOfDisplay } from "./telegramSlice";
@@ -25,7 +25,7 @@ export const MessagesList = () => {
         thunkSetLastTimeOfDisplay(currentChat?.id)
       );
     }
-    saveTelegramStateToIDB();
+    //saveTelegramStateToIDB();
   }, [msgList, currentChat?.id]);
 
   const listOfMessegesInCurrentChat = msgList.map((message: IMessage) => {

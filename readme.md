@@ -29,7 +29,6 @@ Check out the [Docs](https://sashazel.github.io/malo_bot/docs) for getting start
 ## Roadmap
 
 - Make custom setting IndexedDB
-- Make tests
 - Make pictures upload
 - Make commands menu
 - Make CRM-like admin panel
