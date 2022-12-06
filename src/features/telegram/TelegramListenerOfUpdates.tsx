@@ -1,19 +1,23 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { IChat, IMessage, telegramReducer } from "./telegramSlice";
-import { RootState } from "../../app/store";
-import { useListenAndAnswer } from "../chatbot/inputListener";
-import { pollingForMessages, sendMessage } from "../../api/telegramAPI";
+import {
+  IChat,
+  IMessage,
+  telegramReducer,
+  thunkGetAndAnswer,
+} from "../../app/telegramSlice";
+import { AppDispatch, RootState } from "../../app/store";
+import { pollingForMessages } from "../../api/telegramAPI";
 
 export const TelegramListenerOfUpdates = () => {
-
+  
   //console.log("@TelegramListenerOfUpdates");
 
   const isPooling = React.useRef(false);
   const account_data = useSelector(
     (state: RootState) => state.telegram.account_data
   );
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   React.useEffect(() => {
     // Mount long polling listener for getting new messages from Telegram
@@ -32,26 +36,18 @@ export const TelegramListenerOfUpdates = () => {
       );
 
       for (let i = 0; i < resultOfPolling.length; i++) {
-
         if (
-            !resultOfPolling[i] ||
-            !resultOfPolling[i].message ||
-            !resultOfPolling[i].message.message_id ||
-            !resultOfPolling[i].message.from ||
-            !resultOfPolling[i].message.chat ||
-            !resultOfPolling[i].message.date ||
-            !resultOfPolling[i].message.text
-          ) {
+          !resultOfPolling[i] ||
+          !resultOfPolling[i].message ||
+          !resultOfPolling[i].message.message_id ||
+          !resultOfPolling[i].message.from ||
+          !resultOfPolling[i].message.chat ||
+          !resultOfPolling[i].message.date ||
+          !resultOfPolling[i].message.text
+        ) {
           continue;
         }
 
-        const message: IMessage = {
-          message_id: resultOfPolling[i].message.message_id,
-          from: resultOfPolling[i].message.from,
-          chat: resultOfPolling[i].message.chat,
-          date: resultOfPolling[i].message.date,
-          text: resultOfPolling[i].message.text,
-        };
         const newChat: IChat = {
           id: resultOfPolling[i].message.chat.id,
           first_name: resultOfPolling[i].message.chat.first_name,
@@ -61,23 +57,19 @@ export const TelegramListenerOfUpdates = () => {
           date_of_last_display: 0,
         };
         dispatch(telegramReducer.actions.addChatToChats(newChat));
-        dispatch(
-          telegramReducer.actions.addMessage({
-            message: message,
-            markup: "",
-            update_id: resultOfPolling[i].update_id,
-          })
-        );
 
-        const { text, markup } = useListenAndAnswer({
-          inputMessage: resultOfPolling[i].message.text,
-          inputChatID: resultOfPolling[i].message.chat.id,
-        });
-        sendMessage(
-          text,
-          account_data,
-          resultOfPolling[i].message.chat,
-          markup
+        const message: IMessage = {
+          message_id: resultOfPolling[i].message.message_id,
+          from: resultOfPolling[i].message.from,
+          chat: resultOfPolling[i].message.chat,
+          date: resultOfPolling[i].message.date,
+          text: resultOfPolling[i].message.text,
+        };
+        dispatch(
+          thunkGetAndAnswer({
+            receivedMessage: message,
+            updateID: resultOfPolling[i].update_id,
+          })
         );
       }
 

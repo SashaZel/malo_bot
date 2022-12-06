@@ -7,10 +7,9 @@ import { Provider } from "react-redux";
 
 import type { AppStore, RootState } from "../app/store";
 // As a basic setup, import your same slice reducers
-import { chatbotReducer } from "../features/chatbot/chatbotSlice";
-import { telegramReducer } from "../features/telegram/telegramSlice";
+import { chatbotReducer } from "../app/chatbotSlice";
+import { telegramReducer } from "../app/telegramSlice";
 import { DUMMY_STATE_01 } from "../__testsUtils__/testData";
-
 
 // This type interface extends the default options for render from RTL, as well
 // as allows the user to specify other things such as initialState, store.

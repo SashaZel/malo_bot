@@ -1,9 +1,9 @@
 import React from "react";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AppDispatch, RootState, store } from "../../app/store";
-import { KeywordButton } from "./KeywordButton";
-import { ChatbotReaction } from "./ChatbotReaction";
-import { saveThunkChatbotToIDB } from "../../api/IDB_API";
+import { AppDispatch, RootState, store } from "./store";
+import { KeywordButton } from "../features/chatbot/KeywordButton";
+import { ChatbotReaction } from "../features/chatbot/ChatbotReaction";
+import { saveThunkChatbotToIDB } from "../api/IDB_API";
 
 export interface IChatbot {
   intents: {
@@ -76,38 +76,8 @@ export const chatbotReducer = createSlice({
       state.settings = action.payload.newState.settings;
     },
 
-    setSettings: (
-      state,
-      action: PayloadAction<IChatbot["settings"]>
-    ) => {
+    setSettings: (state, action: PayloadAction<IChatbot["settings"]>) => {
       state.settings = action.payload;
-    },
-
-    settingIsActive: (
-      state,
-      action: PayloadAction<{ activeChatbot: boolean }>
-    ) => {
-      state.settings.isActive = action.payload.activeChatbot;
-    },
-
-    settingAddCitation: (state, action: PayloadAction<{ addCit: boolean }>) => {
-      state.settings.defaultAnswer.addCitationOfUserMessage =
-        action.payload.addCit;
-    },
-
-    settingFirstPartOfDefaultAnswer: (
-      state,
-      action: PayloadAction<{ firstPart: string }>
-    ) => {
-      state.settings.defaultAnswer.firstPartOfAnswer = action.payload.firstPart;
-    },
-
-    settingSecondPartOfDefaultAnswer: (
-      state,
-      action: PayloadAction<{ secondPart: string }>
-    ) => {
-      state.settings.defaultAnswer.secondPartOfAnswer =
-        action.payload.secondPart;
     },
 
     addIntent: (
@@ -192,8 +162,6 @@ export const chatbotReducer = createSlice({
   },
 });
 
-// FIXME:
-
 export const selectorKeywordsList = (
   state: RootState,
   reactionName: string
@@ -254,10 +222,9 @@ export const selectorListOfAllReactions = (state: RootState) => {
 export const thunkRemoveIntent =
   ({ keyword }: { keyword: string }) =>
   (dispatch: AppDispatch, getState: typeof store.getState) => {
-    const state = getState();
-    const chatbotState = state.chatbot;
-    saveThunkChatbotToIDB(chatbotState);
     dispatch(chatbotReducer.actions.removeIntent({ keyword: keyword }));
+    const chatbotState = getState().chatbot;
+    saveThunkChatbotToIDB(chatbotState);
   };
 
 export const thunkAddIntent =
@@ -271,9 +238,6 @@ export const thunkAddIntent =
     parent: string;
   }) =>
   (dispatch: AppDispatch, getState: typeof store.getState) => {
-    const state = getState();
-    const chatbotState = state.chatbot;
-    saveThunkChatbotToIDB(chatbotState);
     dispatch(
       chatbotReducer.actions.addIntent({
         keywords: keywords,
@@ -281,34 +245,39 @@ export const thunkAddIntent =
         parent: parent,
       })
     );
+    const chatbotState = getState().chatbot;
+    saveThunkChatbotToIDB(chatbotState);
   };
 
 export const thunkRemoveReaction =
   ({ reactionForRemoving }: { reactionForRemoving: string }) =>
   (dispatch: AppDispatch, getState: typeof store.getState) => {
-    const state = getState();
-    const chatbotState = state.chatbot;
-    saveThunkChatbotToIDB(chatbotState);
     dispatch(
       chatbotReducer.actions.removeReaction({
         reactionForRemoving: reactionForRemoving,
       })
     );
-  };
-
-  export const thunkEditAnswer =
-  ({ reactionName, newAnswer }: { reactionName: string, newAnswer: string }) =>
-  (dispatch: AppDispatch, getState: typeof store.getState) => {
-    const state = getState();
-    const chatbotState = state.chatbot;
+    const chatbotState = getState().chatbot;
     saveThunkChatbotToIDB(chatbotState);
-    dispatch(
-      chatbotReducer.actions.editAnswer({ reactionName: reactionName, newAnswer: newAnswer })
-    );
   };
 
-  export const thunkHandleSettings = ( settings: IChatbot["settings"] ) => ( dispatch: AppDispatch, getState: typeof store.getState ) => {
+export const thunkEditAnswer =
+  ({ reactionName, newAnswer }: { reactionName: string; newAnswer: string }) =>
+  (dispatch: AppDispatch, getState: typeof store.getState) => {
+    dispatch(
+      chatbotReducer.actions.editAnswer({
+        reactionName: reactionName,
+        newAnswer: newAnswer,
+      })
+    );
+    const chatbotState = getState().chatbot;
+    saveThunkChatbotToIDB(chatbotState);
+  };
+
+export const thunkHandleSettings =
+  (settings: IChatbot["settings"]) =>
+  (dispatch: AppDispatch, getState: typeof store.getState) => {
     dispatch(chatbotReducer.actions.setSettings(settings));
     const chatbotState = getState().chatbot;
     saveThunkChatbotToIDB(chatbotState);
-  }
+  };

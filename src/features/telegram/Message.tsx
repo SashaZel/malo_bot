@@ -2,10 +2,9 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { splitTextAndMarkup } from "../../utils/splitTextAndMarkup";
-import { IMessage } from "./telegramSlice";
+import { IMessage } from "../../app/telegramSlice";
 
 export const Message: React.FC<{ message_id: number }> = ({ message_id }) => {
-
   const message: IMessage | undefined = useSelector((state: RootState) =>
     state.telegram.messages.find((msg) => msg.message_id === message_id)
   );
@@ -25,7 +24,6 @@ export const Message: React.FC<{ message_id: number }> = ({ message_id }) => {
   const { text, markup } = splitTextAndMarkup(message.text);
   let markupReadyForDisplay = null;
   if (markup) {
-    
     const markupParsed = JSON.parse(markup);
 
     if (markupParsed.keyboard) {
@@ -41,7 +39,7 @@ export const Message: React.FC<{ message_id: number }> = ({ message_id }) => {
                   className="inline-block bg-neutral-300 text-xs text-center text-neutral-700 dark:bg-neutral-500 dark:text-neutral-900 "
                   style={{
                     //width: `${100 / buttonsInRow - 4 * (buttonsInRow - 1)}px`,
-                    width: "200px"
+                    width: "200px",
                   }}
                 >
                   {btnElement}

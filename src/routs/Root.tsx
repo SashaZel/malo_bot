@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
 import { TelegramListenerOfUpdates } from "../features/telegram/TelegramListenerOfUpdates";
-import { IAccount, telegramReducer } from "../features/telegram/telegramSlice";
+import { IAccount, telegramReducer } from "../app/telegramSlice";
 import { SaveButton } from "../features/telegram/SaveButton";
 import { RootState } from "../app/store";
 import { LeftColumn } from "../features/just-info-pages/LeftColumn";
@@ -20,7 +20,6 @@ import chaos from "../assets/pictures/chaos.svg";
 type ILoginStatus = "login_yes" | "login_no" | "login_waiting";
 
 export const Root = () => {
-
   //console.log("@Root");
 
   const [darkMode, setDarkMode] = React.useState(false);
@@ -45,7 +44,7 @@ export const Root = () => {
     ask Telegram API if it login is valid
   2. If Login is valid this component render the working area, get another data
     from IndexedDB and set available data in Redux.
-  3. If no Log-in data or Token is wrong component renders Log-in form. 
+  3. If no Log-in data or Token is wrong component renders Log-in form and set default state to Redux. 
   4. Check user Log-in input.
   5. see paragraph 2 again.
   */
@@ -150,7 +149,13 @@ export const Root = () => {
         <LeftColumn>{activeLoginElement}</LeftColumn>
         <div className="flex">
           <div className="w-1/4"></div>
-          <div className="w-3/4"  style={{ backgroundImage: `url(${chaos})`, backgroundRepeat: "repeat-y" }}>
+          <div
+            className="w-3/4"
+            style={{
+              backgroundImage: `url(${chaos})`,
+              backgroundRepeat: "repeat-y",
+            }}
+          >
             <Outlet />
           </div>
         </div>

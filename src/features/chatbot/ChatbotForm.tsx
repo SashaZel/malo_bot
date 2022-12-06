@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../app/store";
 import { ChatbotFormButtons } from "./ChatbotFormButtons";
 //import { saveChatbotToIDB } from "../../api/IDB_API";
-import { chatbotReducer, thunkAddIntent } from "./chatbotSlice";
+import { chatbotReducer, thunkAddIntent } from "../../app/chatbotSlice";
 import { useTranslation } from "react-i18next";
 
 type IinputStatus =

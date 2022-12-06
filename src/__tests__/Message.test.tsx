@@ -1,5 +1,5 @@
 import React from "react";
-import { fireEvent, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { renderWithProviders } from "../__testsUtils__/test-utils";
 import { Message } from "../features/telegram/Message";
 

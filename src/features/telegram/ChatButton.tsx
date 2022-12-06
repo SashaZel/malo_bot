@@ -2,7 +2,11 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
-import { IChat, selectorChatStatus, telegramReducer } from "./telegramSlice";
+import {
+  IChat,
+  selectorChatStatus,
+  telegramReducer,
+} from "../../app/telegramSlice";
 
 const borderStyle = (index: number, totalChats: number): string => {
   index++;
@@ -51,7 +55,6 @@ export const ChatButton: React.FC<{
   indexInList: number;
   totalChats: number;
 }> = ({ chat, indexInList, totalChats }) => {
-
   //console.log('@ChatButton');
 
   const { t } = useTranslation();
@@ -66,7 +69,9 @@ export const ChatButton: React.FC<{
     : " border-neutral-200 bg-white dark:bg-neutral-800 dark:border-neutral-700";
 
   const styleForUnreadNumber =
-    chatStatus.unreadMsgs > 0 ? "inline-block px-1 bg-orange-500 text-white rounded-sm" : "inline-block px-1";
+    chatStatus.unreadMsgs > 0
+      ? "inline-block px-1 bg-orange-500 text-white rounded-sm"
+      : "inline-block px-1";
 
   const setThisChatAsCurrent = () => {
     dispatch(telegramReducer.actions.setCurrentChat(chat));
@@ -85,8 +90,8 @@ export const ChatButton: React.FC<{
         {chat.first_name} {chat.last_name}
       </p>
       <p className="text-xs font-semibold text-neutral-700 dark:text-neutral-500">
-        {t("routs.work.unread")}<span className={styleForUnreadNumber}>{chatStatus.unreadMsgs}</span>
-        
+        {t("routs.work.unread")}
+        <span className={styleForUnreadNumber}>{chatStatus.unreadMsgs}</span>
       </p>
     </div>
   );

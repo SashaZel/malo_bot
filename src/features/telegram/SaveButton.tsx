@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
-import { telegramReducer } from "./telegramSlice";
+import { telegramReducer } from "../../app/telegramSlice";
 import { clearIDB, deleteAccountDataIDB } from "../../api/IDB_API";
 import Modal from "@mui/material/Modal";
 import Tooltip from "@mui/material/Tooltip";

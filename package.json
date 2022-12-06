@@ -59,11 +59,13 @@
     "transform": {
       "\\.[jt]sx?$": "babel-jest"
     },
+    "transformIgnorePatterns": ["<rootDir>/node_modules/(?!(foo|bar)/)", "/bar/"],
     "moduleNameMapper": {
       "^image![a-zA-Z0-9$_-]+$": "GlobalImageStub",
       "^[./a-zA-Z0-9$_-]+\\.png$": "<rootDir>/RelativeImageStub.js",
       "module_name_(.*)": "<rootDir>/substituted_module_$1.js",
       "\\.css$": "<rootDir>/src/__mocks__/mockData.js",
+      "axios": "<rootDir>/node_modules/axios/dist/node/axios.cjs",
       "assets/(.*)": [
         "<rootDir>/images/$1",
         "<rootDir>/photos/$1",

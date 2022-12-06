@@ -1,7 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { AppDispatch, RootState, store } from "../../app/store";
-import { saveThunkTelegramStateToIDB } from "../../api/IDB_API";
+import { AppDispatch, RootState, store } from "./store";
+import { saveThunkTelegramStateToIDB } from "../api/IDB_API";
+import { sendThunkMessage } from "../api/telegramAPI";
+import { splitTextAndMarkup } from "../utils/splitTextAndMarkup";
+import { IChatbot } from "./chatbotSlice";
 
 export interface IMessage {
   message_id: number;
@@ -206,8 +209,8 @@ export const selectorUnreadMsgs = (state: RootState) => {
 };
 
 export const thunkSetLastTimeOfDisplay =
-  (requiredChatID: number) => (dispatch: AppDispatch, getState: typeof store.getState) => {
-    const telegramState = getState().telegram;
+  (requiredChatID: number) =>
+  (dispatch: AppDispatch, getState: typeof store.getState) => {
     const dateNowInSec = Math.ceil(Date.now() / 1000);
     dispatch(
       telegramReducer.actions.setLastDateOfDisplay({
@@ -215,5 +218,166 @@ export const thunkSetLastTimeOfDisplay =
         lastDateOfDisplay: dateNowInSec,
       })
     );
+    const telegramState = getState().telegram;
+    saveThunkTelegramStateToIDB(telegramState);
+  };
+
+interface ISend {
+  messageText: string;
+  account_data: IAccount;
+  current_chat: Omit<IChat, "lastReaction" | "date_of_last_display">;
+  messageMarkup: string;
+}
+
+export const thunkSendMessage =
+  ({ messageText, account_data, current_chat, messageMarkup }: ISend) =>
+  async (dispatch: AppDispatch, getState: typeof store.getState) => {
+    const response = await sendThunkMessage(
+      messageText,
+      account_data,
+      current_chat,
+      messageMarkup
+    );
+    if (
+      !response ||
+      !response.data ||
+      !response.data.result ||
+      !response.data.result.message_id ||
+      !response.data.result.from ||
+      !response.data.result.chat ||
+      !response.data.result.date ||
+      !response.data.result.text
+    ) {
+      return;
+    }
+    const message: IMessage = {
+      message_id: response.data.result.message_id,
+      from: response.data.result.from,
+      chat: response.data.result.chat,
+      date: response.data.result.date,
+      text: response.data.result.text,
+    };
+    dispatch(
+      telegramReducer.actions.addMessage({
+        message: message,
+        markup: messageMarkup,
+        update_id: 0,
+      })
+    );
+    const telegramState = getState().telegram;
+    saveThunkTelegramStateToIDB(telegramState);
+  };
+
+export const thunkGetAndAnswer =
+  ({
+    receivedMessage,
+    updateID,
+  }: {
+    receivedMessage: IMessage;
+    updateID: number;
+  }) =>
+  async (dispatch: AppDispatch, getState: typeof store.getState) => {
+    dispatch(
+      telegramReducer.actions.addMessage({
+        message: receivedMessage,
+        markup: "",
+        update_id: updateID,
+      })
+    );
+
+    const chatbotState: IChatbot = getState().chatbot;
+    const listOfChats: IChat[] = getState().telegram.chats;
+
+    let lastReaction = "";
+    for (let i = 0; i < listOfChats.length; i++) {
+      if (listOfChats[i].id === receivedMessage.chat.id) {
+        lastReaction = listOfChats[i].lastReaction;
+      }
+    }
+    if (
+      !chatbotState ||
+      !chatbotState.intents ||
+      !chatbotState.reactions ||
+      !chatbotState.settings
+    ) {
+      console.error("Chatbot state is not ready! @thunkGetAndAnswer");
+      return;
+    }
+    if (!chatbotState.settings.isActive) {
+      return;
+    }
+    const pointerToReaction =
+      chatbotState.intents[lastReaction + "~" + receivedMessage.text] ||
+      chatbotState.intents[receivedMessage.text];
+
+    let answerText = "";
+    let answerMarkup = "";
+
+    if (!pointerToReaction) {
+
+      dispatch(
+        telegramReducer.actions.setLastReaction({
+          chatID: receivedMessage.chat.id,
+          lastReactionForThisChat: "",
+        })
+      );
+
+      answerText =
+        chatbotState.settings.defaultAnswer.firstPartOfAnswer +
+        (chatbotState.settings.defaultAnswer.addCitationOfUserMessage
+          ? receivedMessage.text +
+            chatbotState.settings.defaultAnswer.secondPartOfAnswer
+          : "");
+    }
+
+    if (pointerToReaction) {
+
+      dispatch(
+        telegramReducer.actions.setLastReaction({
+          chatID: receivedMessage.chat.id,
+          lastReactionForThisChat: pointerToReaction,
+        })
+      );
+
+      const textAndMarkup = splitTextAndMarkup(chatbotState.reactions[pointerToReaction]);
+      answerText = textAndMarkup.text;
+      answerMarkup = textAndMarkup.markup;
+    }
+
+    const accountData = getState().telegram.account_data;
+
+    const response = await sendThunkMessage(
+      answerText,
+      accountData,
+      receivedMessage.chat,
+      answerMarkup
+    );
+    if (
+      !response ||
+      !response.data ||
+      !response.data.result ||
+      !response.data.result.message_id ||
+      !response.data.result.from ||
+      !response.data.result.chat ||
+      !response.data.result.date ||
+      !response.data.result.text
+    ) {
+      return;
+    }
+    const confirmMessage: IMessage = {
+      message_id: response.data.result.message_id,
+      from: response.data.result.from,
+      chat: response.data.result.chat,
+      date: response.data.result.date,
+      text: response.data.result.text,
+    };
+    dispatch(
+      telegramReducer.actions.addMessage({
+        message: confirmMessage,
+        markup: answerMarkup,
+        update_id: 0,
+      })
+    );
+    const telegramState = getState().telegram;
     saveThunkTelegramStateToIDB(telegramState);
   };

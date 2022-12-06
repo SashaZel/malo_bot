@@ -3,7 +3,11 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { ChatButton } from "./ChatButton";
-import { IChat, selectorIsLoggedIn, telegramReducer } from "./telegramSlice";
+import {
+  IChat,
+  selectorIsLoggedIn,
+  telegramReducer,
+} from "../../app/telegramSlice";
 
 export const ChooseUser = () => {
   const { t } = useTranslation();

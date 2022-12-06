@@ -4,7 +4,7 @@ import Tooltip from "@mui/material/Tooltip";
 import mainLogo from "../../assets/logos/logo_main.svg";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
-import { selectorUnreadMsgs } from "../telegram/telegramSlice";
+import { selectorUnreadMsgs } from "../../app/telegramSlice";
 import { useTranslation } from "react-i18next";
 
 export const LeftColumn = (props: React.PropsWithChildren) => {

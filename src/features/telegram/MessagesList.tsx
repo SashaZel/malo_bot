@@ -1,11 +1,9 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-//import { saveTelegramStateToIDB } from "../../api/IDB_API";
 import { AppDispatch, RootState } from "../../app/store";
 import { Message } from "./Message";
-import { IMessage, thunkSetLastTimeOfDisplay } from "./telegramSlice";
-
+import { IMessage, thunkSetLastTimeOfDisplay } from "../../app/telegramSlice";
 
 export const MessagesList = () => {
 
@@ -21,11 +19,8 @@ export const MessagesList = () => {
 
   React.useEffect(() => {
     if (currentChat) {
-      dispatch(
-        thunkSetLastTimeOfDisplay(currentChat?.id)
-      );
+      dispatch(thunkSetLastTimeOfDisplay(currentChat?.id));
     }
-    //saveTelegramStateToIDB();
   }, [msgList, currentChat?.id]);
 
   const listOfMessegesInCurrentChat = msgList.map((message: IMessage) => {
@@ -47,7 +42,9 @@ export const MessagesList = () => {
 
   return (
     <div className="m-4 2xl:mr-12 mb-72">
-      <div className="font-semibold text-xl my-1">{t("routs.work.chatWith", "Chat with")}</div>
+      <div className="font-semibold text-xl my-1">
+        {t("routs.work.chatWith", "Chat with")}
+      </div>
       <div className="w-full border-b-2 border-t-2 py-2 mt-1 mb-2 dark:border-neutral-700">
         <div>
           {currentChat.first_name} {currentChat.last_name}

@@ -1,10 +1,9 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
-import { selectorListOfAllReactions } from "./chatbotSlice";
+import { selectorListOfAllReactions } from "../../app/chatbotSlice";
 
 export const ChatbotListOfReactions = () => {
-  
   //console.log("@ChatbotListOfReactions");
 
   const reactions = useSelector((state: RootState) =>

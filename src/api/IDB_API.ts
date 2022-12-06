@@ -1,17 +1,16 @@
-import React from 'react';
+import React from "react";
 import { AnyAction } from "@reduxjs/toolkit";
 import { get, set, clear, setMany, entries, del } from "idb-keyval";
 import { useStore } from "react-redux";
 import { RootState } from "../app/store";
 //import { store } from "../app/store";
-import { IChatbot } from "../features/chatbot/chatbotSlice";
-import { IAccount, ITelegram } from "../features/telegram/telegramSlice";
+import { IChatbot } from "../app/chatbotSlice";
+import { IAccount, ITelegram } from "../app/telegramSlice";
 
 export const getInitialLoginDataFromIDB = async (): Promise<{
   IDBAccountData: IAccount | null;
   hasIDBError: boolean;
 }> => {
-
   //console.log("@IDB_API getInitialLoginDataFromIDB()");
 
   try {
@@ -32,7 +31,6 @@ export const getInitialLoginDataFromIDB = async (): Promise<{
 };
 
 export const saveTelegramAccountDataToIDB = (accountData: IAccount) => {
-
   //console.log("@IDB_API saveTelegramAccountDataToIDB()");
 
   try {
@@ -60,8 +58,9 @@ export const saveTelegramAccountDataToIDB = (accountData: IAccount) => {
 //   }
 // };
 
-export const saveThunkChatbotToIDB = async ( chatbotState: IChatbot ): Promise<void> => {
-
+export const saveThunkChatbotToIDB = async (
+  chatbotState: IChatbot
+): Promise<void> => {
   console.log("@saveThunkChatbotToIDB");
 
   try {
@@ -72,7 +71,6 @@ export const saveThunkChatbotToIDB = async ( chatbotState: IChatbot ): Promise<v
 };
 
 export const getChatbotFromIDB = async (): Promise<IChatbot | undefined> => {
-
   //console.log("@IDB_API getChatbotFromIDB()");
 
   let chatbotState;
@@ -112,7 +110,6 @@ export const getChatbotFromIDB = async (): Promise<IChatbot | undefined> => {
 // };
 
 export const saveThunkTelegramStateToIDB = (telegramAppState: ITelegram) => {
-
   console.log("@saveThunkTelegramStateToIDB");
 
   //const telegramAppState = store.getState().telegram;
@@ -137,7 +134,6 @@ export const saveThunkTelegramStateToIDB = (telegramAppState: ITelegram) => {
 export const getAvailableDataFromIDB = async (): Promise<
   Omit<ITelegram, "account_data">
 > => {
-
   //console.log("@IDB_API getAvailableDataFromIDB()");
 
   const resultFromIDB: Omit<ITelegram, "account_data"> = {
