@@ -21,67 +21,13 @@ export interface IParamsForSend {
   reply_markup?: string;
 }
 
-// export const useSendMessage: Ifunction = (
-//   messageText,
-//   account_data,
-//   current_chat,
-//   messageMarkup
-// ) => {
-
-//   //console.log("@telegramAPI sendMessage()");
-
-//   const dispatch = useDispatch();
-
-//   React.useEffect(() => {
-
-//   if (!messageText || !current_chat || !current_chat) {
-//     return;
-//   }
-
-//   const paramsForSend: IParamsForSend = {
-//     chat_id: current_chat.id,
-//     text: messageText,
-//   };
-
-//   if (messageMarkup) {
-//     paramsForSend.reply_markup = messageMarkup;
-//   }
-
-//   try {
-//     const response = await axios.get(
-//       `https://api.telegram.org/bot${account_data.bot_token}/sendMessage`,
-//       {
-//         params: paramsForSend,
-//       }
-//     );
-//   } catch (error) {
-//     console.error("@telegramAPI => Fail to send message ", error);
-//   }
-
-//     const message: IMessage = {
-//       message_id: response.data.result.message_id,
-//       from: response.data.result.from,
-//       chat: response.data.result.chat,
-//       date: response.data.result.date,
-//       text: response.data.result.text,
-//     };
-//     dispatch(
-//       telegramReducer.actions.addMessage({
-//         message: message,
-//         markup: messageMarkup,
-//         update_id: 0,
-//       })
-//     );
-
-// });
-// };
-
 export const sendThunkMessage: ISend = async (
   messageText,
   account_data,
   current_chat,
   messageMarkup
 ) => {
+
   //console.log("@telegramAPI sendThunkMessage()");
 
   if (!messageText || !current_chat || !current_chat) {
@@ -107,26 +53,13 @@ export const sendThunkMessage: ISend = async (
 
     return response;
 
-    // const message: IMessage = {
-    //   message_id: response.data.result.message_id,
-    //   from: response.data.result.from,
-    //   chat: response.data.result.chat,
-    //   date: response.data.result.date,
-    //   text: response.data.result.text,
-    // };
-    // store.dispatch(
-    //   telegramReducer.actions.addMessage({
-    //     message: message,
-    //     markup: messageMarkup,
-    //     update_id: 0,
-    //   })
-    // );
   } catch (error) {
     console.error("@telegramAPI => Fail to send message ", error);
   }
 };
 
 export const checkTelegramAccount = async (botTocken: string) => {
+
   //console.log("@telegramAPI checkTelegramAccount()");
 
   try {
@@ -143,57 +76,6 @@ export const checkTelegramAccount = async (botTocken: string) => {
   }
 };
 
-// export const sendMessage: Ifunction = async (
-//   messageText,
-//   account_data,
-//   current_chat,
-//   messageMarkup
-// ) => {
-
-//   //console.log("@telegramAPI sendMessage()");
-
-//   const dispatch = useDispatch();
-
-//   if (!messageText || !current_chat || !current_chat) {
-//     return;
-//   }
-
-//   const paramsForSend: IParamsForSend = {
-//     chat_id: current_chat.id,
-//     text: messageText,
-//   };
-
-//   if (messageMarkup) {
-//     paramsForSend.reply_markup = messageMarkup;
-//   }
-
-//   try {
-//     const response = await axios.get(
-//       `https://api.telegram.org/bot${account_data.bot_token}/sendMessage`,
-//       {
-//         params: paramsForSend,
-//       }
-//     );
-
-//     const message: IMessage = {
-//       message_id: response.data.result.message_id,
-//       from: response.data.result.from,
-//       chat: response.data.result.chat,
-//       date: response.data.result.date,
-//       text: response.data.result.text,
-//     };
-//     store.dispatch(
-//       telegramReducer.actions.addMessage({
-//         message: message,
-//         markup: messageMarkup,
-//         update_id: 0,
-//       })
-//     );
-//   } catch (error) {
-//     console.error("@telegramAPI => Fail to send message ", error);
-//   }
-// };
-
 interface IResultsOfPolling {
   update_id: number;
   message: IMessage;
@@ -206,6 +88,7 @@ export const pollingForMessages = async (
   resultOfPolling: IResultsOfPolling[];
   errorOfPolling: Error | null;
 }> => {
+  
   //console.log("@telegramAPI pollingForMessages()");
 
   try {
