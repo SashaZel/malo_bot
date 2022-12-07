@@ -13,4 +13,6 @@ test("render Message with buttons", async () => {
   renderWithProviders(<Message message_id={1273} />);
 
   expect(screen.getByText(/A: cube/)).toBeInTheDocument();
+
+  expect(screen.queryByText(/E: type_never/)).not.toBeInTheDocument();
 });

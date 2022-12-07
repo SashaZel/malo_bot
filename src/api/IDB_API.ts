@@ -46,7 +46,7 @@ export const saveThunkChatbotToIDB = async (
   try {
     set("idb-chatbot", chatbotState);
   } catch (error) {
-    console.error("@IDB_API saveChatbotToIDB() ", error);
+    console.error("@IDB_API saveThunkChatbotToIDB() ", error);
   }
 };
 

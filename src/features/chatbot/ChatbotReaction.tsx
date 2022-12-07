@@ -2,9 +2,7 @@ import React from "react";
 import { Tooltip, Modal } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../app/store";
-//import { saveChatbotToIDB } from "../../api/IDB_API";
 import {
-  chatbotReducer,
   selectorKeywordsList,
   thunkAddIntent,
   thunkEditAnswer,
@@ -36,6 +34,10 @@ export const ChatbotReaction: React.FC<{
   const deepthInIntentTree = reactionName.split("~").length;
 
   const handleAddNewKeyword = (e: React.BaseSyntheticEvent) => {
+
+   console.log('handleAddNewKeyword');
+   console.log(e)
+
     e.preventDefault();
     const lastSlashSymbol = reactionName.lastIndexOf("~");
     let keywordParent = "";
@@ -44,6 +46,7 @@ export const ChatbotReaction: React.FC<{
       keywordParent = reactionName.slice(0, lastSlashSymbol);
       reactionNameWithoutParent = reactionName.slice(lastSlashSymbol + 1);
     }
+    //
     const inputString = e.target[0].value;
 
     if (!inputString || typeof inputString !== "string") return;
@@ -179,15 +182,17 @@ export const ChatbotReaction: React.FC<{
           </span>
           {reactionName}
         </h4>
-        <form onSubmit={(e) => handleAddNewKeyword(e)} className="block">
+        <form onSubmit={handleAddNewKeyword} className="block">
           <input
             type="text"
+            aria-label="input for new keyword"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             className="border-2 border-neutral-200 rounded-bl-lg w-1/2 dark:border-neutral-700 dark:bg-neutral-900"
           />
           <input
             type="submit"
+            aria-label="button for new keyword"
             value={
               t("routs.work.addKeywords", "Add keywords") ?? "Add keywords"
             }

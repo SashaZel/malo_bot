@@ -25,6 +25,7 @@ export const KeywordButton: React.FC<{ keyword: string }> = ({ keyword }) => {
       {keywordForDisplay}
       <button
         onClick={() => handleDeleteKeyword()}
+        aria-label={"keyword: " + keyword}
         className=" m-1 text-red-500 p-1 pr-2 translate-x-3 -translate-y-3 dark:text-orange-500"
       >
         <Close fontSize="small" />
